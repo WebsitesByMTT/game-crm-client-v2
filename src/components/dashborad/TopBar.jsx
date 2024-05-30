@@ -1,21 +1,24 @@
 "use client"
 import React, { useState } from 'react'
 import Modal from '../modal/Modal'
+import { useSelector } from 'react-redux'
 
-const TopBar = () => {
-    const [type,setType]=useState('')
-    const [modal,setModal]=useState(false)
-    const handelModal=(state,type)=>{
+const TopBar = ({ data }) => {
+    const clientdata=useSelector((state)=>state.globlestate.clientData)
+    const [type, setType] = useState('')
+    const [modal, setModal] = useState(false)
+    const handelModal = (state, type) => {
         setModal(state)
         setType(type)
+
     }
-    const handelClosemodal=(state)=>{
+    const handelClosemodal = (state) => {
         setModal(state)
     }
 
     return (
         <>
-           
+
             <div className='p-2 h-full' >
                 <div className='py-5 bg-gradient-to-r from-cyan-500 h-full rounded-xl to-blue-500 px-10'>
                     <div className='flex items-center justify-between w-full'>
@@ -39,22 +42,26 @@ const TopBar = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='space-y-3'>
-                        <div>Account : <span className='text-white'>User Name</span></div>
-                        <div>Credits : <span className='text-white'>0</span></div>
+                    <div className='flex items-center justify-between pt-5'>
+                        <div className='space-y-3'>
+                            <div>Account : <span className='text-white capitalize'>{data?.username}</span></div>
+                            <div>Credits : <span className='text-white'>{data?.credits}</span></div>
+                        </div>
+                        <button  onClick={() => handelModal(true, 'add_client')} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add Client</button>
                     </div>
+
                     {/* Button  */}
-                    <div className='flex justify-around items-center pt-10'>
-                        <button onClick={()=>handelModal(true,'delete')} type="button" className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Delete</button>
-                        <button onClick={()=>handelModal(true,'recharge')} type="button" className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Recharge</button>
-                        <button onClick={()=>handelModal(true,'redeem')} type="button" className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Redeem</button>
-                        <button onClick={()=>handelModal(true,'update_password')} type="button" className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Update Password</button>
-                        <button onClick={()=>handelModal(true,'transaction')} type="button" className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Transaction</button>
-                        <button onClick={()=>handelModal(true,'report')} type="button" className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Report</button>
-                    </div>
+                    {clientdata?.username&&<div className='flex justify-around items-center pt-10'>
+                        <button onClick={() => handelModal(true, 'delete')} type="button" className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Delete</button>
+                        <button onClick={() => handelModal(true, 'recharge')} type="button" className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Recharge</button>
+                        <button onClick={() => handelModal(true, 'redeem')} type="button" className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Redeem</button>
+                        <button onClick={() => handelModal(true, 'update_password')} type="button" className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Update Password</button>
+                        <button onClick={() => handelModal(true, 'transaction')} type="button" className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Transaction</button>
+                        <button onClick={() => handelModal(true, 'report')} type="button" className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Report</button>
+                    </div>}
                 </div>
             </div>
-            <Modal handelClosemodal={handelClosemodal} modal={modal} type={type}/>
+            <Modal clientData={clientdata} data={data} handelClosemodal={handelClosemodal} modal={modal} type={type} />
         </>
     )
 }
