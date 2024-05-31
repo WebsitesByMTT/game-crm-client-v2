@@ -1,16 +1,19 @@
 "use client"
 import React, { useState } from 'react'
 import Modal from '../modal/Modal'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { TransactionType } from '@/redux/ReduxSlice'
 
 const TopBar = ({ data }) => {
     const clientdata=useSelector((state)=>state.globlestate.clientData)
-    const [type, setType] = useState('')
+    const dispatch=useDispatch()
+    const [type,setType]=useState('')
     const [modal, setModal] = useState(false)
-    const handelModal = (state, type) => {
+    
+    const handelModal = (state,type) => {
         setModal(state)
         setType(type)
-
+        type==='transaction'&&dispatch(TransactionType(true))
     }
     const handelClosemodal = (state) => {
         setModal(state)
@@ -47,6 +50,10 @@ const TopBar = ({ data }) => {
                             <div>Account : <span className='text-white capitalize'>{data?.username}</span></div>
                             <div>Credits : <span className='text-white'>{data?.credits}</span></div>
                         </div>
+                        {clientdata?.username&&<div className='text-white'>
+                            <span>Switched Account :</span>
+                            <span className='pl-2 capitalize font-bold'>{clientdata?.username}</span>
+                        </div>}
                         <button  onClick={() => handelModal(true, 'add_client')} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add Client</button>
                     </div>
 
@@ -61,7 +68,7 @@ const TopBar = ({ data }) => {
                     </div>}
                 </div>
             </div>
-            <Modal clientData={clientdata} data={data} handelClosemodal={handelClosemodal} modal={modal} type={type} />
+            <Modal clientData={clientdata} data={data} handelClosemodal={handelClosemodal} type={type} modal={modal} />
         </>
     )
 }

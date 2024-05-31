@@ -6,8 +6,10 @@ import BottomBar from '@/components/dashborad/BottomBar'
 import LeftSideBar from '@/components/dashborad/LeftSideBar'
 import Pagination from '@/components/dashborad/Pagination'
 import TopBar from '@/components/dashborad/TopBar'
+import { useSelector } from 'react-redux'
 
 const Page = () => {
+   const tabelstate=useSelector((state)=>state.globlestate.TableState)
 
    const [data,setData]=useState()
     const handelUserData=async()=>{
@@ -22,7 +24,7 @@ const Page = () => {
     }
    useEffect(()=>{
       handelUserData()
-   },[])
+   },[tabelstate])
 
   return (
     <div className='grid grid-cols-12 h-screen grid-rows-12'>

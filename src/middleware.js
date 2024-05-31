@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 
 
 export default function middleware(req) {
+  console.log('working')
     const loggedin = req.cookies.get("userToken");
+  console.log('working',loggedin)
+
     const { pathname } = req.nextUrl;
     if(!loggedin&&pathname!=='/'){
         return NextResponse.redirect(new URL("/", req.url));

@@ -1,11 +1,12 @@
 import { AddClientDataApi, AddCreditApi, apiChangePassword, apiDelete, apiTransaction } from '@/apiConfig/apis'
-import { ReportState, UpdateTable } from '@/redux/ReduxSlice'
+import { TransactionType, UpdateTable } from '@/redux/ReduxSlice'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
 const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
     const dispatch = useDispatch()
+    const Transaction = useSelector((state) => state.globlestate.TransactionType)
     //Add Client
     const [addClient, setAddClient] = useState({
         "clientNickName": "",
@@ -19,34 +20,54 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
     }
 
     const handelAddClient = async () => {
-        try {
-            const response = await AddClientDataApi(clientdata)
-            if (response.status === 201) {
+        if (!addClient.clientUserName) {
+            toast("Enter Client UserName", { type: 'error' })
+        } else if (!addClient.clientNickName) {
+            toast("Enter Client NickName", { type: 'error' })
+        } else if (!addClient.password) {
+            toast("Enter Client Password", { type: 'error' })
+        } else {
+            try {
+                const response = await AddClientDataApi(clientdata)
+                if (response.status === 201) {
+                    handelClosemodal(false)
+                    toast(response.data.message, { type: 'success' })
+                    dispatch(UpdateTable(true))
+                }
+            } catch (error) {
                 handelClosemodal(false)
-                toast(response.data.message, { type: 'success' })
-                dispatch(UpdateTable(true))
+                toast(error.response.data.error, { type: 'error' })
             }
-        } catch (error) {
-            console.log(error)
         }
     }
+
     //Add Client
     //Add Credits
+    const regex = /^[0-9\b]+$/;
     const [credit, setCredit] = useState('')
     const handelAddCredit = async (clientUserName, type) => {
         const creditdata = {
             credits: type == "redeem" ? String(-credit) : credit,
         }
-        try {
-            const response = await AddCreditApi(clientUserName, creditdata)
-            if (response.status === 200) {
-                dispatch(UpdateTable(true))
-                handelClosemodal(false)
-                toast(response.data.message, { type: 'success' })
-            }
-        } catch (error) {
-            console.log(error)
 
+        if (!credit) {
+            toast(`Enter ${type === "redeem" ? 'Redeem' : 'Credit'} Value`, { type: 'error' })
+        }
+
+        else if (!regex.test(credit)) {
+            toast('Enter Positive Number', { type: 'error' })
+        } else {
+            try {
+                const response = await AddCreditApi(clientUserName, creditdata)
+                if (response.status === 200) {
+                    dispatch(UpdateTable(true))
+                    handelClosemodal(false)
+                    toast(response.data.message, { type: 'success' })
+                }
+            } catch (error) {
+                handelClosemodal(false)
+                toast(error.response.data.error, { type: 'error' })
+            }
         }
     }
     //Add Credits
@@ -65,16 +86,24 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
         const changePasswordData = {
             changedPassword: password.password
         }
+        if (!password.password) {
+            toast('Enter New Password', { type: 'error' })
+        } else if (!password.ConfirmPassword) {
+            toast('Enter Confirm Password', { type: 'error' })
+        } else if (password.password !== password.ConfirmPassword) {
+            toast('Password not matching', { type: 'error' })
+        } else {
+            try {
+                const response = await apiChangePassword(clientData?.username, changePasswordData)
+                if (response.status === 200) {
+                    toast(response.data.message, { type: 'success' })
+                    handelClosemodal(false)
+                }
+            } catch (error) {
 
-        try {
-            const response = await apiChangePassword(clientData?.username, changePasswordData)
-            if (response.status === 200) {
-                toast(response.data.message, { type: 'success' })
-                handelClosemodal(false)
             }
-        } catch (error) {
-
         }
+
     }
     //Change Password
 
@@ -84,9 +113,9 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
         if (clientData?.username) {
             try {
                 const response = await apiTransaction(clientData?.username)
-                console.log(response)
                 if (response.status === 200) {
                     setTransaction(response.data)
+                    dispatch(TransactionType(false))
                 }
             } catch (error) {
 
@@ -95,7 +124,7 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
     }
     useEffect(() => {
         handelTransaction()
-    }, [type === "transaction"])
+    }, [Transaction])
     //Transaction
 
     //Delete
@@ -119,7 +148,7 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
         modal && <>
             <div className={`absolute ${modal ? 'scale-100 transition-all' : 'scale-50 transition-all'} z-50 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white w-[50%] p-5 rounded-lg`}>
                 <div onClick={() => handelClosemodal(false)} className='w-[30px] ml-auto cursor-pointer'>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-x"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
                 </div>
 
                 {/* Recharge Content */}
@@ -127,8 +156,8 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
                     <div>Username : <span>{clientData?.username}</span></div>
                     <div className='pt-5'>
                         <div>
-                            <label for="add_credit" class="block mb-2 text-sm font-medium text-black">Add Credit</label>
-                            <input value={credit} onChange={(e) => setCredit(e.target.value)} type="text" id="add_credit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="add credit" required />
+                            <label for="add_credit" className="block mb-2 text-sm font-medium text-black">Add Credit</label>
+                            <input value={credit} onChange={(e) => setCredit(e.target.value)} type="text" id="add_credit" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="add credit" required />
                         </div>
                         <div className='flex justify-center pt-5'>
                             <button onClick={() => handelAddCredit(clientData?.username)} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add</button>
@@ -142,7 +171,7 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
                     <div className='pt-5'>
                         <div>
                             <label for="redeem_credit" className="block mb-2 text-sm font-medium text-black">Redeem Credit</label>
-                            <input value={credit} onChange={(e) => setCredit(e.target.value)} type="text" id="redeem_credit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="redeem credit" required />
+                            <input value={credit} onChange={(e) => setCredit(e.target.value)} type="text" id="redeem_credit" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="redeem credit" required />
                         </div>
                         <div className='flex justify-center pt-5'>
                             <button onClick={() => handelAddCredit(clientData?.username, "redeem")} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reddem</button>
@@ -159,7 +188,7 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
                             <input value={password.password} onChange={(e) => handelPassword(e)} name='password' type="text" id="new_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="new password" required />
                         </div>
                         <div className='pt-5'>
-                            <label for="Confirm_Password" class="block mb-2 text-sm font-medium text-black">Enter Confirm Password</label>
+                            <label for="Confirm_Password" className="block mb-2 text-sm font-medium text-black">Enter Confirm Password</label>
                             <input value={password.ConfirmPassword} name='ConfirmPassword' onChange={(e) => handelPassword(e)} type="text" id="Confirm_Password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="confirm password" required />
                         </div>
                         <div className='flex justify-center pt-5'>

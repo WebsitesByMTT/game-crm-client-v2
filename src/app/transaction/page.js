@@ -41,20 +41,22 @@ const Page = () => {
             <div className=' p-2  row-span-12 col-span-2'>
                 <LeftSideBar text={'Dashboard'} data={data} />
             </div>
-            <div className='p-2 row-span-12 col-span-10'>
+            <div className='px-2 pb-5 overflow-y-scroll row-span-12 col-span-10'>
                 <table className='w-full'>
                     <thead>
-                        <tr className='text-center bg-indigo-600 text-white'>
+                        <tr className='text-center sticky top-0 bg-indigo-600 text-white'>
                             <th className='py-2'>Creditor</th>
                             <th>Creditor Designation</th>
                             <th>Debitor</th>
-                            <th>Credit</th>
+                            <th>Credit/Redeem</th>
                             <th>Debitor Designation</th>
                             <th>Date & Time</th>
                         </tr>
+                    </thead>
+                    <tbody>
                         {
                             transaction?.map((item, ind) => (
-                                <tr key={ind} className={`${ind%2===1?'bg-white':'bg-gray-100'} text-center`}>
+                                <tr key={ind} className={`${ind % 2 === 1 ? 'bg-white' : 'bg-gray-100'} text-center`}>
                                     <td className='py-2'>{item.creditor}</td>
                                     <td>{item.creditorDesignation}</td>
                                     <td>{item.debitor}</td>
@@ -64,9 +66,10 @@ const Page = () => {
                                 </tr>
                             ))
                         }
+                    </tbody>
 
 
-                    </thead>
+
                 </table>
             </div>
         </div>

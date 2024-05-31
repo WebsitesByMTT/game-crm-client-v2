@@ -1,7 +1,7 @@
 
 import axios from "axios";
 import Cookies from "js-cookie";
-import { API_PATH } from "./apipath";
+import { API_PATH } from "./Apipath";
 const token = Cookies.get("userToken");
 
 export const LoginApi = async (data) => {
@@ -38,7 +38,7 @@ export const GetUserDataApi = async () => {
 
 export const GetClientDataApi = async (data) => {
     try {
-        const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apigetclients,data,
+        const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apigetclients, data,
             {
                 withCredentials: true,
                 headers: {
@@ -56,7 +56,7 @@ export const GetClientDataApi = async (data) => {
 
 export const AddClientDataApi = async (data) => {
     try {
-        const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiaddclient,data,
+        const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiaddclient, data,
             {
                 withCredentials: true,
                 headers: {
@@ -65,36 +65,29 @@ export const AddClientDataApi = async (data) => {
                     }
                 }
             }
-        );
+        )
         return response;
     } catch (error) {
-        console.log(error)
         throw error;
     }
 };
 
-export const AddCreditApi = async (data,creditdata) => {
-    try {
-        const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiAddCredits+data,creditdata,
-            {
-                withCredentials: true,
-                headers: {
-                    cookies: {
-                        userToken: token
-                    }
+export const AddCreditApi = async (data, creditdata) => {
+    return axios.post(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiAddCredits + data, creditdata,
+        {
+            withCredentials: true,
+            headers: {
+                cookies: {
+                    userToken: token
                 }
             }
-        );
-        return response;
-    } catch (error) {
-        console.log(error)
-        throw error;
-    }
+        }
+    );
 };
 
-export const apiChangePassword = async (data,changepassworddata) => {
+export const apiChangePassword = async (data, changepassworddata) => {
     try {
-        const response = await axios.put(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiChangePassword+data,changepassworddata,
+        const response = await axios.put(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiChangePassword + data, changepassworddata,
             {
                 withCredentials: true,
                 headers: {
@@ -113,7 +106,7 @@ export const apiChangePassword = async (data,changepassworddata) => {
 
 export const apiTransaction = async (data) => {
     try {
-        const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiGetTransaction+data,
+        const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiGetTransaction + data,
             {
                 withCredentials: true,
                 headers: {
@@ -132,7 +125,7 @@ export const apiTransaction = async (data) => {
 
 export const apiDelete = async (data) => {
     try {
-        const response = await axios.delete(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiDeleteClient+data,
+        const response = await axios.delete(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiDeleteClient + data,
             {
                 withCredentials: true,
                 headers: {
@@ -144,7 +137,6 @@ export const apiDelete = async (data) => {
         );
         return response;
     } catch (error) {
-        console.log(error)
         throw error;
     }
 };

@@ -5,6 +5,6 @@ export const API_PATH={
     apiaddclient:'/api/users/addClient',
     apiAddCredits:'/api/transaction/updateCredits/',
     apiChangePassword:'/api/users/updateClientPassword/',
-    apiGetTransaction:'/api/transaction/transactions/',
+    apiGetTransaction:'/api/transaction/',
     apiDeleteClient:'/api/users/clients/',
 }

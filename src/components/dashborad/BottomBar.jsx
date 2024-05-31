@@ -1,5 +1,5 @@
 import { GetClientDataApi } from '@/apiConfig/apis'
-import { ClientData, UpdateTable } from '@/redux/ReduxSlice'
+import { ClientData, TransactionType, UpdateTable } from '@/redux/ReduxSlice'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -23,18 +23,20 @@ const BottomBar = ({ data }) => {
                setState(response.data.userClientList)
                dispatch(UpdateTable(false))  
             }  
+            
          } catch (error) {
-   
+           
          }
       }
    
    }
    useEffect(() => {
       handelClientList()
-   }, [tabelstate||data])
+   }, [data,tabelstate])
 
    const handelUpdate=(item)=>{
       dispatch(ClientData(item))
+      dispatch(TransactionType(false))
       toast(`Switched to ${item?.username}`,{type:'success'})
    }
 
