@@ -23,9 +23,7 @@ export const GetUserDataApi = async () => {
             {
                 withCredentials: true,
                 headers: {
-                    cookies: {
-                        userToken: token
-                    }
+                    cookies:`userToken=${token}`
                 }
             }
         );
@@ -42,9 +40,7 @@ export const GetClientDataApi = async (data) => {
             {
                 withCredentials: true,
                 headers: {
-                    cookies: {
-                        userToken: token
-                    }
+                    cookies:`userToken=${token}`
                 }
             }
         );
@@ -60,9 +56,7 @@ export const AddClientDataApi = async (data) => {
             {
                 withCredentials: true,
                 headers: {
-                    cookies: {
-                        userToken: token
-                    }
+                    cookies:`userToken=${token}`
                 }
             }
         )
@@ -77,9 +71,7 @@ export const AddCreditApi = async (data, creditdata) => {
         {
             withCredentials: true,
             headers: {
-                cookies: {
-                    userToken: token
-                }
+                cookies:`userToken=${token}`
             }
         }
     );
@@ -91,9 +83,7 @@ export const apiChangePassword = async (data, changepassworddata) => {
             {
                 withCredentials: true,
                 headers: {
-                    cookies: {
-                        userToken: token
-                    }
+                    cookies:`userToken=${token}`
                 }
             }
         );
@@ -110,9 +100,7 @@ export const apiTransaction = async (data) => {
             {
                 withCredentials: true,
                 headers: {
-                    cookies: {
-                        userToken: token
-                    }
+                    cookies:`userToken=${token}`
                 }
             }
         );
@@ -129,9 +117,7 @@ export const apiDelete = async (data) => {
             {
                 withCredentials: true,
                 headers: {
-                    cookies: {
-                        userToken: token
-                    }
+                    cookies:`userToken=${token}`
                 }
             }
         );

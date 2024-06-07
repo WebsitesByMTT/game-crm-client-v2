@@ -2,10 +2,11 @@
 import React, { useState } from 'react'
 import Modal from '../modal/Modal'
 import { useDispatch, useSelector } from 'react-redux'
-import { TransactionType } from '@/redux/ReduxSlice'
+import { CheckBoxFilter, TransactionType } from '@/redux/ReduxSlice'
 
 const TopBar = ({ data }) => {
     const clientdata=useSelector((state)=>state.globlestate.clientData)
+
     const dispatch=useDispatch()
     const [type,setType]=useState('')
     const [modal, setModal] = useState(false)
@@ -32,15 +33,15 @@ const TopBar = ({ data }) => {
                             <div className='bg-white  w-[200px] text-black p-2 rounded-xl'>
                                 <div className='flex justify-around'>
                                     <label for="all" >All</label>
-                                    <input type='radio' name='account_filter' id='all' />
+                                    <input onChange={()=>dispatch(CheckBoxFilter("all"))} type='radio' name='account_filter' id='all' />
                                 </div>
                                 <div className='flex justify-around'>
                                     <label for="active" >Active</label>
-                                    <input type='radio' name='account_filter' id='active' />
+                                    <input onChange={()=>dispatch(CheckBoxFilter("active"))} type='radio' name='account_filter' id='active' />
                                 </div>
                                 <div className=' flex justify-around'>
                                     <label for="InActive" >InActive</label>
-                                    <input type='radio' name='account_filter' id='InActive' />
+                                    <input onChange={()=>dispatch(CheckBoxFilter("inactive"))} type='radio' name='account_filter' id='InActive' />
                                 </div>
                             </div>
                         </div>

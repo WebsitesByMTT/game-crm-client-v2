@@ -1,5 +1,6 @@
 import { AddClientDataApi, AddCreditApi, apiChangePassword, apiDelete, apiTransaction } from '@/apiConfig/apis'
 import { TransactionType, UpdateTable } from '@/redux/ReduxSlice'
+import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -43,19 +44,15 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
 
     //Add Client
     //Add Credits
-    const regex = /^[0-9\b]+$/;
+    // const regex = /^[0-9\b]+$/;
     const [credit, setCredit] = useState('')
     const handelAddCredit = async (clientUserName, type) => {
         const creditdata = {
-            credits: type == "redeem" ? String(-credit) : credit,
+            credits: type == "redeem" ? Number(-credit) : Number(credit),
         }
 
         if (!credit) {
             toast(`Enter ${type === "redeem" ? 'Redeem' : 'Credit'} Value`, { type: 'error' })
-        }
-
-        else if (!regex.test(credit)) {
-            toast('Enter Positive Number', { type: 'error' })
         } else {
             try {
                 const response = await AddCreditApi(clientUserName, creditdata)
@@ -143,6 +140,22 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
     }
     //Delete
 
+    //Add Games
+    const [gamethumbnail,setGameThumbnail]=useState(null)
+    const [games,setGames]=useState({
+        gameid:'',
+        gameName:'',
+        gameHostLink:'',
+        type:'',
+        category:'',
+        tags:'',
+        status:''
+    })
+    const handelGameChange=(e)=>{
+         const {name,value}=e.target
+         setGames({...games,[name]:value})
+    }
+    //Add Games
 
     return (
         modal && <>
@@ -279,6 +292,56 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
                     </div>
                 </div>}
                 {/* Add Client Content */}
+                {/* Add Games */}
+                {type === 'addGames' && <div className='h-[80vh] overflow-y-scroll'>
+                    <div className='text-center'>Add Games</div>
+                    <div className='pt-5 space-y-3 '>
+                        <div>
+                            <label className="block mb-2 text-sm font-medium text-black">Game Id</label>
+                            <input type="text" onChange={(e) => handelGameChange(e)} value={games.gameid} name='gameid' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="game id" required />
+                        </div>
+                        <div>
+                            <label className="block mb-2 text-sm font-medium text-black">Game Name</label>
+                            <input type="text" onChange={(e) => handelGameChange(e)} value={games.gameName} name='gameName' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="game name" required />
+                        </div>
+                        <div>
+                            <label className="block mb-2 text-sm font-medium text-black">Game Thumbnail</label>
+                            <div class="relative">
+                                <input onChange={(e)=>setGameThumbnail(e.target.files[0])} type="file" className="hidden" id="fileUpload" accept="image/*" />
+                                <label for="fileUpload" className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-20 rounded">
+                                    Upload File
+                                </label>
+                                <p id="fileName" className="mt-2">
+                                    {gamethumbnail&&<Image src={URL.createObjectURL(gamethumbnail)} alt='img' width={200} height={10} />}
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <label className="block mb-2 text-sm font-medium text-black">Game Host Link</label>
+                            <input type="text" onChange={(e) => handelGameChange(e)} value={games.gameHostLink} name='gameHostLink' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="game host link" required />
+                        </div>
+                        <div>
+                            <label className="block mb-2 text-sm font-medium text-black">Type</label>
+                            <input type="text" onChange={(e) => handelGameChange(e)} value={games.type} name='type' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type" required />
+                        </div>
+                        <div>
+                            <label className="block mb-2 text-sm font-medium text-black">Category</label>
+                            <input type="text" onChange={(e) => handelGameChange(e)} value={games.category} name='category' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Category" required />
+                        </div>
+                        <div>
+                            <label className="block mb-2 text-sm font-medium text-black">Tags</label>
+                            <input type="text" onChange={(e) => handelGameChange(e)} value={games.tags} name='tags' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="tags   " required />
+                        </div>
+                        <div>
+                            <label className="block mb-2 text-sm font-medium text-black">Status</label>
+                            <input type="text" onChange={(e) => handelGameChange(e)} value={games.status} name='status' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Status" required />
+                        </div>
+                        <div className='flex justify-center pt-5'>
+                            <button  type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add</button>
+                        </div>
+                    </div>
+                </div>}
+                {/* Add Games */}
             </div>
             <div onClick={() => handelClosemodal(false)} className='bg-black transition-all bg-opacity-40 w-full h-screen absolute top-0 left-0'></div>
         </>

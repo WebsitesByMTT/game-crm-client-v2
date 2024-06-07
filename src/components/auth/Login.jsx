@@ -1,8 +1,11 @@
 "use client"
 import { LoginApi } from '@/apiConfig/apis';
+import { ClientData } from '@/redux/ReduxSlice';
 import Loader from '@/utils/Loader';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import { toast } from 'react-toastify';
 
@@ -10,6 +13,7 @@ const UserLogin = () => {
     const [data, setData] = useState({ username: '', password: '', captcha: '' })
     const [hide, setHide] = useState(false)
     const [load,setLoad]=useState(false)
+    const dispatch=useDispatch()
     const router = useRouter()
     useEffect(() => {
         loadCaptchaEnginge(6)
@@ -40,13 +44,15 @@ const UserLogin = () => {
             try {
                 setLoad(true)
                 const response = await LoginApi(login_data)
-                if (response?.request.status === 200) {
+                if (response?.status === 200) {
                     toast(response.data.message, { type: 'success' })
+                    Cookies.set('userToken',response.data.token)
                     router.push('/dashboard')
-                    window.location.reload()
+                    dispatch(ClientData(''))
                 }
             } catch (error) {
                 setLoad(false)
+                console.log(response)
                 toast(error.response.data.error, { type: 'error' })
             }
         }
