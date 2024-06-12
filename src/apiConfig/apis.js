@@ -127,6 +127,57 @@ export const apiDelete = async (data) => {
     }
 };
 
+export const apiUpload = async (data) => {
+    try {
+        const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiUploadImage,data,
+            {
+                withCredentials: true,
+            }
+        );
+        return response;
+    } catch (error) 
+    {
+        console.log(error)
+        throw error;
+    }
+};
+
+export const apiAddGames = async (data) => {
+    try {
+        const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiAddGame,data,
+            {
+                withCredentials: true,
+                headers: {
+                    cookies:`userToken=${token}`
+                }
+            }
+        );
+        return response;
+    } catch (error) 
+    {
+        console.log(error)
+        throw error;
+    }
+};
+
+export const apiGetGames = async (data) => {
+    try {
+        const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiGetGameData+'='+data,
+            {
+                withCredentials: true,
+                headers: {
+                    cookies:`userToken=${token}`
+                }
+            }
+        );
+        return response;
+    } catch (error){
+        console.log(error)
+        throw error;
+    }
+};
+
+
 
 
 

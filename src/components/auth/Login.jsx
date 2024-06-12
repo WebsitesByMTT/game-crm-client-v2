@@ -52,7 +52,6 @@ const UserLogin = () => {
                 }
             } catch (error) {
                 setLoad(false)
-                console.log(response)
                 toast(error.response.data.error, { type: 'error' })
             }
         }
@@ -62,7 +61,7 @@ const UserLogin = () => {
 
     return (
         <>
-            <div className='w-full relative h-screen bg-gradient-to-r from-cyan-500 to-blue-500'>
+            <div className='w-full relative h-screen bg-[#141414]'>
                 <div className='bg-white w-[90%] md:w-[50%] lg:w-[40%] 2xl:w-[30%] rounded-md p-5 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
                     <h1 className='text-center font-semibold text-3xl text-black'>Login</h1>
                     <div className='w-[90%] space-y-10 mx-auto pt-8'>

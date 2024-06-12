@@ -60,9 +60,9 @@ const Page = () => {
                                     <td className='py-2'>{item.creditor}</td>
                                     <td>{item.creditorDesignation}</td>
                                     <td>{item.debitor}</td>
-                                    <td>{item.credit}</td>
+                                    {item.credit?<td>{item.credit?.includes('-')?<span className='text-red-500'>{item.credit}</span>:<span className='text-green-500'>+{item.credit}</span>}</td>:<td></td>}
                                     <td>{item.debitorDesignation}</td>
-                                    <td>{item.createdAt}</td>
+                                    <td>{new Date(item.createdAt).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'})},<span className='pl-5'>{item.createdAtTime}</span></td>
                                 </tr>
                             ))
                         }

@@ -7,4 +7,7 @@ export const API_PATH={
     apiChangePassword:'/api/users/updateClientPassword/',
     apiGetTransaction:'/api/transaction/',
     apiDeleteClient:'/api/users/clients/',
+    apiUploadImage:'/api/games/upload',
+    apiAddGame:'/api/games/add',
+    apiGetGameData:'/api/games/getGames?category'
 }

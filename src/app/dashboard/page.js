@@ -27,17 +27,17 @@ const Page = () => {
    },[tabelstate])
 
   return (
-    <div className='grid grid-cols-12 h-screen grid-rows-12'>
-       <div className=' p-2  row-span-12 col-span-2'>
+    <div className='grid grid-cols-12 h-auto lg:h-screen grid-rows-12'>
+       <div className='p-2  row-span-12 col-span-12 lg:col-span-2'>
          <LeftSideBar data={data}/>
        </div>
-       <div className='col-span-10 row-span-5'>
+       <div className='col-span-12 lg:col-span-10 row-span-5'>
           <TopBar data={data}/>
        </div>
-       <div className='col-span-10 row-span-6'>
+       <div className='col-span-12 lg:col-span-10 row-span-7'>
           <BottomBar data={data}/>
        </div>
-       <div className='col-span-10 row-span-1'>
+       <div className='col-span-12 lg:col-span-10 row-span-1'>
           <Pagination />
        </div>
     </div>

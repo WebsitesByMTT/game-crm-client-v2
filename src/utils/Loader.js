@@ -4,7 +4,7 @@ import { BeatLoader, MoonLoader } from 'react-spinners'
 const Loader = ({ show }) => {
     
     return (
-       show&&<div className='absolute top-0 left-0 w-full h-full'>
+       show&&<div className='absolute z-[9999] top-0 left-0 w-full h-full'>
             <div className='bg-black w-full h-screen relative bg-opacity-40'>
                 <BeatLoader
                     color={'blue'}

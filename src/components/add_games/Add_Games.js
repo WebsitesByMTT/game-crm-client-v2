@@ -1,10 +1,17 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from '../modal/Modal'
 import Image from 'next/image'
 import Link from 'next/link'
+import { apiGetGames } from '@/apiConfig/apis'
+import { useDispatch, useSelector } from 'react-redux'
+import { UpdateTable } from '@/redux/ReduxSlice'
 
 const Add_Games = () => {
+    const [data, setData] = useState([])
+    const tabelstate = useSelector((state) => state.globlestate.TableState)
+    const [category,setCategory]=useState('all')
+    const dispatch = useDispatch()
     const [type, setType] = useState('')
     const [modal, setModal] = useState(false)
     const handelModal = (state, type) => {
@@ -14,6 +21,21 @@ const Add_Games = () => {
     const handelClosemodal = (state) => {
         setModal(state)
     }
+
+    const handelGames = async () => {
+        try {
+            const response = await apiGetGames(category)
+            if (response.status === 200) {
+                setData(response.data)
+                dispatch(UpdateTable(false))
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        handelGames()
+    }, [tabelstate])
     return (
         <>
 
@@ -41,25 +63,30 @@ const Add_Games = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr className='text-center'>
-                                <td>1</td>
-                                <td>Casino</td>
-                                <td className='py-3'>
-                                    <Image src={'./next.svg'} alt='img' width={50} height={40} quality={1000} className='mx-auto' />
-                                </td>
-                                <td>https://slot-vikings.vercel.app/</td>
-                                <td>Type</td>
-                                <td>Tags</td>
-                                <td>Date</td>
-                                <td>Category</td>
-                                <td>Active</td>
-                                <td>
-                                    <div className='w-full flex justify-center items-center space-x-4'>
-                                        <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide cursor-pointer text-red-500 lucide-trash-2"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" /></svg></span>
-                                        <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide cursor-pointer text-indigo-500 lucide-file-pen-line"><path d="m18 5-3-3H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" /><path d="M8 18h1" /><path d="M18.4 9.6a2 2 0 1 1 3 3L17 17l-4 1 1-4Z" /></svg></span>
-                                    </div>
-                                </td>
-                            </tr>
+                            {
+                                data?.map((item, ind) => (
+                                    <tr key={ind} className='text-center'>
+                                        <td>{item._id}</td>
+                                        <td>{item.gameName}</td>
+                                        <td className='py-3'>
+                                            <img src={item?.gameThumbnailUrl} alt='img' width={50} height={40} quality={1000} className='mx-auto' />
+                                        </td>
+                                        <td>{item.gameHostLink}</td>
+                                        <td>{item.type}</td>
+                                        <td>{item.tagName}</td>
+                                        <td>Date</td>
+                                        <td>{item.category}</td>
+                                        <td>Active</td>
+                                        <td>
+                                            <div className='w-full flex justify-center items-center space-x-4'>
+                                                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide cursor-pointer text-red-500 lucide-trash-2"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" /></svg></span>
+                                                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide cursor-pointer text-indigo-500 lucide-file-pen-line"><path d="m18 5-3-3H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" /><path d="M8 18h1" /><path d="M18.4 9.6a2 2 0 1 1 3 3L17 17l-4 1 1-4Z" /></svg></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+
                         </tbody>
                     </table>
                 </div>
