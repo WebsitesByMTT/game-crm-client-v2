@@ -3,7 +3,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { API_PATH } from "./Apipath";
 const token = Cookies.get("userToken");
-
 export const LoginApi = async (data) => {
     try {
         const response = await axios.post(
@@ -21,9 +20,9 @@ export const GetUserDataApi = async () => {
     try {
         const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apigetUserData,
             {
-                withCredentials: true,
+                withCredentials: true, 
                 headers: {
-                    cookies:`userToken=${token}`
+                    Cookie: `userToken=${token}` 
                 }
             }
         );
@@ -32,7 +31,6 @@ export const GetUserDataApi = async () => {
         throw error;
     }
 };
-
 
 export const GetClientDataApi = async (data) => {
     try {
@@ -176,6 +174,24 @@ export const apiGetGames = async (data) => {
         throw error;
     }
 };
+
+export const apiEditGames = async (data) => {
+    try {
+        const response = await axios.put(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiUpdateGames,data,
+            {
+                withCredentials: true,
+                headers: {
+                    cookies:`userToken=${token}`
+                }
+            }
+        );
+        return response;
+    } catch (error){
+        console.log(error)
+        throw error;
+    }
+};
+
 
 
 

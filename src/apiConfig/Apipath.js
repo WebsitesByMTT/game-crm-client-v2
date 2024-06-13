@@ -9,5 +9,6 @@ export const API_PATH={
     apiDeleteClient:'/api/users/clients/',
     apiUploadImage:'/api/games/upload',
     apiAddGame:'/api/games/add',
-    apiGetGameData:'/api/games/getGames?category'
+    apiGetGameData:'/api/games/getGames?category',
+    apiUpdateGames:'/api/games/changes'
 }

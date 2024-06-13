@@ -6,7 +6,8 @@ export const reduxSlice = createSlice({
         TableState:false,
         clientData:{},
         TransactionType:false,
-        CheckBoxFilter:'all'
+        CheckBoxFilter:'all',
+        GameEditData:{}
     },
     reducers: {
         UpdateTable: (state,action) => {
@@ -20,10 +21,13 @@ export const reduxSlice = createSlice({
         },
         CheckBoxFilter:(state,action)=>{
             state.CheckBoxFilter=action.payload
+        },
+        EditGame:(state,action)=>{
+            state.GameEditData=action.payload
         }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const {UpdateTable,ClientData,ReportState,TransactionType,CheckBoxFilter} = reduxSlice.actions
+export const {UpdateTable,ClientData,ReportState,TransactionType,CheckBoxFilter,EditGame} = reduxSlice.actions
 export default reduxSlice.reducer

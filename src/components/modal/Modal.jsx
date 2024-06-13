@@ -1,4 +1,4 @@
-import { AddClientDataApi, AddCreditApi, apiAddGames, apiChangePassword, apiDelete, apiTransaction, apiUpload } from '@/apiConfig/apis'
+import { AddClientDataApi, AddCreditApi, apiAddGames, apiChangePassword, apiDelete, apiEditGames, apiTransaction, apiUpload } from '@/apiConfig/apis'
 import { TransactionType, UpdateTable } from '@/redux/ReduxSlice'
 import Loader from '@/utils/Loader'
 import Image from 'next/image'
@@ -6,9 +6,10 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
-const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
+const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }) => {
     const dispatch = useDispatch()
     const [load,setLoad]=useState(false)
+    const EditGameData = useSelector((state) => state.globlestate.GameEditData)
     const Transaction = useSelector((state) => state.globlestate.TransactionType)
     //Add Client
     const [addClient, setAddClient] = useState({
@@ -182,27 +183,33 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
     const [games, setGames] = useState({
         gameName: '',
         gameHostLink: '',
-        gamethumbnail:'',
+        gamethumbnail: '',
         type: '',
         category: '',
         tags: '',
-        status:Boolean
-    })
+        status: Boolean,
+    });
+
+    useEffect(() => {
+        setGames({status: Boolean(EditGameData?.status)});
+    }, [EditGameData]); // Depend on EditGameData so this effect runs whenever it changes
+
+    const gameData={
+        gameName:games?.gameName,
+        gameThumbnailUrl: games.gamethumbnail,
+        gameHostLink: games.gameHostLink,
+        type: games.type,
+        category: games.category,
+        status:Boolean(games.status),
+        tagName:games.tags
+      }
     const handelGameChange = (e) => {
         const { name, value } = e.target
         setGames({ ...games, [name]: value })
     }
 
     const handelAddGame=async()=>{
-        const gameData={
-            gameName:games.gameName,
-            gameThumbnailUrl: games.gamethumbnail,
-            gameHostLink: games.gameHostLink,
-            type: games.type,
-            category: games.category,
-            status:Boolean(games.status),
-            tagName:games.tags
-          }
+       
        try {
           const response=await apiAddGames(gameData) 
           if(response.status===201){
@@ -217,9 +224,51 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
     }
     //Add Games
 
+    //Delete Games
+    const handelDeleteGame=async(type,deletegame_id)=>{
+        const deleteData={
+            _id:deletegame_id,
+            type:type
+        }
+        try {
+            setLoad(true)
+            const response = await apiEditGames(deleteData)
+            if(response.status===200){
+               toast(response.data.message,{type:'success'})
+               handelClosemodal()
+               dispatch(UpdateTable(true))
+            }
+            setLoad(false)
+        } catch (error) {
+            setLoad(false)
+            console.log(error)
+        }
+    }
+    //Delete Games
+
+    //Update Games Status
+    const handelUpdateGameStatus=async()=>{
+        const updateStatusData={
+            _id:EditGameData?._id,
+            type:type,
+            status:games.status
+        }
+        try {
+            const response = await apiEditGames(updateStatusData)
+            if(response.status===200){
+                toast(response.data.message,{type:'success'})
+                handelClosemodal()
+                dispatch(UpdateTable(true))
+             }
+        } catch (error) {
+            
+        }
+    }
+    //Update Games Status
+
     return (
         modal && <>
-            <div className={`absolute ${modal ? 'scale-100 transition-all' : 'scale-50 transition-all'} z-50 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white w-[50%] p-5 rounded-lg`}>
+            <div className={`fixed ${modal ? 'scale-100 transition-all' : 'scale-50 transition-all'} z-50 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white w-[50%] p-5 rounded-lg`}>
                 <div onClick={() => handelClosemodal(false)} className='w-[30px] ml-auto cursor-pointer'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-x"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
                 </div>
@@ -352,13 +401,13 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
                 </div>}
                 {/* Add Client Content */}
                 {/* Add Games */}
-                {type === 'addGames' && <div className='h-[80vh] overflow-y-scroll'>
+                {((type === 'addGames')|| (type==='updateStatus')) && <div className='h-[80vh] overflow-y-scroll'>
                     <div className='text-center'>Add Games</div>
                     <div className='pt-5 space-y-3 '>
-                     
+                       {type==="updateStatus"?null:<>
                         <div>
                             <label className="block mb-2 text-sm font-medium text-black">Game Name</label>
-                            <input type="text" onChange={(e) => handelGameChange(e)} value={games.gameName} name='gameName' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="game name" required />
+                            <input type="text" onChange={(e) => handelGameChange(e)} value={games?.gameName} name='gameName' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="game name" required />
                         </div>
                         <div>
                             <label className="block mb-2 text-sm font-medium text-black">Game Thumbnail</label>
@@ -389,18 +438,29 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data }) => {
                             <label className="block mb-2 text-sm font-medium text-black">Tags</label>
                             <input type="text" onChange={(e) => handelGameChange(e)} value={games.tags} name='tags' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="tags   " required />
                         </div>
-                        {/* <div>
+                        </>}
+                        {type==="updateStatus"&&<div>
                             <label className="block mb-2 text-sm font-medium text-black">Status</label>
                             <input type="text" onChange={(e) => handelGameChange(e)} value={games.status} name='status' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Status" required />
-                        </div> */}
-                        <div onClick={handelAddGame} className='flex justify-center pt-5'>
-                            <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add</button>
+                        </div>}
+                        <div onClick={type!=="updateStatus"?handelAddGame:handelUpdateGameStatus} className='flex justify-center pt-5'>
+                            <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{type==="updateStatus"?'Update':'Add'}</button>
                         </div>
                     </div>
                 </div>}
                 {/* Add Games */}
+                {/* Delete Games */}
+                {type === 'deleteGame' && <div>
+                    <div className='pt-5'>
+                        <div className='text-center text-black font-semibold'>Are You Want to Delete This Game?</div>
+                        <div className='flex items-center  justify-center pt-10 space-x-10'>
+                            <button onClick={() => handelDeleteGame(type,deletegame_id)} type="button" className="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Yes</button>
+                            <button onClick={() => handelClosemodal(false)} type="button" className="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">No</button>
+                        </div>
+                    </div>
+                </div>}
             </div>
-            <div onClick={() => handelClosemodal(false)} className='bg-black transition-all bg-opacity-40 w-full h-screen absolute top-0 left-0'></div>
+            <div onClick={() => handelClosemodal(false)} className='bg-black transition-all bg-opacity-40 w-full h-screen fixed top-0 left-0'></div>
             <Loader show={load}/>
         </>
     )
