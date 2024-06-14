@@ -1,197 +1,245 @@
-
-import axios from "axios";
-import Cookies from "js-cookie";
+"use server"
 import { API_PATH } from "./Apipath";
-const token = Cookies.get("userToken");
+import { getCookie } from "@/utils/cookie";
+
 export const LoginApi = async (data) => {
     try {
-        const response = await axios.post(
-            process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiLogin,
-            data,
-            { withCredentials: true }
-        );
-        return response;
+        const response = await fetch(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiLogin, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        let responseData = await response.json();
+        return { status: response.status, responseData };
     } catch (error) {
         throw error;
     }
 };
 
 export const GetUserDataApi = async () => {
+    const token = await getCookie()
+    console.log(token)
     try {
-        const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apigetUserData,
-            {
-                withCredentials: true, 
-                headers: {
-                    Cookie: `userToken=${token}` 
-                }
-            }
-        );
-        return response;
-    } catch (error) {
-        throw error;
-    }
-};
-
-export const GetClientDataApi = async (data) => {
-    try {
-        const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apigetclients, data,
-            {
-                withCredentials: true,
-                headers: {
-                    cookies:`userToken=${token}`
-                }
-            }
-        );
-        return response;
-    } catch (error) {
-        throw error;
-    }
-};
-
-export const AddClientDataApi = async (data) => {
-    try {
-        const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiaddclient, data,
-            {
-                withCredentials: true,
-                headers: {
-                    cookies:`userToken=${token}`
-                }
-            }
-        )
-        return response;
-    } catch (error) {
-        throw error;
-    }
-};
-
-export const AddCreditApi = async (data, creditdata) => {
-    return axios.post(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiAddCredits + data, creditdata,
-        {
-            withCredentials: true,
+        const response = await fetch(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apigetUserData, {
+            method: 'GET',
+            credentials: 'include',
             headers: {
-                cookies:`userToken=${token}`
+                'Content-Type': 'application/json',
+                Cookie: `userToken=${token}`
             }
+        });
+
+        const data = await response.json();
+        return { status: response.status, data };
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const GetClientDataApi = async (postdata) => {
+    const token = await getCookie()
+    try {
+        const response = await fetch(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apigetclients, {
+            method: 'POST',
+            body: JSON.stringify(postdata),
+            credentials: 'include', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `userToken=${token}` 
+            }
+        });
+        const data = await response.json();
+        return { status: response.status, data };
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const AddClientDataApi = async (postdata) => {
+    const token = await getCookie()
+    try {
+        const response = await fetch(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiaddclient, {
+            method: 'POST',
+            body: JSON.stringify(postdata),
+            credentials: 'include', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `userToken=${token}` 
+            }
+        });
+
+        const data = await response.json();
+        return { status: response.status, data };
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const AddCreditApi = async (postdata, creditdata) => {
+    const token = await getCookie()
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${API_PATH.apiAddCredits}${postdata}`, {
+            method: 'POST',
+            body: JSON.stringify(creditdata),
+            credentials: 'include', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `userToken=${token}` 
+            }
+        });
+
+        const data = await response.json();
+        return { status: response.status, data };
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const apiChangePassword = async (postdata, changepassworddata) => {
+    const token = await getCookie()
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${API_PATH.apiChangePassword}${postdata}`, {
+            method: 'PUT',
+            body: JSON.stringify(changepassworddata),
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `userToken=${token}`
+            }
+        });
+        const data = await response.json();
+        return { status: response.status, data };
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
+export const apiTransaction = async (postdata) => {
+    const token = await getCookie()
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${API_PATH.apiGetTransaction}${postdata}`, {
+            method: 'GET',
+            credentials: 'include', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `userToken=${token}`
+            }
+        });
+
+        const data = await response.json();
+        return { status: response.status, data };
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
+export const apiDelete = async (deletedata) => {
+    const token = await getCookie();
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${API_PATH.apiDeleteClient}${deletedata}`, {
+            method: 'DELETE',
+            credentials: 'include', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `userToken=${token}` 
+            }
+        });
+
+        const contentType = response.headers.get('content-type');
+        let data;
+        if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
+        } else {
+            data = {}; 
         }
-    );
-};
-
-export const apiChangePassword = async (data, changepassworddata) => {
-    try {
-        const response = await axios.put(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiChangePassword + data, changepassworddata,
-            {
-                withCredentials: true,
-                headers: {
-                    cookies:`userToken=${token}`
-                }
-            }
-        );
-        return response;
+        return { status: response.status, data };
     } catch (error) {
-        console.log(error)
+        console.log(error);
         throw error;
     }
 };
-
-export const apiTransaction = async (data) => {
+export const apiUpload = async (imageObject) => {
     try {
-        const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiGetTransaction + data,
-            {
-                withCredentials: true,
-                headers: {
-                    cookies:`userToken=${token}`
-                }
-            }
-        );
-        return response;
+        const response = await fetch(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiUploadImage, {
+            method: 'POST',
+            body: JSON.stringify(imageObject),
+            credentials: 'include', 
+            headers: {
+                'Content-Type': 'application/json', 
+            },
+        });
+console.log(response)
+        const data = await response.json();
+        return { status: response.status, data };
     } catch (error) {
-        console.log(error)
+        console.error(error);
         throw error;
     }
 };
 
-export const apiDelete = async (data) => {
+export const apiAddGames = async (postdata) => {
+    const token = await getCookie()
     try {
-        const response = await axios.delete(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiDeleteClient + data,
-            {
-                withCredentials: true,
-                headers: {
-                    cookies:`userToken=${token}`
-                }
+        const response = await fetch(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiAddGame, {
+            method: 'POST',
+            body: JSON.stringify(postdata),
+            credentials: 'include', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `userToken=${token}` 
             }
-        );
-        return response;
+        });
+        const data = await response.json();
+        return { status: response.status, data };
     } catch (error) {
+        console.log(error);
         throw error;
     }
 };
 
-export const apiUpload = async (data) => {
+export const apiGetGames = async (getdata) => {
+    const token = await getCookie()
     try {
-        const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiUploadImage,data,
-            {
-                withCredentials: true,
+        const response = await fetch(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiGetGameData + '=' + getdata, {
+            method: 'GET',
+            credentials: 'include', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `userToken=${token}` 
             }
-        );
-        return response;
-    } catch (error) 
-    {
-        console.log(error)
+        });
+        const data = await response.json();
+        return { status: response.status, data };
+    } catch (error) {
+        console.log(error);
         throw error;
     }
 };
 
-export const apiAddGames = async (data) => {
+export const apiEditGames = async (putdata) => {
+    const token = await getCookie()
     try {
-        const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiAddGame,data,
-            {
-                withCredentials: true,
-                headers: {
-                    cookies:`userToken=${token}`
-                }
+        const response = await fetch(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiUpdateGames, {
+            method: 'PUT',
+            body: JSON.stringify(putdata),
+            credentials: 'include', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `userToken=${token}` 
             }
-        );
-        return response;
-    } catch (error) 
-    {
-        console.log(error)
+        });
+        const data = await response.json();
+        return { status: response.status, data };
+    } catch (error) {
+        console.log(error);
         throw error;
     }
 };
-
-export const apiGetGames = async (data) => {
-    try {
-        const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiGetGameData+'='+data,
-            {
-                withCredentials: true,
-                headers: {
-                    cookies:`userToken=${token}`
-                }
-            }
-        );
-        return response;
-    } catch (error){
-        console.log(error)
-        throw error;
-    }
-};
-
-export const apiEditGames = async (data) => {
-    try {
-        const response = await axios.put(process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiUpdateGames,data,
-            {
-                withCredentials: true,
-                headers: {
-                    cookies:`userToken=${token}`
-                }
-            }
-        );
-        return response;
-    } catch (error){
-        console.log(error)
-        throw error;
-    }
-};
-
 
 
 

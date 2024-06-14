@@ -1,10 +1,12 @@
 "use client"
 import { GetUserDataApi, apiTransaction } from '@/apiConfig/apis'
 import LeftSideBar from '@/components/dashborad/LeftSideBar'
+import Loader from '@/utils/Loader'
 import React, { useEffect, useState } from 'react'
 
 
 const Page = () => {
+    const [load,setLoad]=useState(false)
     const [data, setData] = useState()
     const handelUserData = async () => {
         try {
@@ -22,13 +24,15 @@ const Page = () => {
     const [transaction, setTransaction] = useState([])
     const handelTransaction = async (data_username) => {
         try {
+            setLoad(true)
             const response = await apiTransaction(data_username)
             console.log(response)
             if (response.status === 200) {
                 setTransaction(response.data)
             }
+            setLoad(false)
         } catch (error) {
-
+            setLoad(false)
         }
     }
     //Transaction
@@ -37,6 +41,7 @@ const Page = () => {
         handelUserData()
     }, [])
     return (
+        <>
         <div className='grid grid-cols-12 h-screen grid-rows-12'>
             <div className=' p-2  row-span-12 col-span-2'>
                 <LeftSideBar text={'Dashboard'} data={data} />
@@ -73,6 +78,8 @@ const Page = () => {
                 </table>
             </div>
         </div>
+        <Loader show={load}/>
+        </>
     )
 }
 

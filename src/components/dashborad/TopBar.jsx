@@ -1,4 +1,3 @@
-"use client"
 import React, { useState } from 'react'
 import Modal from '../modal/Modal'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,7 +5,7 @@ import { CheckBoxFilter, TransactionType } from '@/redux/ReduxSlice'
 
 const TopBar = ({ data }) => {
     const clientdata=useSelector((state)=>state.globlestate.clientData)
-
+    console.log(clientdata)
     const dispatch=useDispatch()
     const [type,setType]=useState('')
     const [modal, setModal] = useState(false)

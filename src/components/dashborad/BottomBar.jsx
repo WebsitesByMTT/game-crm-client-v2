@@ -1,11 +1,13 @@
 import { GetClientDataApi } from '@/apiConfig/apis'
 import { ClientData, TransactionType, UpdateTable } from '@/redux/ReduxSlice'
+import Loader from '@/utils/Loader'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
 const BottomBar = ({ data }) => {
    const dispatch = useDispatch()
+   const [load,setLoad]=useState(false)
    const tabelstate = useSelector((state) => state.globlestate.TableState)
    const checkboxfilter = useSelector((state) => state.globlestate.CheckBoxFilter)
    const [state, setState] = useState([])
@@ -18,14 +20,15 @@ const BottomBar = ({ data }) => {
       }
       if (data?.username) {
          try {
+            setLoad(true)
             const response = await GetClientDataApi(clientdata)
             if (response.status === 200) {
                setState(response.data.userClientList)
                dispatch(UpdateTable(false))
             }
-
+            setLoad(false)
          } catch (error) {
-
+            setLoad(false)
          }
       }
 
@@ -44,6 +47,7 @@ const BottomBar = ({ data }) => {
    }
 
    return (
+      <>
       <div className='p-2  h-full'>
          <div className='py-5 h-full overflow-y-scroll bg-[#161616] rounded-xl px-2 lg:px-10'>
             <table className='w-[900px] lg:w-full '>
@@ -112,6 +116,8 @@ const BottomBar = ({ data }) => {
             </table>
          </div>
       </div>
+      <Loader show={load}/>
+      </>
    )
 }
 

@@ -1,5 +1,4 @@
 "use client"
-
 import { useEffect, useState } from 'react'
 import { GetUserDataApi } from '../../apiConfig/apis'
 import BottomBar from '@/components/dashborad/BottomBar'
@@ -7,7 +6,6 @@ import LeftSideBar from '@/components/dashborad/LeftSideBar'
 import Pagination from '@/components/dashborad/Pagination'
 import TopBar from '@/components/dashborad/TopBar'
 import { useSelector } from 'react-redux'
-import Cookies from 'js-cookie'
 
 const Page = () => {
    const tabelstate = useSelector((state) => state.globlestate.TableState)

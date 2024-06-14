@@ -1,5 +1,5 @@
 import { AddClientDataApi, AddCreditApi, apiAddGames, apiChangePassword, apiDelete, apiEditGames, apiTransaction, apiUpload } from '@/apiConfig/apis'
-import { TransactionType, UpdateTable } from '@/redux/ReduxSlice'
+import { ClientData, TransactionType, UpdateTable } from '@/redux/ReduxSlice'
 import Loader from '@/utils/Loader'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
@@ -48,34 +48,37 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
         }
     }
     //Add Client
-    //Add Credits
-    // const regex = /^[0-9\b]+$/;
-    const [credit, setCredit] = useState('')
-    const handelAddCredit = async (clientUserName, type) => {
-        const creditdata = {
-            credits: type == "redeem" ? Number(-credit) : Number(credit),
-        }
-
-        if (!credit) {
-            toast(`Enter ${type === "redeem" ? 'Redeem' : 'Credit'} Value`, { type: 'error' })
-        } else {
-            try {
-                setLoad(true)
-                const response = await AddCreditApi(clientUserName, creditdata)
-                if (response.status === 200) {
-                    dispatch(UpdateTable(true))
-                    handelClosemodal(false)
-                    toast(response.data.message, { type: 'success' })
-                }
-                setLoad(false)
-            } catch (error) {
-                setLoad(false)
-                handelClosemodal(false)
-                toast(error.response.data.error, { type: 'error' })
-            }
-        }
-    }
-    //Add Credits
+     //Add Credits
+    const regex = /^[0-9\b]+$/;
+   
+     const [credit, setCredit] = useState('')
+     const handelAddCredit = async (clientUserName, type) => {
+         const creditdata = {
+             credits: type == "redeem" ? Number(-credit) : Number(credit),
+         }
+ 
+         if (!credit) {
+             toast(`Enter ${type === "redeem" ? 'Redeem' : 'Credit'} Value`, { type: 'error' })
+         }else if(credit<=0||regex.test(credit)===false){
+            toast('InValid Value !',{type:'error'})
+         }else {
+             try {
+                 setLoad(true)
+                 const response = await AddCreditApi(clientUserName, creditdata)
+                 if (response.status === 200) {
+                     dispatch(UpdateTable(true))
+                     handelClosemodal(false)
+                     toast(response.data.message, { type: 'success' })
+                 }
+                 setLoad(false)
+             } catch (error) {
+                 setLoad(false)
+                 handelClosemodal(false)
+                 toast(error.response.data.error, { type: 'error' })
+             }
+         }
+     }
+     //Add Credits
 
     //Change Pssword
     const [password, setPassword] = useState({
@@ -119,6 +122,7 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
     const handelTransaction = async () => {
         if (clientData?.username) {
             try {
+                setLoad(true)
                 const response = await apiTransaction(clientData?.username)
                 if (response.status === 200) {
                     setTransaction(response.data)
@@ -138,15 +142,13 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
     //Delete
     const handelDelete = async (deletethis) => {
         try {
-            setLoad(true)
             const response = await apiDelete(deletethis)
             if (response.status === 204) {
                 toast("Deleted !", { type: 'success' })
                 handelClosemodal(false)
                 dispatch(UpdateTable(true))
-                window.location.reload()
+                dispatch(ClientData({}))
             }
-            setLoad(false)
         } catch (error) {
             setLoad(false)
         }
@@ -230,6 +232,7 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
             _id:deletegame_id,
             type:type
         }
+        
         try {
             setLoad(true)
             const response = await apiEditGames(deleteData)
@@ -328,6 +331,7 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
                                     <th>Creditor</th>
                                     <th>Debitor</th>
                                     <th>Credits/Reddemed</th>
+                                    <th>Debitor Designation</th>
                                     <th>Date & Time</th>
                                 </tr>
                             </thead>

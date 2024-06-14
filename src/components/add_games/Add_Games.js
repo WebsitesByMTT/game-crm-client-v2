@@ -6,9 +6,11 @@ import Link from 'next/link'
 import { apiGetGames } from '@/apiConfig/apis'
 import { useDispatch, useSelector } from 'react-redux'
 import { EditGame, UpdateTable } from '@/redux/ReduxSlice'
+import Loader from '@/utils/Loader'
 
 const Add_Games = () => {
     const [data, setData] = useState([])
+    const [load,setLoad]=useState(false)
     const tabelstate = useSelector((state) => state.globlestate.TableState)
     const [category, setCategory] = useState('all')
     const dispatch = useDispatch()
@@ -26,12 +28,15 @@ const Add_Games = () => {
 
     const handelGames = async () => {
         try {
+            setLoad(true)
             const response = await apiGetGames(category)
-            if (response.status === 200) {
-                setData(response.data)
+            if (response?.status === 200) {
+                setData([...response.data.featured,...response.data.otherGames])
                 dispatch(UpdateTable(false))
             }
+            setLoad(false)
         } catch (error) {
+            setLoad(false)
             console.log(error)
         }
     }
@@ -103,6 +108,7 @@ const Add_Games = () => {
                 </div>
             </div>
             <Modal handelClosemodal={handelClosemodal} deletegame_id={id} type={type} modal={modal} />
+            <Loader show={load}/>
         </>
     )
 }

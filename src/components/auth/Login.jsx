@@ -45,14 +45,16 @@ const UserLogin = () => {
                 setLoad(true)
                 const response = await LoginApi(login_data)
                 if (response?.status === 200) {
-                    toast(response.data.message, { type: 'success' })
-                    Cookies.set('userToken',response.data.token)
+                    toast(response.responseData.message, { type: 'success' })
+                    Cookies.set('userToken',response.responseData.token)
                     router.push('/dashboard')
                     dispatch(ClientData(''))
+                }else{
+                    toast(response.responseData.error, { type: 'error' })
                 }
+                setLoad(false)
             } catch (error) {
                 setLoad(false)
-                toast(error.response.data.error, { type: 'error' })
             }
         }
 
