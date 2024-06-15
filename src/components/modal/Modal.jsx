@@ -6,9 +6,9 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
-const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }) => {
+const Modal = ({ clientData, modal, handelClosemodal, type, data, deletegame_id }) => {
     const dispatch = useDispatch()
-    const [load,setLoad]=useState(false)
+    const [load, setLoad] = useState(false)
     const EditGameData = useSelector((state) => state.globlestate.GameEditData)
     const Transaction = useSelector((state) => state.globlestate.TransactionType)
     //Add Client
@@ -48,37 +48,37 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
         }
     }
     //Add Client
-     //Add Credits
+    //Add Credits
     const regex = /^[0-9\b]+$/;
-   
-     const [credit, setCredit] = useState('')
-     const handelAddCredit = async (clientUserName, type) => {
-         const creditdata = {
-             credits: type == "redeem" ? Number(-credit) : Number(credit),
-         }
- 
-         if (!credit) {
-             toast(`Enter ${type === "redeem" ? 'Redeem' : 'Credit'} Value`, { type: 'error' })
-         }else if(credit<=0||regex.test(credit)===false){
-            toast('InValid Value !',{type:'error'})
-         }else {
-             try {
-                 setLoad(true)
-                 const response = await AddCreditApi(clientUserName, creditdata)
-                 if (response.status === 200) {
-                     dispatch(UpdateTable(true))
-                     handelClosemodal(false)
-                     toast(response.data.message, { type: 'success' })
-                 }
-                 setLoad(false)
-             } catch (error) {
-                 setLoad(false)
-                 handelClosemodal(false)
-                 toast(error.response.data.error, { type: 'error' })
-             }
-         }
-     }
-     //Add Credits
+
+    const [credit, setCredit] = useState('')
+    const handelAddCredit = async (clientUserName, type) => {
+        const creditdata = {
+            credits: type == "redeem" ? Number(-credit) : Number(credit),
+        }
+
+        if (!credit) {
+            toast(`Enter ${type === "redeem" ? 'Redeem' : 'Credit'} Value`, { type: 'error' })
+        } else if (credit <= 0 || regex.test(credit) === false) {
+            toast('InValid Value !', { type: 'error' })
+        } else {
+            try {
+                setLoad(true)
+                const response = await AddCreditApi(clientUserName, creditdata)
+                if (response.status === 200) {
+                    dispatch(UpdateTable(true))
+                    handelClosemodal(false)
+                    toast(response.data.message, { type: 'success' })
+                }
+                setLoad(false)
+            } catch (error) {
+                setLoad(false)
+                handelClosemodal(false)
+                toast(error.response.data.error, { type: 'error' })
+            }
+        }
+    }
+    //Add Credits
 
     //Change Pssword
     const [password, setPassword] = useState({
@@ -156,30 +156,28 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
     //Delete
 
     //Add Games
-    const [gamethumbnail, setGameThumbnail] = useState(null)
+    const [gamethumbnail, setGameThumbnail] = useState(EditGameData?.gameThumbnailUrl)
     const handleImageChange = async (e) => {
         setGameThumbnail(e.target.files[0]);
         const reader = new FileReader();
         reader.onloadend = async () => {
             const base64String = reader.result;
-            const imagedata={
-                image:base64String
+            const imagedata = {
+                image: base64String
             }
             try {
                 setLoad(true)
                 const response = await apiUpload(imagedata);
-                if(response.status===200){
-                  toast(response.data.message,{type:'success'})
-                  setGames({...games,gamethumbnail:response.data.imageUrl})
+                if (response.status === 200) {
+                    toast(response.data.message, { type: 'success' })
+                    setGames({ ...games, gamethumbnail: response.data.imageUrl })
                 }
                 setLoad(false)
             } catch (error) {
                 setLoad(false)
-                console.error("Error during upload:", error);
             }
         };
-    
-        // Start reading the file as a data URL
+
         reader.readAsDataURL(e.target.files[0]);
     };
     const [games, setGames] = useState({
@@ -193,53 +191,62 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
     });
 
     useEffect(() => {
-        setGames({status: Boolean(EditGameData?.status)});
+        setGames(
+            {
+                gameName: EditGameData?.gameName,
+                gameHostLink: EditGameData?.gameHostLink,
+                gamethumbnail: EditGameData?.gameThumbnailUrl,
+                type: EditGameData?.type,
+                category: EditGameData?.category,
+                tags: EditGameData?.tagName,
+                status: Boolean(EditGameData?.status)
+            });
     }, [EditGameData]); // Depend on EditGameData so this effect runs whenever it changes
 
-    const gameData={
-        gameName:games?.gameName,
+    const gameData = {
+        gameName: games?.gameName,
         gameThumbnailUrl: games.gamethumbnail,
         gameHostLink: games.gameHostLink,
         type: games.type,
         category: games.category,
-        status:Boolean(games.status),
-        tagName:games.tags
-      }
+        status: Boolean(games.status),
+        tagName: games.tags
+    }
     const handelGameChange = (e) => {
         const { name, value } = e.target
         setGames({ ...games, [name]: value })
     }
 
-    const handelAddGame=async()=>{
-       
-       try {
-          const response=await apiAddGames(gameData) 
-          if(response.status===201){
-            toast('Game Added',{type:'success'})
+    const handelAddGame = async () => {
+
+        try {
+            const response = await apiAddGames(gameData)
+            if (response.status === 201) {
+                toast('Game Added', { type: 'success' })
+                handelClosemodal()
+                dispatch(UpdateTable(true))
+            }
+        } catch (error) {
+            console.log(error)
             handelClosemodal()
-            dispatch(UpdateTable(true))
-          }
-       } catch (error) {
-         console.log(error)
-         handelClosemodal()
-       }
+        }
     }
     //Add Games
 
     //Delete Games
-    const handelDeleteGame=async(type,deletegame_id)=>{
-        const deleteData={
-            _id:deletegame_id,
-            type:type
+    const handelDeleteGame = async (type, deletegame_id) => {
+        const deleteData = {
+            _id: deletegame_id,
+            updateType: type
         }
-        
+
         try {
             setLoad(true)
             const response = await apiEditGames(deleteData)
-            if(response.status===200){
-               toast(response.data.message,{type:'success'})
-               handelClosemodal()
-               dispatch(UpdateTable(true))
+            if (response.status === 200) {
+                toast(response.data.message, { type: 'success' })
+                handelClosemodal()
+                dispatch(UpdateTable(true))
             }
             setLoad(false)
         } catch (error) {
@@ -250,21 +257,30 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
     //Delete Games
 
     //Update Games Status
-    const handelUpdateGameStatus=async()=>{
-        const updateStatusData={
-            _id:EditGameData?._id,
-            type:type,
-            status:games.status
+    const handelUpdateGameStatus = async () => {
+
+        const updateStatusData = {
+            _id: EditGameData?._id,
+            updateType: type,
+            gameName: games?.gameName,
+            gameThumbnailUrl: games.gamethumbnail,
+            gameHostLink: games.gameHostLink,
+            type: games.type,
+            category: games.category,
+            status: Boolean(games.status),
+            tagName: games.tags
         }
+        console.log(updateStatusData, "edit game data")
         try {
             const response = await apiEditGames(updateStatusData)
-            if(response.status===200){
-                toast(response.data.message,{type:'success'})
+            console.log(response, "modal response")
+            if (response.status === 200) {
+                toast(response.data.message, { type: 'success' })
                 handelClosemodal()
                 dispatch(UpdateTable(true))
-             }
+            }
         } catch (error) {
-            
+
         }
     }
     //Update Games Status
@@ -405,10 +421,9 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
                 </div>}
                 {/* Add Client Content */}
                 {/* Add Games */}
-                {((type === 'addGames')|| (type==='updateStatus')) && <div className='h-[80vh] overflow-y-scroll'>
+                {((type === 'addGames') || (type === 'updateGame')) && <div className='h-[80vh] overflow-y-scroll'>
                     <div className='text-center'>Add Games</div>
                     <div className='pt-5 space-y-3 '>
-                       {type==="updateStatus"?null:<>
                         <div>
                             <label className="block mb-2 text-sm font-medium text-black">Game Name</label>
                             <input type="text" onChange={(e) => handelGameChange(e)} value={games?.gameName} name='gameName' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="game name" required />
@@ -416,13 +431,14 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
                         <div>
                             <label className="block mb-2 text-sm font-medium text-black">Game Thumbnail</label>
                             <div class="relative">
-                                <input onChange={(e) =>handleImageChange(e)} type="file" className="hidden" id="fileUpload" accept="image/*" />
+                                <input onChange={(e) => handleImageChange(e)} type="file" className="hidden" id="fileUpload" accept="image/*" />
                                 <label for="fileUpload" className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-20 rounded">
                                     Upload File
                                 </label>
                                 <p id="fileName" className="flex mt-4">
-                                    {gamethumbnail && <Image src={URL.createObjectURL(gamethumbnail)} alt='img' width={200} height={10} className='mr-4' />}
-                                    {games.gamethumbnail&&<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide bg-green-600 text-white rounded-full p-1 lucide-circle-check-big"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>}
+                                    {gamethumbnail&& <Image src={URL.createObjectURL(gamethumbnail)} alt='img' width={200} height={10} className='mr-4' />}
+                                    {EditGameData?.gameThumbnailUrl&& <Image src={EditGameData?.gameThumbnailUrl} alt='img' width={200} height={10} className='mr-4' />}
+                                    {games.gamethumbnail && <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide bg-green-600 text-white rounded-full p-1 lucide-circle-check-big"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><path d="m9 11 3 3L22 4" /></svg>}
                                 </p>
                             </div>
                         </div>
@@ -442,13 +458,12 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
                             <label className="block mb-2 text-sm font-medium text-black">Tags</label>
                             <input type="text" onChange={(e) => handelGameChange(e)} value={games.tags} name='tags' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="tags   " required />
                         </div>
-                        </>}
-                        {type==="updateStatus"&&<div>
+                        {type === "updateGame" && <div>
                             <label className="block mb-2 text-sm font-medium text-black">Status</label>
                             <input type="text" onChange={(e) => handelGameChange(e)} value={games.status} name='status' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Status" required />
                         </div>}
-                        <div onClick={type!=="updateStatus"?handelAddGame:handelUpdateGameStatus} className='flex justify-center pt-5'>
-                            <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{type==="updateStatus"?'Update':'Add'}</button>
+                        <div onClick={type !== "updateGame" ? handelAddGame : handelUpdateGameStatus} className='flex justify-center pt-5'>
+                            <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{type === "updateGame" ? 'Update' : 'Add'}</button>
                         </div>
                     </div>
                 </div>}
@@ -458,14 +473,14 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
                     <div className='pt-5'>
                         <div className='text-center text-black font-semibold'>Are You Want to Delete This Game?</div>
                         <div className='flex items-center  justify-center pt-10 space-x-10'>
-                            <button onClick={() => handelDeleteGame(type,deletegame_id)} type="button" className="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Yes</button>
+                            <button onClick={() => handelDeleteGame(type, deletegame_id)} type="button" className="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Yes</button>
                             <button onClick={() => handelClosemodal(false)} type="button" className="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">No</button>
                         </div>
                     </div>
                 </div>}
             </div>
             <div onClick={() => handelClosemodal(false)} className='bg-black transition-all bg-opacity-40 w-full h-screen fixed top-0 left-0'></div>
-            <Loader show={load}/>
+            <Loader show={load} />
         </>
     )
 }

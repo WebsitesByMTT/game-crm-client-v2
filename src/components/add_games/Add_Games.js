@@ -22,6 +22,10 @@ const Add_Games = () => {
         setType(type)
         setId(Id)
     }
+    const handelAddGames=(state,type)=>{
+      handelModal(state,type)
+      dispatch(EditGame({}))
+    }
     const handelClosemodal = (state) => {
         setModal(state)
     }
@@ -58,7 +62,7 @@ const Add_Games = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide cursor-pointer lucide-move-left"><path d="M6 8L2 12L6 16" /><path d="M2 12H22" /></svg>
                     </Link>
                     <div className='flex justify-end'>
-                        <button onClick={() => handelModal(true, 'addGames')} type="button" class="text-white bg-blue-700 hover:bg-blue-800 cursor-pointer focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add Games</button>
+                        <button onClick={() => handelAddGames(true, 'addGames')} type="button" class="text-white bg-blue-700 hover:bg-blue-800 cursor-pointer focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add Games</button>
                     </div>
                 </div>
 
@@ -84,9 +88,9 @@ const Add_Games = () => {
                                     <tr key={ind} className={`text-center ${ind % 2 == 0 ? 'bg-gray-100' : ''}`}>
                                         <td>{item._id}</td>
                                         <td>{item.gameName}</td>
-                                        <td className='py-3'>
-                                            <img src={item?.gameThumbnailUrl} alt='img' width={120} height={40} quality={1000} className='mx-auto' />
-                                        </td>
+                                        {item&&<td className='py-3'>
+                                            <Image src={item?.gameThumbnailUrl} alt={item?.gameThumbnailUrl} width={120} height={40} quality={100} className='mx-auto' />
+                                        </td>}
                                         <td>{item.gameHostLink}</td>
                                         <td>{item.type}</td>
                                         <td>{item.tagName}</td>
@@ -96,7 +100,7 @@ const Add_Games = () => {
                                         <td>
                                             <div className='w-full flex justify-center items-center space-x-4'>
                                                 <span onClick={() => handelModal(true, 'deleteGame',item._id)}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide cursor-pointer text-red-500 lucide-trash-2"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" /></svg></span>
-                                                <span onClick={()=>handelEdit(item,'updateStatus')}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide cursor-pointer text-indigo-500 lucide-file-pen-line"><path d="m18 5-3-3H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" /><path d="M8 18h1" /><path d="M18.4 9.6a2 2 0 1 1 3 3L17 17l-4 1 1-4Z" /></svg></span>
+                                                <span onClick={()=>handelEdit(item,'updateGame')}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide cursor-pointer text-indigo-500 lucide-file-pen-line"><path d="m18 5-3-3H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" /><path d="M8 18h1" /><path d="M18.4 9.6a2 2 0 1 1 3 3L17 17l-4 1 1-4Z" /></svg></span>
                                             </div>
                                         </td>
                                     </tr>

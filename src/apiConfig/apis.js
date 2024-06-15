@@ -233,9 +233,11 @@ export const apiEditGames = async (putdata) => {
             }
         });
         const data = await response.json();
+        console.log(data,"response edit game")
+
         return { status: response.status, data };
     } catch (error) {
-        console.log(error);
+        console.log(error,"edit game error");
         throw error;
     }
 };
