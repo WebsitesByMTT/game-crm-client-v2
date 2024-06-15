@@ -173,7 +173,6 @@ export const apiUpload = async (imageObject) => {
                 'Content-Type': 'application/json', 
             },
         });
-        console.log(response,"image limit error")
         const data = await response.json();
         return { status: response.status, data };
     } catch (error) {

@@ -341,7 +341,7 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data,deletegame_id }
                                         <tr key={ind} className='text-center bg-green-200 py-2'>
                                             <td>{item.creditor}</td>
                                             <td>{item.debitor}</td>
-                                            {item.credit ? <td>{item.credit?.includes('-') ? <span className='text-red-500'>{item.credit}</span> : <span className='text-green-500'>+{item.credit}</span>}</td> : <td></td>}
+                                            {item.credit ? <td>{item.credit?.includes('-') ? <span className='text-red-500'>{item.credit.replace(/-/g, '')}</span> : <span className='text-green-500'>{item.credit}</span>}</td> : <td></td>}
                                             <td>{item.debitorDesignation}</td>
                                             <td>{item.createdAt}</td>
                                         </tr>
