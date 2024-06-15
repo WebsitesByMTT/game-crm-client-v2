@@ -11,6 +11,7 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data, deletegame_id 
     const [load, setLoad] = useState(false)
     const EditGameData = useSelector((state) => state.globlestate.GameEditData)
     const Transaction = useSelector((state) => state.globlestate.TransactionType)
+    const [check,setCheck]=useState(null)
     //Add Client
     const [addClient, setAddClient] = useState({
         clientNickName: "",
@@ -183,34 +184,48 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data, deletegame_id 
     const [games, setGames] = useState({
         gameName: '',
         gameHostLink: '',
-        gamethumbnail: '',
+        gameThumbnailUrl: '',
         type: '',
         category: '',
-        tags: '',
-        status: Boolean,
+        tagName: '',
     });
-
     useEffect(() => {
         setGames(
             {
                 gameName: EditGameData?.gameName,
                 gameHostLink: EditGameData?.gameHostLink,
-                gamethumbnail: EditGameData?.gameThumbnailUrl,
+                gameThumbnailUrl: EditGameData?.gameThumbnailUrl,
                 type: EditGameData?.type,
                 category: EditGameData?.category,
-                tags: EditGameData?.tagName,
-                status: Boolean(EditGameData?.status)
+                tagName: EditGameData?.tagName,
             });
+
+            setCheck(EditGameData?.status)
     }, [EditGameData]); // Depend on EditGameData so this effect runs whenever it changes
+
+    const compareGameData = (originalData, newData) => {
+        const updatedFields = {};
+
+        Object.keys(newData).forEach(key => {
+            if (newData[key] !== originalData[key]) {
+                updatedFields[key] = newData[key];
+            }
+        });
+
+        return updatedFields;
+    };
+
+    // Assuming EditGameData and games are defined somewhere in your component
+    const updatedData = compareGameData(EditGameData, games);
 
     const gameData = {
         gameName: games?.gameName,
-        gameThumbnailUrl: games.gamethumbnail,
+        gameThumbnailUrl: games.gameThumbnailUrl,
         gameHostLink: games.gameHostLink,
         type: games.type,
         category: games.category,
-        status: Boolean(games.status),
-        tagName: games.tags
+        tagName: games.tagName,
+        status: check
     }
     const handelGameChange = (e) => {
         const { name, value } = e.target
@@ -237,7 +252,7 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data, deletegame_id 
     const handelDeleteGame = async (type, deletegame_id) => {
         const deleteData = {
             _id: deletegame_id,
-            updateType: type
+            updateType: type,
         }
 
         try {
@@ -262,15 +277,10 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data, deletegame_id 
         const updateStatusData = {
             _id: EditGameData?._id,
             updateType: type,
-            gameName: games?.gameName,
-            gameThumbnailUrl: games.gamethumbnail,
-            gameHostLink: games.gameHostLink,
-            type: games.type,
-            category: games.category,
-            status: Boolean(games.status),
-            tagName: games.tags
+            status:check,
+            ...updatedData
         }
-        console.log(updateStatusData, "edit game data")
+        console.log(updateStatusData, "sadasd")
         try {
             const response = await apiEditGames(updateStatusData)
             console.log(response, "modal response")
@@ -436,9 +446,9 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data, deletegame_id 
                                     Upload File
                                 </label>
                                 <p id="fileName" className="flex mt-4">
-                                    {gamethumbnail&& <Image src={URL.createObjectURL(gamethumbnail)} alt='img' width={200} height={10} className='mr-4' />}
-                                    {EditGameData?.gameThumbnailUrl&& <Image src={EditGameData?.gameThumbnailUrl} alt='img' width={200} height={10} className='mr-4' />}
-                                    {games.gamethumbnail && <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide bg-green-600 text-white rounded-full p-1 lucide-circle-check-big"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><path d="m9 11 3 3L22 4" /></svg>}
+                                    {gamethumbnail && <Image src={URL.createObjectURL(gamethumbnail)} alt='img' width={200} height={10} className='mr-4' />}
+                                    {EditGameData?.gameThumbnailUrl && <Image src={EditGameData?.gameThumbnailUrl} alt='img' width={200} height={10} className='mr-4' />}
+                                    {games.gameThumbnailUrl && <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide bg-green-600 text-white rounded-full p-1 lucide-circle-check-big"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><path d="m9 11 3 3L22 4" /></svg>}
                                 </p>
                             </div>
                         </div>
@@ -456,12 +466,14 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data, deletegame_id 
                         </div>
                         <div>
                             <label className="block mb-2 text-sm font-medium text-black">Tags</label>
-                            <input type="text" onChange={(e) => handelGameChange(e)} value={games.tags} name='tags' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="tags   " required />
+                            <input type="text" onChange={(e) => handelGameChange(e)} value={games.tagName} name='tagName' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="tags   " required />
                         </div>
-                        {type === "updateGame" && <div>
-                            <label className="block mb-2 text-sm font-medium text-black">Status</label>
-                            <input type="text" onChange={(e) => handelGameChange(e)} value={games.status} name='status' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Status" required />
-                        </div>}
+                
+                        {type === "updateGame" &&<label className="inline-flex items-center cursor-pointer">
+                           <input type="checkbox" value={check} checked={check} onChange={(e)=>setCheck(e.target.checked)} className="sr-only peer"/>
+                            <div className={`relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-red-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600`}></div>
+                            <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{check?'Active':'InActive'}</span>
+                      </label>}
                         <div onClick={type !== "updateGame" ? handelAddGame : handelUpdateGameStatus} className='flex justify-center pt-5'>
                             <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{type === "updateGame" ? 'Update' : 'Add'}</button>
                         </div>
@@ -473,8 +485,8 @@ const Modal = ({ clientData, modal, handelClosemodal, type, data, deletegame_id 
                     <div className='pt-5'>
                         <div className='text-center text-black font-semibold'>Are You Want to Delete This Game?</div>
                         <div className='flex items-center  justify-center pt-10 space-x-10'>
-                            <button onClick={() => handelDeleteGame(type, deletegame_id)} type="button" className="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Yes</button>
-                            <button onClick={() => handelClosemodal(false)} type="button" className="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">No</button>
+                            <button onClick={() => handelDeleteGame(type, deletegame_id)} type="button" className="text-white inlin bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Yes</button>
+                            <button onClick={() => handelClosemodal(false)} type="button" className="text-white inline-block border bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">No</button>
                         </div>
                     </div>
                 </div>}
