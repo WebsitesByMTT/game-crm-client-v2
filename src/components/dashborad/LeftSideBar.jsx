@@ -2,14 +2,14 @@ import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react'
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 
 const LeftSideBar = ({ text, data }) => {
     const router = useRouter()
     const logOutDispatch = () => {
         Cookies.remove("userToken");
         router.push('/')
-        toast("Logout Successfully", { type: 'success' })
+        toast.success("Logout Successfully")
     }
 
     return (
