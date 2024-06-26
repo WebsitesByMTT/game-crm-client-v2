@@ -4,6 +4,7 @@
 
 body {
   overflow: hidden;
+  background: #000;
 }
 
 .Component {
@@ -17,8 +18,19 @@ body {
     font-size: 100%;
   }
 }
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 840px) {
   html {
     font-size: 70%;
   }
+}
+.rounded-md {
+  border-radius: 5px;
+}
+.editgradient {
+  border-radius: 10px;
+background: linear-gradient(135deg, #D9D9D9 0%, #9377E6 100%);
+}
+.deletegradient {
+  border-radius: 10px;
+  background: linear-gradient(135deg, #d9d9d9 0%, #ef4444 100%);
 }

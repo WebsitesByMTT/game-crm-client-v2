@@ -37,7 +37,7 @@ const Login = () => {
     const { username, password, captcha } = data;
     if (!username || !password) {
       toast.remove();
-      return toast.error("Please fill all fields");
+      return toast.error("All fields are required");
     }
     if (!validateCaptcha(captcha)) {
       toast.remove();
@@ -54,7 +54,7 @@ const Login = () => {
           if (designation !== "player") {
             toast.success(message);
             Cookies.set("userToken", token);
-            router.push("/dashboard");
+            router.push("/");
             dispatch(ClientData(""));
           } else {
             toast.remove();

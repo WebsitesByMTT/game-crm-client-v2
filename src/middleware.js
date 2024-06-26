@@ -7,15 +7,15 @@ export default function middleware(req) {
   if (!loggedin && pathname !== "/login") {
     return NextResponse.redirect(new URL("/login", req.url));
   }
-  if (loggedin && pathname === "/") {
-    return NextResponse.redirect(new URL(`/dashboard`, req.url));
+  if (loggedin && pathname === "/login") {
+    return NextResponse.redirect(new URL(`/`, req.url));
   }
   // Check if the user's designation is not 'company' and redirect them away from the games route
   if (
     jwt.decode(loggedin?.value)?.designation !== "company" &&
     pathname === "/games"
   ) {
-    return NextResponse.redirect(new URL(`/dashboard`, req.url));
+    return NextResponse.redirect(new URL(`/`, req.url));
   }
   // For any other cases return
   return NextResponse.next();
