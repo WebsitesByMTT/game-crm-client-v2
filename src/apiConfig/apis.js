@@ -161,11 +161,11 @@ export const apiTransaction = async (postdata) => {
   }
 };
 
-export const apiDelete = async (deletedata) => {
+export const apiDelete = async (id) => {
   const token = await getCookie();
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${API_PATH.apiDeleteClient}${deletedata}`,
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${API_PATH.apiDeleteClient}${id}`,
       {
         method: "DELETE",
         credentials: "include",
@@ -189,6 +189,7 @@ export const apiDelete = async (deletedata) => {
     throw error;
   }
 };
+
 export const apiUpload = async (imageObject) => {
   try {
     const response = await fetch(

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { GetClientDataApi } from "../apiConfig/apis";
+import { GetClientDataApi, apiDelete } from "../apiConfig/apis";
 import { useSelector } from "react-redux";
 import { IoMdPersonAdd } from "react-icons/io";
 import { MdOutlineEdit } from "react-icons/md";
@@ -15,10 +15,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import toast from "react-hot-toast";
+import Modal from "./ui/Modal";
 
 const Dashboard = () => {
   // const tabelstate = useSelector((state) => state.globlestate.TableState);
   const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [rowData, setRowData] = useState();
+  const [editing, setEditing] = useState(false);
+
+  const handleRowClick = (data) => {
+    setRowData(data);
+    setOpen(true);
+  };
+
   const handelUserData = async () => {
     try {
       const response = await GetClientDataApi();
@@ -29,6 +39,20 @@ const Dashboard = () => {
       toast.error(error.message);
     }
   };
+  const handleDelete = async (id) => {
+    setOpen(false);
+    // console.log(id);
+    // try {
+    //   const response = await apiDelete(id);
+    //   console.log(response);
+    //   if (response.status === 200) {
+    //     setData(response.data);
+    //   }
+    // } catch (error) {
+    //   toast.error(error.message);
+    // }
+  };
+
   useEffect(() => {
     handelUserData();
   }, []);
@@ -57,7 +81,7 @@ const Dashboard = () => {
           </TableHeader>
           <TableBody>
             {data?.map((item, index) => (
-              <TableRow key={index}>
+              <TableRow key={index} onClick={() => handleRowClick(item)}>
                 <TableCell>{item.username}</TableCell>
                 <TableCell>{item.status}</TableCell>
                 <TableCell>{item.role}</TableCell>
@@ -66,10 +90,21 @@ const Dashboard = () => {
                 <TableCell>{item?.lastLogin?.split("T")[0]}</TableCell>
                 <TableCell>
                   <div className="flex gap-5 text-2xl justify-center">
-                    <div className="text-[#1b1b1e] editgradient p-1 rounded-md">
+                    <div
+                      onClick={() => {
+                        setOpen(true);
+                        setEditing(true);
+                      }}
+                      className="text-[#1b1b1e] editgradient p-1 rounded-md"
+                    >
                       <MdOutlineEdit />
                     </div>
-                    <div className="text-[#1b1b1e] deletegradient p-1 rounded-md">
+                    <div
+                      onClick={() => {
+                        handleDelete(item._id);
+                      }}
+                      className="text-[#1b1b1e] deletegradient p-1 rounded-md"
+                    >
                       <MdDeleteOutline />
                     </div>
                   </div>
@@ -79,6 +114,15 @@ const Dashboard = () => {
           </TableBody>
         </Table>
       </div>
+      {rowData && (
+        <Modal
+          editing={editing}
+          data={rowData}
+          open={open}
+          setOpen={setOpen}
+          setEditing={setEditing}
+        />
+      )}
     </div>
   );
 };

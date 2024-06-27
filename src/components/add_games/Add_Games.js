@@ -62,7 +62,7 @@ const Add_Games = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide cursor-pointer lucide-move-left"><path d="M6 8L2 12L6 16" /><path d="M2 12H22" /></svg>
                     </Link>
                     <div className='flex justify-end'>
-                        <button onClick={() => handelAddGames(true, 'addGames')} type="button" class="text-white bg-blue-700 hover:bg-blue-800 cursor-pointer focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add Games</button>
+                        <button onClick={() => handelAddGames(true, 'addGames')} type="button" className="text-white bg-blue-700 hover:bg-blue-800 cursor-pointer focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add Games</button>
                     </div>
                 </div>
 

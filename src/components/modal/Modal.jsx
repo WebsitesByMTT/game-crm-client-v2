@@ -661,7 +661,7 @@ const Modal = ({
                   <label className="block mb-2 text-sm font-medium text-black">
                     Game Thumbnail
                   </label>
-                  <div class="relative">
+                  <div className="relative">
                     <input
                       onChange={(e) => handleImageChange(e)}
                       type="file"
