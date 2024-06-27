@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoMdCloseCircle } from "react-icons/io";
 import { RiEdit2Fill } from "react-icons/ri";
 
-const Modal = ({ data, open, setOpen, editing, setEditing }) => {
+const Modal = ({ data, open, setOpen, editing, setEditing, setRefresh }) => {
   const [edit, setEdit] = useState(false);
   useEffect(() => {
     if (editing) {
@@ -15,6 +15,9 @@ const Modal = ({ data, open, setOpen, editing, setEditing }) => {
     setEdit(false);
     setOpen(false);
     setEditing(false);
+    setRefresh((prev) => {
+      !prev;
+    });
   };
 
   return (
@@ -58,61 +61,24 @@ const Modal = ({ data, open, setOpen, editing, setEditing }) => {
                 className="grid grid-cols-2 gap-4 overflow-hidden px-5"
               >
                 <p className="text-left font-light">Username :</p>
-                <input
-                  className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
-                  value={data.username}
-                />
-                <p className="text-left font-light">Name :</p>
-                <input
-                  className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
-                  value={data.name}
-                />
+                <p className="text-left font-extralight text-gray-400">
+                  {data.username}
+                </p>
                 <p className="text-left font-light">Password :</p>
                 <input
                   className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
                   value={data.password}
-                />
-                <p className="text-left font-light">Role :</p>
-                <input
-                  className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
-                  value={data.role}
                 />
                 <p className="text-left font-light">Status :</p>
                 <input
                   className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
                   value={data.status}
                 />
-                <p className="text-left font-light">Recharge :</p>
-                <input
-                  className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
-                  value={data.totalRecharged}
-                />
-                <p className="text-left font-light">Redeem :</p>
-                <input
-                  className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
-                  value={data.totalRedeemed}
-                />
                 <p className="text-left font-light">Credits :</p>
                 <input
                   className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
                   value={data.totalRedeemed}
                 />
-                <p className="text-left font-light">Login times :</p>
-                <p className="text-left font-extralight text-gray-400">
-                  {data.loginTimes}
-                </p>
-                <p className="text-left font-light">Last Login :</p>
-                <p className="text-left font-extralight text-gray-400">
-                  {data.lastLogin.split("T")[0]}
-                </p>
-                <p className="text-left font-light">Created At :</p>
-                <p className="text-left font-extralight text-gray-400">
-                  {data.createdAt.split("T")[0]}
-                </p>
-                <p className="text-left font-light">Updated At :</p>
-                <p className="text-left font-extralight text-gray-400">
-                  {data.updatedAt.split("T")[0]}
-                </p>
                 <div className="col-span-2 flex justify-center mt-2">
                   <button
                     type="submit"
@@ -162,15 +128,15 @@ const Modal = ({ data, open, setOpen, editing, setEditing }) => {
                 </p>
                 <p className="text-left font-light">Last Login :</p>
                 <p className="text-left font-extralight text-gray-400">
-                  {data.lastLogin.split("T")[0]}
+                  {data?.lastLogin?.split("T")[0]}
                 </p>
                 <p className="text-left font-light">Created At :</p>
                 <p className="text-left font-extralight text-gray-400">
-                  {data.createdAt.split("T")[0]}
+                  {data?.createdAt?.split("T")[0]}
                 </p>
                 <p className="text-left font-light">Updated At :</p>
                 <p className="text-left font-extralight text-gray-400">
-                  {data.updatedAt.split("T")[0]}
+                  {data?.updatedAt?.split("T")[0]}
                 </p>
               </div>
             )}

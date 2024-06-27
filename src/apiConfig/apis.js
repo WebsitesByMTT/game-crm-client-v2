@@ -1,4 +1,5 @@
 "use server";
+import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 import { API_PATH } from "./Apipath";
 import { getCookie } from "@/utils/cookie";
 
@@ -69,14 +70,14 @@ export const GetClientDataApi = async (postdata) => {
   }
 };
 
-export const AddClientDataApi = async (postdata) => {
+export const AddClientDataApi = async (user) => {
   const token = await getCookie();
   try {
     const response = await fetch(
       process.env.NEXT_PUBLIC_SERVER_BASE_URL + API_PATH.apiaddclient,
       {
         method: "POST",
-        body: JSON.stringify(postdata),
+        body: JSON.stringify({ user }),
         credentials: "include",
         headers: {
           "Content-Type": "application/json",

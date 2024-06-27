@@ -16,14 +16,16 @@ import {
 } from "@/components/ui/table";
 import toast from "react-hot-toast";
 import Modal from "./ui/Modal";
+import AddClientModal from "./ui/AddClientModal";
 
 const Dashboard = () => {
   // const tabelstate = useSelector((state) => state.globlestate.TableState);
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openClient, setOpenClient] = useState(false);
   const [rowData, setRowData] = useState();
   const [editing, setEditing] = useState(false);
-
+  const [refresh, setRefresh] = useState(false);
   const handleRowClick = (data) => {
     setRowData(data);
     setOpen(true);
@@ -41,26 +43,29 @@ const Dashboard = () => {
   };
   const handleDelete = async (id) => {
     setOpen(false);
-    // console.log(id);
-    // try {
-    //   const response = await apiDelete(id);
-    //   console.log(response);
-    //   if (response.status === 200) {
-    //     setData(response.data);
-    //   }
-    // } catch (error) {
-    //   toast.error(error.message);
-    // }
+    try {
+      const response = await apiDelete(id);
+      console.log(response);
+      if (response.status === 200) {
+        setRefresh((prev) => !prev);
+        toast.success("user deleted successfully!");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
     handelUserData();
-  }, []);
+  }, [refresh]);
 
   return (
     <div className="h-full w-full flex flex-col">
       <div className="w-full flex items-center justify-end my-2">
-        <button className="text-center flex justify-center items-center gap-2 bg-gradient-to-b from-[#C5A5FF] to-[#362356] text-white text-xl rounded-[10px] p-2 font-[300] border-[1px] border-[#847697] hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out w-fit">
+        <button
+          onClick={() => setOpenClient(true)}
+          className="text-center flex justify-center items-center gap-2 bg-gradient-to-b from-[#C5A5FF] to-[#362356] text-white text-xl rounded-[10px] p-2 font-[300] border-[1px] border-[#847697] hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out w-fit"
+        >
           <IoMdPersonAdd />
           <span>Add Client</span>
           <div className="text-2xl"></div>
@@ -100,7 +105,8 @@ const Dashboard = () => {
                       <MdOutlineEdit />
                     </div>
                     <div
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         handleDelete(item._id);
                       }}
                       className="text-[#1b1b1e] deletegradient p-1 rounded-md"
@@ -121,8 +127,14 @@ const Dashboard = () => {
           open={open}
           setOpen={setOpen}
           setEditing={setEditing}
+          setRefresh={setRefresh}
         />
       )}
+      <AddClientModal
+        setRefresh={setRefresh}
+        open={openClient}
+        setOpen={setOpenClient}
+      />
     </div>
   );
 };
