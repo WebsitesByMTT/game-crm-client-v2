@@ -1,27 +1,26 @@
 "use client";
-import { GetUserDataApi } from "@/apiConfig/apis";
 import React, { useEffect, useState } from "react";
 import { PiUserCircleThin } from "react-icons/pi";
 import { FiSearch } from "react-icons/fi";
 import { GiTwoCoins } from "react-icons/gi";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { FaUserTie } from "react-icons/fa6";
+import { getUserData } from "@/utils/action";
+import toast from "react-hot-toast";
 
 const Header = () => {
   const [data, setData] = useState();
   const [search, setSearch] = useState("");
-  const handelUserData = async () => {
+  const fetchUserData = async () => {
     try {
-      const response = await GetUserDataApi();
-      if (response.status === 200) {
-        setData(response.data);
-      }
+      const response = await getUserData();
+      setData(response.data);
     } catch (error) {
       toast.error(error.message);
     }
   };
   useEffect(() => {
-    handelUserData();
+    fetchUserData();
   }, []);
 
   return (
@@ -69,7 +68,11 @@ const Header = () => {
             amount={data?.totalRedeemed}
           ></Card>
           <div className="h-[80%] border-[1px] border-[#16151551] m-auto"></div>
-          <Card name="Clients" icon={<FaUserTie />} amount="52"></Card>
+          <Card
+            name="Clients"
+            icon={<FaUserTie />}
+            amount={data?.subordinates?.length}
+          ></Card>
         </div>
         <div className="h-[200px] w-[23%] bg-[#dfdfdf2b] rounded-xl flex flex-col p-4 justify-evenly text-white">
           <div className="flex gap-2 text-2xl font-extralight items-center">

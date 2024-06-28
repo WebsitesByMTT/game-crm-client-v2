@@ -1,11 +1,11 @@
 "use client";
-import { LoginApi } from "@/apiConfig/apis";
-import { ClientData } from "@/redux/ReduxSlice";
+import { loginUser } from "@/utils/action";
+// import { ClientData } from "@/redux/ReduxSlice";
 import Loader from "@/utils/Loader";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import {
   loadCaptchaEnginge,
   LoadCanvasTemplate,
@@ -18,11 +18,14 @@ const Login = () => {
   const [data, setData] = useState({ username: "", password: "", captcha: "" });
   const [hide, setHide] = useState(false);
   const [load, setLoad] = useState(false);
-  const dispatch = useDispatch();
+
+  // const dispatch = useDispatch();
+
   const router = useRouter();
   //   useEffect(() => {
   //     loadCaptchaEnginge(6);
   //   }, []);
+
   const handelChange = (e) => {
     let { name, value } = e.target;
     setData({ ...data, [name]: value });
@@ -45,32 +48,25 @@ const Login = () => {
     }
     setLoad(true);
     try {
-      const response = await LoginApi({ username, password });
-      console.log("response", response);
-      if (response?.status === 200) {
-        const { token, message, error } = response.responseData;
-        if (token) {
-          const { designation } = jwtDecode(token);
-          if (designation !== "player") {
-            toast.success(message);
-            Cookies.set("userToken", token);
-            router.push("/");
-            dispatch(ClientData(""));
-          } else {
-            toast.remove();
-            toast.error("Access denied");
-          }
+      const response = await loginUser({ username, password });
+      console.log("login response", response);
+      const { token, message, role } = response.responseData;
+      if (token) {
+        if (role !== "player") {
+          toast.success(message);
+          Cookies.set("userToken", token);
+          router.push("/");
+          // dispatch(ClientData(""));
         } else {
           toast.remove();
-          toast.error(error);
+          toast.error("Access denied");
         }
       } else {
-        toast.remove();
-        toast.error(response.responseData.error);
+        toast.error("Token not found");
       }
     } catch (error) {
       toast.remove();
-      toast.error("Login failed");
+      toast.error(error.message);
     } finally {
       setLoad(false);
     }

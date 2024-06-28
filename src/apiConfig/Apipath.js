@@ -1,6 +1,4 @@
 export const API_PATH = {
-  apiLogin: "/api/users/login",
-  apigetUserData: "/api/users",
   apigetclients: "/api/users/all",
   apiaddclient: "/api/users",
   apiAddCredits: "/api/transaction/updateCredits/",

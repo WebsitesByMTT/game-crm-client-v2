@@ -7,28 +7,26 @@ import { toast } from "react-hot-toast";
 import { RiDashboardFill, RiMoneyRupeeCircleFill } from "react-icons/ri";
 import { IoLogOut } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { GetUserDataApi } from "@/apiConfig/apis";
+import { getUserData } from "@/utils/action";
 
 const LeftSideBar = ({}) => {
   const router = useRouter();
   const [option, setOption] = useState("dashboard");
   const [open, setOpen] = useState(false);
   const [data, setData] = useState();
-  const handelUserData = async () => {
+  const fetchUser = async () => {
     try {
-      const response = await GetUserDataApi();
-      if (response.status === 200) {
-        setData(response.data);
-      }
+      const response = await getUserData();
+      setData(response.data);
     } catch (error) {
       toast.error(error.message);
     }
   };
   useEffect(() => {
-    handelUserData();
+    fetchUser();
   }, []);
 
-  const logOutDispatch = () => {
+  const logOutUser = () => {
     Cookies.remove("userToken");
     router.push("/");
     toast.success("Logout Successfully");
@@ -145,7 +143,7 @@ const LeftSideBar = ({}) => {
         </div>
         <div className="pt-5 lg:pt-0">
           <button
-            onClick={() => logOutDispatch()}
+            onClick={() => logOutUser()}
             className="text-center flex justify-center tracking-[0.1rem] items-center gap-2 bg-gradient-to-r from-[#8C7CFD] hover:from-[#BC89F1] hover:to-[#8C7CFD] to-[#BC89F1] mx-auto text-white text-xl rounded-md p-2 font-[600] hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out w-full"
           >
             <span>LOGOUT</span>
