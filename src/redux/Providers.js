@@ -1,10 +1,8 @@
-"use client"
+"use client";
 
-import { store } from "./Store"
-const { Provider } = require("react-redux")
+import { store } from "./Store";
+const { Provider } = require("react-redux");
 
-export function Providers({children}){
-    return <Provider store={store}>
-        {children}
-    </Provider>
+export function Providers({ children }) {
+  return <Provider store={store}>{children}</Provider>;
 }
