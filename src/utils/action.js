@@ -114,28 +114,12 @@ export const deleteClient = async (id) => {
   }
 };
 
-export const editClient = async (
-  existingPassword,
-  password,
-  credits,
-  status,
-  id
-) => {
+export const editPassword = async (existingPassword, password, id) => {
   const token = await getCookie();
-  const data = {};
-  if (credits) {
-    data.credits = credits;
-  } else if (existingPassword && password) {
-    data.existingPassword = existingPassword;
-    data.password = password;
-  } else if (status) {
-    data.status = status;
-  }
-  console.log(data);
   try {
     const response = await fetch(`${config.server}/api/users/${id}`, {
       method: "PUT",
-      body: JSON.stringify({ data }),
+      body: JSON.stringify({ password, existingPassword }),
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
@@ -148,6 +132,190 @@ export const editClient = async (
     }
     const responseData = await response.json();
     return { responseData };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const editCredits = async (credits, id) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/users/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({ credits: credits }),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const responseData = await response.json();
+    return { responseData };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const editStatus = async (status, id) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/users/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({ status: status }),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const responseData = await response.json();
+    return { responseData };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getTransactions = async () => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/transactions`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const data = await response.json();
+    return { data };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getGames = async () => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/games/`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const data = await response.json();
+    return { data };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const editGames = async (status, slug, id) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/games/${id}`, {
+      method: "PUT",
+      credentials: "include",
+      body: JSON.stringify({ status, slug }),
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const data = await response.json();
+    return { data };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteGame = async (id) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/games/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const data = await response.json();
+    return { data };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const uploadImage = async (image) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/games/thumbnail`, {
+      method: "POST",
+      body: JSON.stringify(image),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const data = await response.json();
+    return { data };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addGame = async (game) => {
+  const token = await getCookie();
+  console.log(game);
+  try {
+    const response = await fetch(`${config.server}/api/games`, {
+      method: "POST",
+      credentials: "include",
+      body: game,
+      headers: {
+        Cookie: `userToken=${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const data = await response.json();
+    return { data };
   } catch (error) {
     throw error;
   }

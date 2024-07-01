@@ -18,38 +18,65 @@ body {
     font-size: 100%;
   }
 }
+
+@media screen and (max-width: 1080px) {
+  html {
+    font-size: 90%;
+  }
+}
+
 @media screen and (max-width: 840px) {
   html {
     font-size: 70%;
   }
 }
+
 .rounded-md {
   border-radius: 5px;
 }
 .editgradient {
   border-radius: 10px;
-background: linear-gradient(135deg, #D9D9D9 0%, #9377E6 100%);
+  background: linear-gradient(135deg, #d9d9d9 0%, #9377e6 100%);
 }
 .deletegradient {
   border-radius: 10px;
   background: linear-gradient(135deg, #d9d9d9 0%, #ef4444 100%);
 }
-.animate-scale{
+.animate-scale {
   animation: scale 0.4s ease-in-out;
 }
-@keyframes scale{
-  from{
+@keyframes scale {
+  from {
     transform: scale(0);
   }
-  to{
+  to {
     transform: scale(1);
   }
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    margin: 0; 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#8c7cfd, #bc89f1);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(#bc89f1, #8c7cfd);
+}
+
+input[type="radio"] {
+  accent-color: #8c7cfd;
 }

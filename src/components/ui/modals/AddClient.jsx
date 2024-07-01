@@ -1,9 +1,10 @@
 "use client";
 import { addClient } from "@/utils/action";
-import React, { useState } from "react";
+import { getCookie } from "@/utils/cookie";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const AddClient = ({ setOpen, setRefresh }) => {
+const AddClient = ({ setOpen, setRefresh, refresh, role }) => {
   const [user, setUser] = useState({
     username: "",
     name: "",
@@ -44,13 +45,12 @@ const AddClient = ({ setOpen, setRefresh }) => {
         role: "",
         credits: "",
       });
-      setRefresh((prev) => {
-        !prev;
-      });
+      setRefresh(!refresh);
     } catch (error) {
       toast.error(error.message);
     }
   };
+
   return (
     <form
       onSubmit={handleSubmit}

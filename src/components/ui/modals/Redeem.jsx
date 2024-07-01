@@ -3,10 +3,10 @@ import { editClient, editCredits } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-const Recharge = ({ setOpen, setRefresh, id, refresh }) => {
+const Redeem = ({ setOpen, setRefresh, id, refresh }) => {
   const [amount, setAmount] = useState();
   const credits = {
-    type: "recharge",
+    type: "redeem",
     amount: amount,
   };
 
@@ -17,8 +17,8 @@ const Recharge = ({ setOpen, setRefresh, id, refresh }) => {
     }
     try {
       const response = await editCredits(credits, id);
-      setRefresh(!refresh);
       setOpen(false);
+      setRefresh(!refresh);
       toast.success(response.responseData.message);
     } catch (error) {
       toast.error(error.message);
@@ -30,10 +30,10 @@ const Recharge = ({ setOpen, setRefresh, id, refresh }) => {
       onSubmit={handleSubmit}
       className="grid grid-cols-2 gap-4 overflow-hidden px-5"
     >
-      <p className="text-left font-light">Recharge Amount : </p>
+      <p className="text-left font-light">Redeem Amount : </p>
       <input
         type="number"
-        name="recharge"
+        name="redeem"
         onChange={(e) => setAmount(e.target.value)}
         value={amount}
         className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
@@ -50,4 +50,4 @@ const Recharge = ({ setOpen, setRefresh, id, refresh }) => {
   );
 };
 
-export default Recharge;
+export default Redeem;

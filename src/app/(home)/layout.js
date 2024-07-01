@@ -18,10 +18,10 @@ export default function RootLayout({ children }) {
   return (
     <Providers>
       <div
-        style={{ backgroundImage: "url(/bg1.png)" }}
+        // style={{ backgroundImage: "url(/bg1.png)" }}
         className="bg-cover h-screen bg-gradient-to-b from-[#1a1a1a] to-[#1c1b20] flex gap-2"
       >
-        <div className="lg:w-[10%] w-fit lg:min-w-[250px]">
+        <div className="lg:w-[10%] w-fit lg:min-w-[210px]">
           <div className="w-full h-full">
             <Sidebar />
           </div>

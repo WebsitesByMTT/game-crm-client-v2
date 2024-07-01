@@ -1,9 +1,9 @@
 "use client";
-import { editClient } from "@/utils/action";
+import { editPassword } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-const Password = ({ id }) => {
+const Password = ({ id, setRefresh, setOpen, refresh }) => {
   const [existingPassword, setExistingPassword] = useState("");
   const [password, setPassword] = useState("");
   const [reEnterPassword, setReEnterPassword] = useState("");
@@ -16,11 +16,10 @@ const Password = ({ id }) => {
       return toast.error("Both the passwords do now match");
     }
     try {
-      const response = await editClient(existingPassword, password, "", "", id);
-      console.log(response);
-      //   setRefresh((prev) => {
-      //     !prev;
-      //   });
+      const response = await editPassword(existingPassword, password, id);
+      setRefresh(!refresh);
+      toast.success(response.responseData.message);
+      setOpen(false);
     } catch (error) {
       toast.error(error.message);
     }

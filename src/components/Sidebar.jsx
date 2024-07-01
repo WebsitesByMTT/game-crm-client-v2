@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { RiDashboardFill, RiMoneyRupeeCircleFill } from "react-icons/ri";
+import { MdOutlinePlayCircleFilled } from "react-icons/md";
 import { IoLogOut } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { getUserData } from "@/utils/action";
@@ -35,7 +36,7 @@ const LeftSideBar = ({}) => {
   return (
     <>
       <div
-        className="block lg:hidden text-[30px] text-white px-4 py-8"
+        className="block absolute top-0 left-0 lg:hidden text-[30px] text-white px-4 py-8"
         onClick={() => setOpen((prev) => !prev)}
       >
         <RxHamburgerMenu />
@@ -43,7 +44,7 @@ const LeftSideBar = ({}) => {
       <div
         className={`py-4 border-r-2 bg-clip-padding backdrop-filter backdrop-blur-[5px] bg-opacity-10 border-[#e4e4e42f] px-5 ${
           open ? "flex backdrop-blur-[20px]" : "hidden"
-        } lg:flex flex-col justify-between h-full lg:static absolute w-[250px] top-0 left-0 z-10`}
+        } lg:flex flex-col justify-between h-full lg:static absolute w-full top-0 left-0 z-10`}
       >
         <div>
           <div className="h-auto w-[15%] min-w-[50px]">
@@ -83,6 +84,7 @@ const LeftSideBar = ({}) => {
             <Link
               onClick={() => {
                 setOption("dashboard");
+                setOpen(false);
               }}
               href="/"
             >
@@ -104,6 +106,7 @@ const LeftSideBar = ({}) => {
             <Link
               onClick={() => {
                 setOption("transaction");
+                setOpen(false);
               }}
               href="/transaction"
             >
@@ -124,8 +127,9 @@ const LeftSideBar = ({}) => {
               <Link
                 onClick={() => {
                   setOption("games");
+                  setOpen(false);
                 }}
-                href="/add-games"
+                href="/game"
               >
                 <li
                   className={`w-full p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
@@ -133,9 +137,9 @@ const LeftSideBar = ({}) => {
                   }`}
                 >
                   <div className={option === "games" ? "text-[#8C7CFD]" : ""}>
-                    <RiMoneyRupeeCircleFill />
+                    <MdOutlinePlayCircleFilled />
                   </div>
-                  <span>Add Game</span>
+                  <span>Games</span>
                 </li>
               </Link>
             )}
