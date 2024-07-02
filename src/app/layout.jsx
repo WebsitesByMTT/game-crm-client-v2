@@ -1,6 +1,5 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { Providers } from "@/redux/Providers";
 import { Toaster } from "react-hot-toast";
 
 const inter = Poppins({
@@ -17,8 +16,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Toaster position="bottomcenter"/>
-        <Providers>{children}</Providers>
+        <Toaster position="bottomcenter" />
+        {children}
       </body>
     </html>
   );

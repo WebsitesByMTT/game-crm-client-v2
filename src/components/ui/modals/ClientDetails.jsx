@@ -1,7 +1,9 @@
 "use client";
+import { useRouter } from "next/navigation";
 import React from "react";
 
-const ClientDetails = ({ data }) => {
+const ClientDetails = ({ data, setOpenTransaction }) => {
+  const router = useRouter();
   return (
     <div className="grid grid-cols-2 gap-4 overflow-hidden px-5">
       <p className="text-left font-light">Username :</p>
@@ -42,6 +44,15 @@ const ClientDetails = ({ data }) => {
       <p className="text-left font-extralight text-gray-400">
         {data?.updatedAt?.split("T")[0]}
       </p>
+      <div className="col-span-2 flex justify-center mt-2">
+        <button
+          onClick={() => setOpenTransaction(true)}
+          type="submit"
+          className="text-center flex justify-center px-4 items-center gap-2 bg-gradient-to-r from-[#8C7CFD] hover:from-[#BC89F1] hover:to-[#8C7CFD] to-[#BC89F1] mx-auto text-white text-xl rounded-md p-2 font-light hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out"
+        >
+          View Transactions
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import { Poppins } from "next/font/google";
 import "../../app/globals.css";
-import { Providers } from "@/redux/Providers";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 
@@ -16,9 +15,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <Providers>
       <div
-        // style={{ backgroundImage: "url(/bg1.png)" }}
         className="bg-cover h-screen bg-gradient-to-b from-[#1a1a1a] to-[#1c1b20] flex gap-2"
       >
         <div className="lg:w-[10%] w-fit lg:min-w-[210px]">
@@ -36,6 +33,5 @@ export default function RootLayout({ children }) {
           </div>
         </div>
       </div>
-    </Providers>
   );
 }

@@ -81,6 +81,7 @@ const Page = () => {
     const filtered = data.filter((item) => item.type === type);
     setFilteredData(filtered);
   };
+  
   return (
     <div className="h-full w-full flex flex-col">
       <div className="w-full flex items-center justify-between my-2">

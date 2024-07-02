@@ -5,6 +5,7 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdDeleteOutline } from "react-icons/md";
 import { IoOptions } from "react-icons/io5";
+import { FaCircle } from "react-icons/fa";
 import {
   Table,
   TableBody,
@@ -33,6 +34,8 @@ import Loader from "@/utils/Loader";
 import { GiTwoCoins } from "react-icons/gi";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { FaUserTie } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
+import ClientTransactions from "./ui/modals/ClientTransaction";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -44,11 +47,14 @@ const Dashboard = () => {
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(data);
   const [loading, setLoading] = useState(false);
+  const [openTransaction, setOpenTransaction] = useState(false);
 
   let ModalContent;
   switch (modalType) {
     case "Client Details":
-      ModalContent = <ClientDetails data={rowData} />;
+      ModalContent = (
+        <ClientDetails data={rowData} setOpenTransaction={setOpenTransaction} />
+      );
       break;
 
     case "Add Client":
@@ -265,27 +271,43 @@ const Dashboard = () => {
           </TableHeader>
           <TableBody>
             {filteredData?.map((item, index) => (
-              <TableRow
-                key={index}
-                onClick={() => {
-                  handleRowClick(item);
-                  handleModalOpen("Client Details");
-                }}
-              >
+              <TableRow key={index}>
                 <TableCell>{item.username}</TableCell>
-                <TableCell>{item.status}</TableCell>
+                <TableCell
+                  className={
+                    item.status === "active"
+                      ? "text-[#70ef44]"
+                      : "text-[#ef4444]"
+                  }
+                >
+                  <div className="w-full flex gap-2 items-center justify-center">
+                    <div className="text-[8px]">
+                      <FaCircle />
+                    </div>
+                    <span className="text-white opacity-50">{item.status}</span>
+                  </div>
+                </TableCell>
                 <TableCell>{item.role}</TableCell>
-                <TableCell className="hidden md:table-cell">
+                <TableCell className="hidden md:table-cell text-[#ef4444]">
                   {item.totalRedeemed}
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
                   {item.totalRecharged}
                 </TableCell>
-                <TableCell className="hidden md:table-cell">
+                <TableCell className="hidden md:table-cell text-[#70ef44]">
                   {item.credits}
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-5 text-2xl justify-center relative">
+                    <div
+                      className="text-[#1b1b1e] flex items-center justify-center text-sm viewgradient px-2 p-1 leading-3 font-[500] rounded-md cursor-pointer"
+                      onClick={() => {
+                        handleRowClick(item);
+                        handleModalOpen("Client Details");
+                      }}
+                    >
+                      View
+                    </div>
                     <DropdownMenu>
                       <DropdownMenuTrigger className="text-[#1b1b1e] editgradient p-1 rounded-md">
                         <BsThreeDotsVertical />
@@ -353,6 +375,11 @@ const Dashboard = () => {
         {ModalContent}
       </Modal>
       <Loader show={loading} />
+      <ClientTransactions
+        data={rowData?.transactions}
+        setOpenTransaction={setOpenTransaction}
+        openTransaction={openTransaction}
+      />
     </div>
   );
 };
@@ -364,7 +391,9 @@ const Card = ({ name, icon, amount }) => {
         <div className="border-[1px] border-[#847697] min-w-[20px] bg-[#8C7CFD] w-fit p-2 md:p-1 rounded-md">
           {icon}
         </div>
-        <span className="text-[#dfdfdf9d] text-[14.5px] md:text-2xl">{name}</span>
+        <span className="text-[#dfdfdf9d] text-[14.5px] md:text-2xl">
+          {name}
+        </span>
       </div>
       <span className="lg:text-[4.5rem] text-[2rem] md:text-center font-semibold text-transparent bg-clip-text bg-gradient-to-bl from-[#bc89f1] from-[24%] via-[#D5CAFF] via-[36%] to-[#8c7cfd] drop-shadow-2xl">
         {amount}

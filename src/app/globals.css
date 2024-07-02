@@ -42,6 +42,10 @@ body {
   border-radius: 10px;
   background: linear-gradient(135deg, #d9d9d9 0%, #ef4444 100%);
 }
+.viewgradient{
+  border-radius: 10px;
+  background: linear-gradient(135deg, #d9d9d9 0%, #8fef44 100%);
+}
 .animate-scale {
   animation: scale 0.4s ease-in-out;
 }

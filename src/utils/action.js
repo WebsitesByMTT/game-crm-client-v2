@@ -1,4 +1,5 @@
 "use server";
+import { revalidatePath } from "next/cache";
 import { config } from "./config";
 import { getCookie } from "./cookie";
 
@@ -89,6 +90,8 @@ export const addClient = async (user) => {
     return { data };
   } catch (error) {
     throw error;
+  } finally {
+    revalidatePath("/");
   }
 };
 
@@ -289,7 +292,7 @@ export const uploadImage = async (image) => {
     });
     if (!response.ok) {
       const error = await response.json();
-       console.log(error);
+      console.log(error);
       throw new Error(error.message);
     }
     const data = await response.json();
