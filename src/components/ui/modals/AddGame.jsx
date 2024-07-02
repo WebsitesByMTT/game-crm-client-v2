@@ -13,9 +13,10 @@ const AddGame = ({ setOpen, setRefresh, refresh }) => {
     slug: "",
     url: "",
     thumbnail: "",
-    file: "",
+    file: null,
   });
   const [gameThumbnail, setGameThumbnail] = useState(null);
+  const [disable, setDisable] = useState(true);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -34,7 +35,9 @@ const AddGame = ({ setOpen, setRefresh, refresh }) => {
       game.tagName === "" ||
       game.category === "" ||
       game.slug === "" ||
-      game.type === ""
+      game.type === "" ||
+      game.thumbnail === "" ||
+      game.file === null
     ) {
       return toast.error("All fileds are required!");
     }
@@ -44,10 +47,10 @@ const AddGame = ({ setOpen, setRefresh, refresh }) => {
     }
 
     try {
+      setRefresh(!refresh);
       const response = await addGame(data);
       setOpen(false);
       toast.success("Game Added successfully!");
-      setRefresh(!refresh);
     } catch (error) {
       toast.error(error.message);
     }
@@ -61,10 +64,13 @@ const AddGame = ({ setOpen, setRefresh, refresh }) => {
       const imagedata = {
         image: base64String,
       };
-      console.log("Image", imagedata);
       try {
+        toast.loading("Uploading image on server");
         const response = await uploadImage(imagedata);
         setGame({ ...game, thumbnail: response.data.imageUrl });
+        toast.remove();
+        toast.success(response.data.message);
+        setDisable(false);
       } catch (error) {
         toast.error(error.message);
       }
@@ -146,7 +152,7 @@ const AddGame = ({ setOpen, setRefresh, refresh }) => {
       <input
         onChange={(e) => handleImageChange(e)}
         type="file"
-        className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full"
+        className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
         id="fileUpload"
         accept="image/*"
       />
@@ -161,8 +167,11 @@ const AddGame = ({ setOpen, setRefresh, refresh }) => {
       />
       <div className="col-span-2 flex justify-center mt-2">
         <button
+          disabled={disable ? true : false}
           type="submit"
-          className="text-center flex justify-center px-4 items-center gap-2 bg-gradient-to-r from-[#8C7CFD] hover:from-[#BC89F1] hover:to-[#8C7CFD] to-[#BC89F1] mx-auto text-white text-xl rounded-md p-2 font-light hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out"
+          className={` ${
+            disable ? "opacity-50 " : "opacity-100 "
+          }text-center flex justify-center px-4 items-center gap-2 bg-gradient-to-r from-[#8C7CFD] hover:from-[#BC89F1] hover:to-[#8C7CFD] to-[#BC89F1] mx-auto text-white text-xl rounded-md p-2 font-light hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out`}
         >
           Submit
         </button>

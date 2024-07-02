@@ -20,9 +20,9 @@ const EditGame = ({
       return toast.error("All fileds are required!");
     }
     try {
+      setRefresh(!refresh);
       const response = await editGames(status, slug, id);
       toast.success("Game updated succesfully!");
-      setRefresh(!refresh);
       setOpen(false);
     } catch (error) {
       toast.error(error.message);

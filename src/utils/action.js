@@ -289,9 +289,11 @@ export const uploadImage = async (image) => {
     });
     if (!response.ok) {
       const error = await response.json();
+       console.log(error);
       throw new Error(error.message);
     }
     const data = await response.json();
+    console.log("ImageData", data);
     return { data };
   } catch (error) {
     throw error;

@@ -16,8 +16,8 @@ const Password = ({ id, setRefresh, setOpen, refresh }) => {
       return toast.error("Both the passwords do now match");
     }
     try {
-      const response = await editPassword(existingPassword, password, id);
       setRefresh(!refresh);
+      const response = await editPassword(existingPassword, password, id);
       toast.success(response.responseData.message);
       setOpen(false);
     } catch (error) {

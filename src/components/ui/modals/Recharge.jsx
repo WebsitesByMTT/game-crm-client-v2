@@ -16,8 +16,8 @@ const Recharge = ({ setOpen, setRefresh, id, refresh }) => {
       return toast.error("Enter a valid amount");
     }
     try {
-      const response = await editCredits(credits, id);
       setRefresh(!refresh);
+      const response = await editCredits(credits, id);
       setOpen(false);
       toast.success(response.responseData.message);
     } catch (error) {

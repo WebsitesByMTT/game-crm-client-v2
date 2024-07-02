@@ -9,7 +9,7 @@ const AddClient = ({ setOpen, setRefresh, refresh, role }) => {
     username: "",
     name: "",
     password: "",
-    role: "",
+    role: "master",
     credits: "",
   });
 
@@ -35,6 +35,7 @@ const AddClient = ({ setOpen, setRefresh, refresh, role }) => {
       return toast.error("Credit can't be negative");
     }
     try {
+      setRefresh(!refresh);
       const response = await addClient(user);
       setOpen(false);
       toast.success("Client Added successfully!");
@@ -45,7 +46,6 @@ const AddClient = ({ setOpen, setRefresh, refresh, role }) => {
         role: "",
         credits: "",
       });
-      setRefresh(!refresh);
     } catch (error) {
       toast.error(error.message);
     }
@@ -78,12 +78,19 @@ const AddClient = ({ setOpen, setRefresh, refresh, role }) => {
         className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
       />
       <p className="text-left font-light">Role :</p>
-      <input
+      <select
         name="role"
-        onChange={handleChange}
+        id="role"
         value={user.role}
-        className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
-      />
+        onChange={handleChange}
+        className="outline-none bg-transparent w-full text-left font-extralight text-gray-400 border-b-[1px] border-[#dfdfdf2e]"
+      >
+        <option value="master">master</option>
+        <option value="distributor">distributor</option>
+        <option value="subdistributor">sub-distributor</option>
+        <option value="store">store</option>
+        <option value="player">player</option>
+      </select>
       <p className="text-left font-light">Credits :</p>
       <input
         name="credits"

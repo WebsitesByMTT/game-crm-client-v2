@@ -20,6 +20,10 @@ const LeftSideBar = ({}) => {
       const response = await getUserData();
       setData(response.data);
     } catch (error) {
+      if (error.message === "Token has expired") {
+        logOutUser();
+      }
+      toast.remove();
       toast.error(error.message);
     }
   };
@@ -29,7 +33,7 @@ const LeftSideBar = ({}) => {
 
   const logOutUser = () => {
     Cookies.remove("userToken");
-    router.push("/");
+    router.push("/login");
     toast.success("Logout Successfully");
   };
 
@@ -44,7 +48,7 @@ const LeftSideBar = ({}) => {
       <div
         className={`py-4 border-r-2 bg-clip-padding backdrop-filter backdrop-blur-[5px] bg-opacity-10 border-[#e4e4e42f] px-5 ${
           open ? "flex backdrop-blur-[20px]" : "hidden"
-        } lg:flex flex-col justify-between h-full lg:static absolute w-full top-0 left-0 z-10`}
+        } lg:flex flex-col justify-between h-full lg:static absolute w-[250px] top-0 left-0 z-10`}
       >
         <div>
           <div className="h-auto w-[15%] min-w-[50px]">

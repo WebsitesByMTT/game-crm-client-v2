@@ -161,19 +161,6 @@ const Login = () => {
                     )}
                   </div>
                 </div>
-                {/* <div className="space-y-2">
-                <div className="flex items-center space-x-3 border-b border-gray-400">
-                  <input
-                    type="text"
-                    name="captcha"
-                    placeholder="Enter Captcha"
-                    value={data.captcha}
-                    onChange={(e) => handelChange(e)}
-                    className="outline-none w-full text-xl px-2 py-1.5 placeholder:text-[1rem]"
-                  />
-                  <LoadCanvasTemplate />
-                </div>
-              </div> */}
                 <div className="flex justify-center">
                   <button
                     type="submit"

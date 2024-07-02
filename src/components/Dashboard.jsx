@@ -123,6 +123,7 @@ const Dashboard = () => {
     try {
       setLoading(true);
       const response = await getClients();
+      console.log(response);
       setData(response.data);
       setFilteredData(response.data);
       setLoading(false);
@@ -144,9 +145,9 @@ const Dashboard = () => {
   const handleDelete = async (id, e) => {
     e.stopPropagation();
     try {
+      setRefresh((prev) => !prev);
       const response = await deleteClient(id);
       toast.success(response.data.message);
-      setRefresh((prev) => !prev);
     } catch (error) {
       toast.error(error.message);
     }

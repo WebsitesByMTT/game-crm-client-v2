@@ -16,9 +16,9 @@ const Redeem = ({ setOpen, setRefresh, id, refresh }) => {
       return toast.error("Enter a valid amount");
     }
     try {
+      setRefresh(!refresh);
       const response = await editCredits(credits, id);
       setOpen(false);
-      setRefresh(!refresh);
       toast.success(response.responseData.message);
     } catch (error) {
       toast.error(error.message);

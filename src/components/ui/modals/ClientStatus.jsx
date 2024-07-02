@@ -12,10 +12,10 @@ const ClientStatus = ({ setOpen, setRefresh, id, prevStatus, refresh }) => {
       return toast.error("Status is required");
     }
     try {
+      setRefresh(!refresh);
       const response = await editStatus(status, id);
       setOpen(false);
       toast.success(response.responseData.message);
-      setRefresh(!refresh);
     } catch (error) {
       toast.error(error.message);
     }
