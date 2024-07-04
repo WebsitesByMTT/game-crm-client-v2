@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
       <div
         className="bg-cover h-screen bg-gradient-to-b from-[#1a1a1a] to-[#1c1b20] flex gap-2"
       >
-        <div className="lg:w-[10%] w-fit lg:min-w-[210px]">
+        <div>
           <div className="w-full h-full">
             <Sidebar />
           </div>
@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
           <div>
             <Header />
           </div>
-          <div className="h-full overflow-auto w-[93%] m-auto my-5">
+          <div className="h-full overflow-auto w-[100%] m-auto my-5">
             {children}
           </div>
         </div>

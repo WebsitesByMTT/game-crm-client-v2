@@ -84,3 +84,11 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="radio"] {
   accent-color: #8c7cfd;
 }
+
+@media (max-width:768px) {
+  .Transition{
+    transition: .5s;
+  }
+}
+
+

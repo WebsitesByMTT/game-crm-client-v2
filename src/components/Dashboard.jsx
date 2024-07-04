@@ -184,7 +184,7 @@ const Dashboard = () => {
   return (
     <div className="h-full w-full flex flex-col">
       <div className="w-full m-auto md:py-5 py-3 px-2 md:px-4 flex gap-5 flex-wrap items-center justify-center">
-        <div className="h-auto lg:h-[200px] w-[71%] bg-[#2a2a2aad] rounded-xl flex justify-between">
+        <div className="h-auto lg:h-[200px] w-[71%]  bg-[#2a2a2aad] rounded-xl flex justify-between">
           <Card
             name="Recharge"
             icon={<FaHandHoldingDollar />}
