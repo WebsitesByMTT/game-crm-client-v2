@@ -35,6 +35,7 @@ import { GiTwoCoins } from "react-icons/gi";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { FaUserTie } from "react-icons/fa6";
 import ClientTransactions from "./ui/modals/ClientTransaction";
+import TableComponent from "./TableComponent";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -181,6 +182,12 @@ const Dashboard = () => {
     setFilteredData(filtered);
   };
 
+  //Table Data
+  const tableData={
+    tableHead:["Username","Status","Role","Redeem","Recharge","Credits","Action"],
+    tableBody:["username","status","role","totalRedeemed","totalRecharged","credits","action"]
+  }
+
   return (
     <div className="h-full w-full flex flex-col">
       <div className="w-full m-auto md:py-5 py-3 px-2 md:px-4 flex gap-5 flex-wrap items-center justify-center">
@@ -260,114 +267,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="overflow-y-auto">
-        <Table className="overflow-y-auto">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Username</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead className="hidden md:table-cell">Redeem</TableHead>
-              <TableHead className="hidden md:table-cell">Recharge</TableHead>
-              <TableHead className="hidden md:table-cell">Credits</TableHead>
-              <TableHead>Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredData?.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell>{item.username}</TableCell>
-                <TableCell
-                  className={
-                    item.status === "active"
-                      ? "text-[#70ef44]"
-                      : "text-[#ef4444]"
-                  }
-                >
-                  <div className="w-full flex gap-2 items-center justify-center">
-                    <div className="text-[8px]">
-                      <FaCircle />
-                    </div>
-                    <span className="text-white opacity-50">{item.status}</span>
-                  </div>
-                </TableCell>
-                <TableCell>{item.role}</TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {item.totalRedeemed}
-                </TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {item?.totalRecharged}
-                </TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {item.credits}
-                </TableCell>
-                <TableCell>
-                  <div className="flex gap-5 text-2xl justify-center relative">
-                    <div
-                      className="text-[#1b1b1e] flex items-center justify-center text-sm viewgradient px-2 p-1 leading-3 font-[500] rounded-md cursor-pointer"
-                      onClick={() => {
-                        handleRowClick(item);
-                        handleModalOpen("Client Details");
-                      }}
-                    >
-                      View
-                    </div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger className="text-[#1b1b1e] editgradient p-1 rounded-md">
-                        <BsThreeDotsVertical />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleModalOpen("Change Password");
-                            handleRowClick(item);
-                          }}
-                        >
-                          Change Password
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleRowClick(item);
-                            handleModalOpen("Recharge Client");
-                          }}
-                        >
-                          Recharge Client
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleRowClick(item);
-                            handleModalOpen("Redeem Client");
-                          }}
-                        >
-                          Redeem Client
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleRowClick(item);
-                            handleModalOpen("Update Status");
-                          }}
-                        >
-                          Update Status
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                    <div
-                      onClick={(e) => {
-                        handleDelete(item._id, e);
-                      }}
-                      className="text-[#1b1b1e] deletegradient p-1 rounded-md"
-                    >
-                      <MdDeleteOutline />
-                    </div>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <TableComponent tableData={tableData} DashboardFetchedData={filteredData}/>
       </div>
       <Modal
         open={open}
