@@ -20,8 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import toast from "react-hot-toast";
 import TransactionDetails from "@/components/ui/modals/TransactionDetails";
-import Loader from "@/utils/Loader";
-
+import Loader from "@/components/ui/Loader";
 const Page = () => {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);

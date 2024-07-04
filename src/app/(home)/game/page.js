@@ -18,7 +18,8 @@ import GameDetails from "@/components/ui/modals/GameDetails";
 import AddGame from "@/components/ui/modals/AddGame";
 import { MdEdit } from "react-icons/md";
 import EditGame from "@/components/ui/modals/EditGame";
-import Loader from "@/utils/Loader";
+import Loader from "@/components/ui/Loader";
+import { FaCircle } from "react-icons/fa";
 
 const Game = () => {
   const [data, setData] = useState([]);
@@ -44,8 +45,7 @@ const Game = () => {
     case "Edit Game":
       ModalContent = (
         <EditGame
-          prevstatus={rowData?.status}
-          prevslug={rowData?.slug}
+          prevData={rowData}
           id={rowData._id}
           setRefresh={setRefresh}
           setOpen={setOpen}
@@ -152,8 +152,19 @@ const Game = () => {
                 <TableCell>{item.name}</TableCell>
                 <TableCell>{item.category}</TableCell>
                 <TableCell>{item.type}</TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {item.status}
+                <TableCell
+                  className={
+                    item.status === "active"
+                      ? "text-[#70ef44] hidden md:table-cell"
+                      : "text-[#ef4444] hidden md:table-cell"
+                  }
+                >
+                  <div className="w-full flex gap-2 items-center justify-center">
+                    <div className="text-[8px]">
+                      <FaCircle />
+                    </div>
+                    <span className="text-white opacity-50">{item.status}</span>
+                  </div>
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
                   {item.slug}

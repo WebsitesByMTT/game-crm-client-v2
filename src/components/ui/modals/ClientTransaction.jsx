@@ -35,7 +35,6 @@ const ClientTransactions = ({ data, setOpenTransaction, openTransaction }) => {
     const filtered = data.filter((item) => item.type === type);
     setFilteredData(filtered);
   };
-
   useEffect(() => {
     setFilteredData(data);
   },[]);
@@ -44,7 +43,7 @@ const ClientTransactions = ({ data, setOpenTransaction, openTransaction }) => {
     <>
       {openTransaction && (
         <div className="fixed top-0 left-0 h-full w-full bg-[#00000092] backdrop-blur-[2px] z-10 flex items-center justify-center">
-          <div className="h-[80%] w-[50%] flex flex-col bg-[#1a1a1a] py-2 px-5 rounded-md">
+          <div className="h-[80%] w-[90%] lg:w-[50%] flex flex-col bg-[#1a1a1a] py-2 px-5 rounded-md">
             <div className="w-full flex items-center justify-between my-2">
               <div className="w-[70%] flex gap-2">
                 <div className="w-full flex shadow-lg items-center gap-2 text-white  rounded-md  font-extralight bg-[#dfdfdf1d] py-2 px-4 ">

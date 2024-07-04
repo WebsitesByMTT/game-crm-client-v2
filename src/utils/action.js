@@ -232,15 +232,15 @@ export const getGames = async () => {
   }
 };
 
-export const editGames = async (status, slug, id) => {
+export const editGames = async (game, id) => {
   const token = await getCookie();
+  console.log(game);
   try {
     const response = await fetch(`${config.server}/api/games/${id}`, {
       method: "PUT",
       credentials: "include",
-      body: JSON.stringify({ status, slug }),
+      body: game,
       headers: {
-        "Content-Type": "application/json",
         Cookie: `userToken=${token}`,
       },
     });

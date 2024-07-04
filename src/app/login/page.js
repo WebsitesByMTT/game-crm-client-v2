@@ -1,7 +1,7 @@
 "use client";
 import { loginUser } from "@/utils/action";
 // import { ClientData } from "@/redux/ReduxSlice";
-import Loader from "@/utils/Loader";
+import Loader from "@/components/ui/Loader";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";

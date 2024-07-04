@@ -30,11 +30,10 @@ import Recharge from "./ui/modals/Recharge";
 import { FiSearch } from "react-icons/fi";
 import Redeem from "./ui/modals/Redeem";
 import ClientStatus from "./ui/modals/ClientStatus";
-import Loader from "@/utils/Loader";
+import Loader from "@/components/ui/Loader";
 import { GiTwoCoins } from "react-icons/gi";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { FaUserTie } from "react-icons/fa6";
-import { useRouter } from "next/navigation";
 import ClientTransactions from "./ui/modals/ClientTransaction";
 
 const Dashboard = () => {
@@ -53,7 +52,11 @@ const Dashboard = () => {
   switch (modalType) {
     case "Client Details":
       ModalContent = (
-        <ClientDetails data={rowData} setOpenTransaction={setOpenTransaction} />
+        <ClientDetails
+          data={rowData}
+          setOpenTransaction={setOpenTransaction}
+          setRowData={setRowData}
+        />
       );
       break;
 
@@ -129,7 +132,6 @@ const Dashboard = () => {
     try {
       setLoading(true);
       const response = await getClients();
-      console.log(response);
       setData(response.data);
       setFilteredData(response.data);
       setLoading(false);
@@ -142,6 +144,7 @@ const Dashboard = () => {
   const fetchUserData = async () => {
     try {
       const response = await getUserData();
+      console.log("Response", response.data);
       setUserData(response.data);
     } catch (error) {
       toast.error(error.message);
@@ -210,7 +213,7 @@ const Dashboard = () => {
             </span>
           </div>
           <span className="lg:text-[4.5rem] text-[2.5rem] md:text-center font-semibold text-transparent bg-clip-text bg-gradient-to-bl from-[#bc89f1] from-[24%] via-[#D5CAFF] via-[36%] to-[#8c7cfd] drop-shadow-2xl">
-            {data?.credits ? data?.credits : "\u221E"}
+            {userData?.credits !== null ? userData?.credits : "\u221E"}
           </span>
         </div>
       </div>
@@ -288,13 +291,13 @@ const Dashboard = () => {
                   </div>
                 </TableCell>
                 <TableCell>{item.role}</TableCell>
-                <TableCell className="hidden md:table-cell text-[#ef4444]">
+                <TableCell className="hidden md:table-cell">
                   {item.totalRedeemed}
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                  {item.totalRecharged}
+                  {item?.totalRecharged}
                 </TableCell>
-                <TableCell className="hidden md:table-cell text-[#70ef44]">
+                <TableCell className="hidden md:table-cell">
                   {item.credits}
                 </TableCell>
                 <TableCell>

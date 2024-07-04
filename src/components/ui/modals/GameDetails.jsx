@@ -7,7 +7,7 @@ const GameDetails = ({ data }) => {
     <div className="grid grid-cols-2 gap-4 overflow-hidden px-5">
       <p className="text-left font-light">Name :</p>
       <p className="text-left font-extralight text-gray-400">{data.name}</p>
-      <p className="text-left font-light">Categroy :</p>
+      <p className="text-left font-light">Category :</p>
       <p className="text-left font-extralight overflow-hidden text-gray-400">
         {data.category}
       </p>
