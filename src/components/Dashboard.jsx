@@ -36,6 +36,7 @@ import { FaHandHoldingDollar } from "react-icons/fa6";
 import { FaUserTie } from "react-icons/fa6";
 import ClientTransactions from "./ui/modals/ClientTransaction";
 import TableComponent from "./TableComponent";
+import { handleFilter } from "@/utils/Filter";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -175,19 +176,17 @@ const Dashboard = () => {
     setFilteredData(filtered);
   };
 
-  const handleStatus = (status) => {
-    const filtered = data.filter((item) => item.status === status);
-    setFilteredData(filtered);
-  };
-  const handleFilterRoles = (role) => {
-    const filtered = data.filter((item) => item.role === role);
-    setFilteredData(filtered);
-  };
+  const handleFilterData=(key,value,Num)=>{
+    const dataFiltered = handleFilter(data,key,value,Num)
+    setFilteredData(dataFiltered)
+  }
+ 
   //Table Data
   const tableData={
-    tableHead:["Username","Status","Role","Redeem","Recharge","Credits","Action"],
+    tableHead:["username","status","role","totalRedeemed","totalRecharged","credits","action"],
     tableBody:["username","status","role","totalRedeemed","totalRecharged","credits","action"],
-    Filter:["master","distributor","subdistributor","store","player"]
+    Filter:["master","distributor","subdistributor","store","player"],
+    Status:["active","inactive"]
   }
 
   return (
@@ -245,19 +244,6 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="flex gap-5 items-center">
-          <DropdownMenu>
-            <DropdownMenuTrigger className="text-white text-3xl  bg-[#c4a5ff36] rounded-md p-2 border-[1px] border-[#847697] focus:outline-none">
-              <IoOptions />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => handleStatus("active")}>
-                Active
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleStatus("inactive")}>
-                Inactive
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
           <button
             onClick={() => handleModalOpen("Add Client")}
             className="text-nowrap text-center flex justify-center items-center gap-2 bg-gradient-to-b from-[#C5A5FF] to-[#362356] text-white text-xl rounded-[10px] p-2 font-[300] border-[1px] border-[#847697] hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out w-fit"
@@ -269,7 +255,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="rounded-2xl h-[420px] w-[97%] bg-[#252525] mx-auto overflow-y-scroll">
-        <TableComponent  tableData={tableData} Filter={handleFilterRoles} DashboardFetchedData={filteredData} rowClick={handleRowClick} openModal={handleModalOpen} deleteTableData={handleDelete}/>
+        <TableComponent  tableData={tableData} Filter={handleFilterData} DashboardFetchedData={filteredData} rowClick={handleRowClick} openModal={handleModalOpen} deleteTableData={handleDelete}/>
       </div>
       <Modal
         open={open}
