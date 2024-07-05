@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Table,
   TableBody,
@@ -18,7 +18,15 @@ import { MdDeleteOutline, MdEdit } from 'react-icons/md';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { IoIosArrowDown } from "react-icons/io";
 
-const TableComponent = ({ tableData, DashboardFetchedData, rowClick, openModal, deleteTableData, pageType, Filter}) => {
+const TableComponent = ({ tableData, DashboardFetchedData, rowClick, openModal, deleteTableData, pageType, Filter }) => {
+  const [filterCountData, setFilterCountData] = useState({ From: 0, To: 0 });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFilterCountData((prevData) => ({
+      ...prevData,
+      [name]: Number(value)
+    }));
+  };
   return (
     <Table>
       <TableHeader className="sticky top-0 bg-[#252525] z-50">
@@ -27,24 +35,41 @@ const TableComponent = ({ tableData, DashboardFetchedData, rowClick, openModal, 
             tableData?.tableHead?.map((item) => (
               <TableHead key={item} className="py-5">
                 <div className='flex justify-center items-center space-x-2'>
-                  <span>{item}</span>
-                  {item == 'Role' && <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <IoIosArrowDown />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      {
-                        tableData?.Filter?.map((item) => (
-                          <DropdownMenuItem key={item} onClick={()=>Filter(item)} className="capitalize">
-                            {item}
-                          </DropdownMenuItem>
-                        ))
+                  <span className='capitalize'>{item == 'totalRedeemed' ? 'redeem' : item == 'totalRecharged' ? 'Recharge' : item}</span>
+                  {(item !== 'action' && item !== 'username') &&
+                    (<DropdownMenu>
+                      <DropdownMenuTrigger>
+                        <IoIosArrowDown />
+                      </DropdownMenuTrigger>
 
-                      }
-                    </DropdownMenuContent>
-                  </DropdownMenu>}
+                      <DropdownMenuContent>
+                        {(item == 'totalRedeemed' || item == 'totalRecharged' || item == 'credits') && (<div className='p-2 space-x-3'>
+                          <input
+                            type='number'
+                            name='From'
+                            placeholder='From'
+                            onChange={handleInputChange}
+                            className='outline-none border border-gray-700 bg-black text-white rounded-[.4rem] px-4 py-2'
+                          />
+                          <input
+                            type='number'
+                            name='To'
+                            placeholder='To'
+                            onChange={handleInputChange}
+                            className='outline-none border border-gray-700 bg-black text-white rounded-[.4rem] px-4 py-2'
+                          />
+                          <button onClick={() => Filter(item, filterCountData, "Numbers")} type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Search</button>
+                        </div>)}
+                        {
+                          (item === 'role' ? tableData?.Filter : item === 'status' ? tableData?.Status : null)?.map((subitem) => (
+                            <DropdownMenuItem key={subitem} onClick={() => Filter(item, subitem)} className="capitalize">
+                              {subitem}
+                            </DropdownMenuItem>
+                          ))
+                        }
+                      </DropdownMenuContent>
+                    </DropdownMenu>)}
                 </div>
-
               </TableHead>
             ))
           }
@@ -52,7 +77,7 @@ const TableComponent = ({ tableData, DashboardFetchedData, rowClick, openModal, 
       </TableHeader>
       <TableBody>
         {DashboardFetchedData?.map((item, index) => (
-          <TableRow className={` ${index%2===0?'bg-[#111828]':''} #1F2937`} key={index}
+          <TableRow className={` ${index % 2 === 0 ? 'bg-[#111828]' : ''} #1F2937`} key={index}
             onClick={pageType === "transaction" ? () => {
               rowClick(item);
               openModal("Transaction Details");
