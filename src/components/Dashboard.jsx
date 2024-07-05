@@ -1,19 +1,135 @@
 "use client";
 import { useEffect, useState } from "react";
+// import { useSelector } from "react-redux";
+import { IoMdPersonAdd } from "react-icons/io";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { MdDeleteOutline } from "react-icons/md";
+import { IoOptions } from "react-icons/io5";
+import { FaCircle } from "react-icons/fa";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import toast from "react-hot-toast";
-import { getUserData } from "@/utils/action";
+import Modal from "./ui/Modal";
+import { deleteClient, getClients, getUserData } from "@/utils/action";
+import ClientDetails from "./ui/modals/ClientDetails";
+import Password from "./ui/modals/Password";
+import Recharge from "./ui/modals/Recharge";
+import { FiSearch } from "react-icons/fi";
+import Redeem from "./ui/modals/Redeem";
+import ClientStatus from "./ui/modals/ClientStatus";
+import Loader from "@/components/ui/Loader";
 import { GiTwoCoins } from "react-icons/gi";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { FaUserTie } from "react-icons/fa6";
 import ClientTransactions from "./ui/modals/ClientTransaction";
 import TableComponent from "./TableComponent";
 import { handleFilter } from "@/utils/Filter";
-import Loader from "./ui/Loader";
 
 const Dashboard = () => {
+  const [data, setData] = useState([]);
   const [userData, setUserData] = useState();
+  const [open, setOpen] = useState(false);
+  const [rowData, setRowData] = useState();
   const [refresh, setRefresh] = useState(false);
+  const [modalType, setModalType] = useState("");
+  const [search, setSearch] = useState("");
+  const [filteredData, setFilteredData] = useState(data);
   const [loading, setLoading] = useState(false);
+  const [openTransaction, setOpenTransaction] = useState(false);
+
+  let ModalContent;
+  switch (modalType) {
+    case "Client Details":
+      ModalContent = (
+        <ClientDetails
+          data={rowData}
+          setOpenTransaction={setOpenTransaction}
+          setRowData={setRowData}
+        />
+      );
+      break;
+
+    case "Change Password":
+      ModalContent = (
+        <Password
+          id={rowData._id}
+          setRefresh={setRefresh}
+          setOpen={setOpen}
+          refresh={refresh}
+        />
+      );
+      break;
+
+    case "Recharge Client":
+      ModalContent = (
+        <Recharge
+          setOpen={setOpen}
+          setRefresh={setRefresh}
+          id={rowData._id}
+          refresh={refresh}
+        />
+      );
+      break;
+
+    case "Redeem Client":
+      ModalContent = (
+        <Redeem
+          setOpen={setOpen}
+          setRefresh={setRefresh}
+          id={rowData._id}
+          refresh={refresh}
+        />
+      );
+      break;
+
+    case "Update Status":
+      ModalContent = (
+        <ClientStatus
+          setOpen={setOpen}
+          setRefresh={setRefresh}
+          id={rowData._id}
+          prevStatus={rowData.status}
+          refresh={refresh}
+        />
+      );
+      break;
+    default:
+      ModalContent = null;
+  }
+
+  const handleModalOpen = (type) => {
+    setModalType(type);
+    setOpen(true);
+  };
+
+  const handleRowClick = (data) => {
+    setRowData(data);
+  };
+
+  const fetchClients = async () => {
+    try {
+      setLoading(true);
+      const response = await getClients();
+      setData(response.data);
+      setFilteredData(response.data);
+      setLoading(false);
+    } catch (error) {
+      toast.error(error.message);
+      setLoading(false);
+    }
+  };
 
   const fetchUserData = async () => {
     try {
@@ -25,8 +141,20 @@ const Dashboard = () => {
     }
   };
 
+  const handleDelete = async (id, e) => {
+    e.stopPropagation();
+    try {
+      setRefresh((prev) => !prev);
+      const response = await deleteClient(id);
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     fetchUserData();
+    fetchClients();
   }, [refresh]);
 
   const handleSearch = (searchTerm) => {
@@ -42,16 +170,31 @@ const Dashboard = () => {
   };
 
   //Table Data
-
-  const tableData={
-    tableHead:["username","status","role","totalRedeemed","totalRecharged","credits","action"],
-    tableBody:["username","status","role","totalRedeemed","totalRecharged","credits","action"],
-    Filter:["master","distributor","subdistributor","store","player"],
-    Status:["active","inactive"]
-  }
+  const tableData = {
+    tableHead: [
+      "username",
+      "status",
+      "role",
+      "totalRedeemed",
+      "totalRecharged",
+      "credits",
+      "action",
+    ],
+    tableBody: [
+      "username",
+      "status",
+      "role",
+      "totalRedeemed",
+      "totalRecharged",
+      "credits",
+      "action",
+    ],
+    Filter: ["master", "distributor", "subdistributor", "store", "player"],
+    Status: ["active", "inactive"],
+  };
 
   return (
-    <div className="h-full w-[95%] mx-auto flex flex-col">
+    <div className="h-full w-full flex flex-col">
       <div className="w-full m-auto md:py-5 py-3 px-2 md:px-4 flex gap-5 flex-wrap items-center justify-center">
         <div className="h-auto lg:h-[200px] w-[71%]  bg-[#2a2a2aad] rounded-xl flex justify-between">
           <Card
@@ -134,6 +277,11 @@ const Dashboard = () => {
         {ModalContent}
       </Modal>
       <Loader show={loading} />
+      <ClientTransactions
+        data={rowData?.transactions}
+        setOpenTransaction={setOpenTransaction}
+        openTransaction={openTransaction}
+      />
     </div>
   );
 };
