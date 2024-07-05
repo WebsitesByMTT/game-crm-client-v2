@@ -23,7 +23,6 @@ import toast from "react-hot-toast";
 import Modal from "@/components/ui/Modal";
 import { deleteClient, getClients, getUserData } from "@/utils/action";
 import ClientDetails from "@/components/ui/modals/ClientDetails";
-import AddClient from "@/components/ui/modals/AddClient";
 import Password from "@/components/ui/modals/Password";
 import Recharge from "@/components/ui/modals/Recharge";
 import { FiSearch } from "react-icons/fi";
@@ -31,6 +30,7 @@ import Redeem from "@/components/ui/modals/Redeem";
 import ClientStatus from "@/components/ui/modals/ClientStatus";
 import Loader from "@/components/ui/Loader";
 import ClientTransactions from "@/components/ui/modals/ClientTransaction";
+import { useRouter } from "next/navigation";
 
 const Clients = () => {
   const [data, setData] = useState([]);
@@ -44,6 +44,7 @@ const Clients = () => {
   const [loading, setLoading] = useState(false);
   const [openTransaction, setOpenTransaction] = useState(false);
   const [list, setList] = useState("My Clients");
+  const router = useRouter();
 
   let ModalContent;
   switch (modalType) {
@@ -53,17 +54,6 @@ const Clients = () => {
           data={rowData}
           setOpenTransaction={setOpenTransaction}
           setRowData={setRowData}
-        />
-      );
-      break;
-
-    case "Add Client":
-      ModalContent = (
-        <AddClient
-          setOpen={setOpen}
-          setRefresh={setRefresh}
-          refresh={refresh}
-          role={userData.role}
         />
       );
       break;
@@ -129,6 +119,7 @@ const Clients = () => {
     try {
       setLoading(true);
       const response = await getClients();
+      console.log(response.data);
       setData(response.data);
       setFilteredData(response.data);
       setLoading(false);
@@ -169,32 +160,6 @@ const Clients = () => {
 
   return (
     <div className="h-full w-[95%] mx-auto flex flex-col">
-      <div className="flex gap-5 my-4">
-        <button
-          onClick={() => {
-            setList("My Clients");
-          }}
-          className={`text-nowrap text-center  rounded-md py-2 px-4 border-[1px] border-[#847697] focus:outline-none ${
-            list === "My Clients"
-              ? "text-white bg-[#c4a5ff36]"
-              : "text-[#dfdfdf7e] bg-[#c4a5ff22]"
-          } `}
-        >
-          My Clients
-        </button>
-        <button
-          onClick={() => {
-            setList("All Clients");
-          }}
-          className={`text-nowrap text-center  rounded-md py-2 px-4 border-[1px] border-[#847697] focus:outline-none ${
-            list === "All Clients"
-              ? "text-white bg-[#c4a5ff36]"
-              : "text-[#dfdfdf7e] bg-[#c4a5ff22]"
-          } `}
-        >
-          All Clients
-        </button>
-      </div>
       <div className="w-full flex items-center justify-between gap-2 my-2">
         <div className="w-[70%]">
           <div className="w-full flex shadow-lg items-center gap-2 text-white  rounded-md  font-extralight bg-[#dfdfdf1d] py-2 px-4 ">
@@ -252,7 +217,12 @@ const Clients = () => {
           </TableHeader>
           <TableBody>
             {filteredData?.map((item, index) => (
-              <TableRow key={index}>
+              <TableRow
+                key={index}
+                onClick={() => {
+                  router.push(`/clients/${item._id}`);
+                }}
+              >
                 <TableCell>{item.username}</TableCell>
                 <TableCell
                   className={

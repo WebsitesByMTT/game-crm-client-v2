@@ -15,7 +15,6 @@ import { MdDeleteOutline } from "react-icons/md";
 import { IoAddCircleOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import GameDetails from "@/components/ui/modals/GameDetails";
-import AddGame from "@/components/ui/modals/AddGame";
 import { MdEdit } from "react-icons/md";
 import EditGame from "@/components/ui/modals/EditGame";
 import Loader from "@/components/ui/Loader";
@@ -29,17 +28,12 @@ const Game = () => {
   const [modalType, setModalType] = useState("");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const optionList = [];
 
   let ModalContent;
   switch (modalType) {
     case "Game Details":
       ModalContent = <GameDetails data={rowData} />;
-      break;
-
-    case "Add Game":
-      ModalContent = (
-        <AddGame setOpen={setOpen} setRefresh={setRefresh} refresh={refresh} />
-      );
       break;
 
     case "Edit Game":
