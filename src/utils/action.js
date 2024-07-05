@@ -3,20 +3,20 @@ import { revalidatePath } from "next/cache";
 import { config } from "./config";
 import { getCookie } from "./cookie";
 
-export const getCaptcha = async () => {
-  try {
-    const response = await fetch(`${config.server}/captcha`);
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message);
-    }
-    const responseData = await response.json();
-    console.log(responseData);
-    return { responseData };
-  } catch (error) {
-    throw error;
-  }
-};
+// export const getCaptcha = async () => {
+//   try {
+//     const response = await fetch(`${config.server}/captcha`);
+//     if (!response.ok) {
+//       const error = await response.json();
+//       throw new Error(error.message);
+//     }
+//     const responseData = await response.json();
+//     console.log(responseData);
+//     return { responseData };
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 export const loginUser = async (data) => {
   try {
