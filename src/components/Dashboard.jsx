@@ -170,9 +170,7 @@ const Dashboard = () => {
 
   const handleSearch = (searchTerm) => {
     const filtered = data.filter((item) =>
-      Object.values(item).some((value) =>
-        value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      item.username.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(filtered);
   };
@@ -181,11 +179,15 @@ const Dashboard = () => {
     const filtered = data.filter((item) => item.status === status);
     setFilteredData(filtered);
   };
-
+  const handleFilterRoles = (role) => {
+    const filtered = data.filter((item) => item.role === role);
+    setFilteredData(filtered);
+  };
   //Table Data
   const tableData={
     tableHead:["Username","Status","Role","Redeem","Recharge","Credits","Action"],
-    tableBody:["username","status","role","totalRedeemed","totalRecharged","credits","action"]
+    tableBody:["username","status","role","totalRedeemed","totalRecharged","credits","action"],
+    Filter:["master","distributor","subdistributor","store","player"]
   }
 
   return (
@@ -233,7 +235,7 @@ const Dashboard = () => {
             <input
               name="search"
               className="focus:outline-none placeholder:text-[#fffbfb7c] text-md bg-transparent w-full"
-              placeholder="Search"
+              placeholder="Search by Username"
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -266,8 +268,8 @@ const Dashboard = () => {
           </button>
         </div>
       </div>
-      <div className="overflow-y-auto">
-        <TableComponent tableData={tableData} DashboardFetchedData={filteredData}/>
+      <div className="rounded-2xl h-[420px] w-[97%] bg-[#252525] mx-auto overflow-y-scroll">
+        <TableComponent  tableData={tableData} Filter={handleFilterRoles} DashboardFetchedData={filteredData} rowClick={handleRowClick} openModal={handleModalOpen} deleteTableData={handleDelete}/>
       </div>
       <Modal
         open={open}

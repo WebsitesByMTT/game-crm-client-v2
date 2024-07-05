@@ -20,6 +20,7 @@ import { MdEdit } from "react-icons/md";
 import EditGame from "@/components/ui/modals/EditGame";
 import Loader from "@/components/ui/Loader";
 import { FaCircle } from "react-icons/fa";
+import TableComponent from "@/components/TableComponent";
 
 const Game = () => {
   const [data, setData] = useState([]);
@@ -99,6 +100,11 @@ const Game = () => {
     )
   );
 
+  const tableData = {
+    tableHead: ["Name", "Category", "Type", "Status", "Slug", "Action"],
+    tableBody: ["name", "category", "type", "status", "slug", "action"],
+  }
+
   return (
     <div className="h-full w-full flex flex-col">
       <div className="w-full flex items-center justify-between my-2 gap-2 text-nowrap">
@@ -129,72 +135,7 @@ const Game = () => {
         </button>
       </div>
       <div className="overflow-y-auto">
-        <Table className="overflow-y-auto">
-          <TableHeader>
-            <TableRow>
-              <TableHead className="">Name</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead className="hidden md:table-cell">Status</TableHead>
-              <TableHead className="hidden md:table-cell">Slug</TableHead>
-              <TableHead>Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredData?.map((item, index) => (
-              <TableRow
-                key={index}
-                onClick={() => {
-                  handleRowClick(item);
-                  handleModalOpen("Game Details");
-                }}
-              >
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.category}</TableCell>
-                <TableCell>{item.type}</TableCell>
-                <TableCell
-                  className={
-                    item.status === "active"
-                      ? "text-[#70ef44] hidden md:table-cell"
-                      : "text-[#ef4444] hidden md:table-cell"
-                  }
-                >
-                  <div className="w-full flex gap-2 items-center justify-center">
-                    <div className="text-[8px]">
-                      <FaCircle />
-                    </div>
-                    <span className="text-white opacity-50">{item.status}</span>
-                  </div>
-                </TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {item.slug}
-                </TableCell>
-                <TableCell>
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleRowClick(item);
-                      handleModalOpen("Edit Game");
-                    }}
-                    className="flex gap-5 text-2xl justify-center relative"
-                  >
-                    <div className="text-[#1b1b1e] editgradient p-1 rounded-md">
-                      <MdEdit />
-                    </div>
-                    <div
-                      onClick={(e) => {
-                        handleDelete(item._id, e);
-                      }}
-                      className="text-[#1b1b1e] deletegradient p-1 rounded-md"
-                    >
-                      <MdDeleteOutline />
-                    </div>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <TableComponent pageType="game" tableData={tableData} rowClick={handleRowClick} openModal={handleModalOpen} DashboardFetchedData={filteredData} deleteTableData={handleDelete} />
       </div>
       <Modal
         open={open}

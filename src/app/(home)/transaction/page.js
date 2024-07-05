@@ -21,6 +21,7 @@ import {
 import toast from "react-hot-toast";
 import TransactionDetails from "@/components/ui/modals/TransactionDetails";
 import Loader from "@/components/ui/Loader";
+import TableComponent from "@/components/TableComponent";
 const Page = () => {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -81,6 +82,11 @@ const Page = () => {
     setFilteredData(filtered);
   };
   
+  const tableData={
+    tableHead:["Type","Amount","Creditor","Debitor","Updated At"],
+    tableBody:["type","amount","creditor","debtor","updatedAt"]
+  }
+
   return (
     <div className="h-full w-full flex flex-col">
       <div className="w-full flex items-center justify-between my-2">
@@ -126,40 +132,7 @@ const Page = () => {
         </DropdownMenu>
       </div>
       <div className="overflow-y-auto">
-        <Table className="overflow-y-auto">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Type</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead className="hidden md:table-cell">Creditor</TableHead>
-              <TableHead className="hidden md:table-cell">Debitor</TableHead>
-              <TableHead className="hidden md:table-cell">Updated At</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredData?.map((item, index) => (
-              <TableRow
-                key={index}
-                onClick={() => {
-                  handleRowClick(item);
-                  handleModalOpen("Transaction Details");
-                }}
-              >
-                <TableCell>{item.type}</TableCell>
-                <TableCell>{item.amount}</TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {item.creditor}
-                </TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {item.debtor}
-                </TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {item?.updatedAt?.split("T")[0]}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <TableComponent pageType="transaction" tableData={tableData} rowClick={handleRowClick} openModal={handleModalOpen} DashboardFetchedData={filteredData}/>
       </div>
       <Modal
         open={open}
