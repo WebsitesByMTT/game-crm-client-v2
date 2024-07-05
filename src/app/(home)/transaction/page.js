@@ -83,11 +83,12 @@ const Page = () => {
     const filtered = data.filter((item) => item.type === type);
     setFilteredData(filtered);
   };
-  
-  const tableData={
-    tableHead:["Type","Amount","Creditor","Debitor","Updated At"],
-    tableBody:["type","amount","creditor","debtor","updatedAt"]
-  }
+
+  const tableData = {
+    tableHead: ["Type", "Amount", "Creditor", "Debitor", "Updated At"],
+    tableBody: ["type", "amount", "creditor", "debtor", "updatedAt"],
+  };
+
 
   return (
     <div className="h-full w-[95%] mx-auto flex flex-col">
@@ -160,7 +161,13 @@ const Page = () => {
         </DropdownMenu>
       </div>
       <div className="overflow-y-auto">
-        <TableComponent pageType="transaction" tableData={tableData} rowClick={handleRowClick} openModal={handleModalOpen} DashboardFetchedData={filteredData}/>
+        <TableComponent
+          pageType="transaction"
+          tableData={tableData}
+          rowClick={handleRowClick}
+          openModal={handleModalOpen}
+          DashboardFetchedData={filteredData}
+        />
       </div>
       <Modal
         open={open}

@@ -36,18 +36,20 @@ const Dashboard = () => {
     setFilteredData(filtered);
   };
 
-  const handleFilterData=(key,value,Num)=>{
-    const dataFiltered = handleFilter(data,key,value,Num)
-    setFilteredData(dataFiltered)
-  }
- 
+  const handleFilterData = (key, value, Num) => {
+    const dataFiltered = handleFilter(data, key, value, Num);
+    setFilteredData(dataFiltered);
+  };
+
   //Table Data
+
   const tableData={
     tableHead:["username","status","role","totalRedeemed","totalRecharged","credits","action"],
     tableBody:["username","status","role","totalRedeemed","totalRecharged","credits","action"],
     Filter:["master","distributor","subdistributor","store","player"],
     Status:["active","inactive"]
   }
+
   return (
     <div className="h-full w-[95%] mx-auto flex flex-col">
       <div className="w-full m-auto md:py-5 py-3 px-2 md:px-4 flex gap-5 flex-wrap items-center justify-center">
@@ -114,7 +116,14 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="rounded-2xl h-[420px] w-[97%] bg-[#252525] mx-auto overflow-y-scroll">
-        <TableComponent  tableData={tableData} Filter={handleFilterData} DashboardFetchedData={filteredData} rowClick={handleRowClick} openModal={handleModalOpen} deleteTableData={handleDelete}/>
+        <TableComponent
+          tableData={tableData}
+          Filter={handleFilterData}
+          DashboardFetchedData={filteredData}
+          rowClick={handleRowClick}
+          openModal={handleModalOpen}
+          deleteTableData={handleDelete}
+        />
       </div>
       <Modal
         open={open}
