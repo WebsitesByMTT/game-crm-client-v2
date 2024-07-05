@@ -24,7 +24,6 @@ import toast from "react-hot-toast";
 import Modal from "./ui/Modal";
 import { deleteClient, getClients, getUserData } from "@/utils/action";
 import ClientDetails from "./ui/modals/ClientDetails";
-import AddClient from "./ui/modals/AddClient";
 import Password from "./ui/modals/Password";
 import Recharge from "./ui/modals/Recharge";
 import { FiSearch } from "react-icons/fi";
@@ -58,17 +57,6 @@ const Dashboard = () => {
           data={rowData}
           setOpenTransaction={setOpenTransaction}
           setRowData={setRowData}
-        />
-      );
-      break;
-
-    case "Add Client":
-      ModalContent = (
-        <AddClient
-          setOpen={setOpen}
-          setRefresh={setRefresh}
-          refresh={refresh}
-          role={userData.role}
         />
       );
       break;

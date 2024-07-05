@@ -38,7 +38,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { username, password } = data;
+    const { username, password, captcha } = data;
     if (!username || !password) {
       toast.remove();
       return toast.error("All fields are required");
@@ -46,7 +46,7 @@ const Login = () => {
 
     setLoad(true);
     try {
-      const response = await loginUser({ username, password });
+      const response = await loginUser({ username, password, captcha });
       const { token, message, role } = response.responseData;
       if (token) {
         if (role !== "player") {

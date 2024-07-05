@@ -11,6 +11,7 @@ export const getCaptcha = async () => {
       throw new Error(error.message);
     }
     const responseData = await response.json();
+    console.log(responseData);
     return { responseData };
   } catch (error) {
     throw error;
