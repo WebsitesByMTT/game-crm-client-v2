@@ -5,6 +5,9 @@ import { getUserData } from "@/utils/action";
 import { GiTwoCoins } from "react-icons/gi";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { FaUserTie } from "react-icons/fa6";
+import ClientTransactions from "./ui/modals/ClientTransaction";
+import TableComponent from "./TableComponent";
+import { handleFilter } from "@/utils/Filter";
 import Loader from "./ui/Loader";
 
 const Dashboard = () => {
@@ -26,6 +29,25 @@ const Dashboard = () => {
     fetchUserData();
   }, [refresh]);
 
+  const handleSearch = (searchTerm) => {
+    const filtered = data.filter((item) =>
+      item.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredData(filtered);
+  };
+
+  const handleFilterData=(key,value,Num)=>{
+    const dataFiltered = handleFilter(data,key,value,Num)
+    setFilteredData(dataFiltered)
+  }
+ 
+  //Table Data
+  const tableData={
+    tableHead:["username","status","role","totalRedeemed","totalRecharged","credits","action"],
+    tableBody:["username","status","role","totalRedeemed","totalRecharged","credits","action"],
+    Filter:["master","distributor","subdistributor","store","player"],
+    Status:["active","inactive"]
+  }
   return (
     <div className="h-full w-[95%] mx-auto flex flex-col">
       <div className="w-full m-auto md:py-5 py-3 px-2 md:px-4 flex gap-5 flex-wrap items-center justify-center">
@@ -62,6 +84,46 @@ const Dashboard = () => {
           </span>
         </div>
       </div>
+      <div className="w-full flex items-center justify-between gap-2 my-2">
+        <div className="w-[70%]">
+          <div className="w-full flex shadow-lg items-center gap-2 text-white  rounded-md  font-extralight bg-[#dfdfdf1d] py-2 px-4 ">
+            <div className="text-lg">
+              <FiSearch />
+            </div>
+            <input
+              name="search"
+              className="focus:outline-none placeholder:text-[#fffbfb7c] text-md bg-transparent w-full"
+              placeholder="Search by Username"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                handleSearch(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+        <div className="flex gap-5 items-center">
+          <button
+            onClick={() => handleModalOpen("Add Client")}
+            className="text-nowrap text-center flex justify-center items-center gap-2 bg-gradient-to-b from-[#C5A5FF] to-[#362356] text-white text-xl rounded-[10px] p-2 font-[300] border-[1px] border-[#847697] hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out w-fit"
+          >
+            <IoMdPersonAdd />
+            <span>Add Client</span>
+            <div className="text-2xl"></div>
+          </button>
+        </div>
+      </div>
+      <div className="rounded-2xl h-[420px] w-[97%] bg-[#252525] mx-auto overflow-y-scroll">
+        <TableComponent  tableData={tableData} Filter={handleFilterData} DashboardFetchedData={filteredData} rowClick={handleRowClick} openModal={handleModalOpen} deleteTableData={handleDelete}/>
+      </div>
+      <Modal
+        open={open}
+        setOpen={setOpen}
+        modalType={modalType}
+        setModalType={setModalType}
+      >
+        {ModalContent}
+      </Modal>
       <Loader show={loading} />
     </div>
   );
