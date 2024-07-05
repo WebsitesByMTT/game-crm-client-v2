@@ -29,6 +29,7 @@ const Page = () => {
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(data);
   const [loading, setLoading] = useState(false);
+  const [list, setList] = useState("My Transactions");
 
   let ModalContent;
   switch (modalType) {
@@ -52,7 +53,8 @@ const Page = () => {
   const fetchTransactions = async () => {
     setLoading(true);
     try {
-      const response = await getTransactions();
+      const path = list;
+      const response = await getTransactions(path);
       setData(response.data);
       setFilteredData(response.data);
       setLoading(false);
@@ -80,9 +82,35 @@ const Page = () => {
     const filtered = data.filter((item) => item.type === type);
     setFilteredData(filtered);
   };
-  
+
   return (
-    <div className="h-full w-full flex flex-col">
+    <div className="h-full w-[95%] mx-auto flex flex-col">
+      <div className="flex gap-5 my-4">
+        <button
+          onClick={() => {
+            setList("My Transactions");
+          }}
+          className={`text-nowrap text-center  rounded-md py-2 px-4 border-[1px] border-[#847697] focus:outline-none ${
+            list === "My Transactions"
+              ? "text-white bg-[#c4a5ff36]"
+              : "text-[#dfdfdf7e] bg-[#c4a5ff22]"
+          } `}
+        >
+          My Transactions
+        </button>
+        <button
+          onClick={() => {
+            setList("All Transactions");
+          }}
+          className={`text-nowrap text-center  rounded-md py-2 px-4 border-[1px] border-[#847697] focus:outline-none ${
+            list === "All Transactions"
+              ? "text-white bg-[#c4a5ff36]"
+              : "text-[#dfdfdf7e] bg-[#c4a5ff22]"
+          } `}
+        >
+          All Transactions
+        </button>
+      </div>
       <div className="w-full flex items-center justify-between my-2">
         <div className="w-[70%]">
           <div className="w-full flex shadow-lg items-center gap-2 text-white  rounded-md  font-extralight bg-[#dfdfdf1d] py-2 px-4 ">

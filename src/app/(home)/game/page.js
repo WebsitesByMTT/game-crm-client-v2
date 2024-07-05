@@ -100,7 +100,7 @@ const Game = () => {
   );
 
   return (
-    <div className="h-full w-full flex flex-col">
+    <div className="h-full w-[95%] mx-auto flex flex-col">
       <div className="w-full flex items-center justify-between my-2 gap-2 text-nowrap">
         <div className="w-[70%]">
           <div className="w-full flex shadow-lg items-center gap-2 text-white  rounded-md  font-extralight bg-[#dfdfdf1d] py-2 px-4 ">

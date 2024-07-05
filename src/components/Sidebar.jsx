@@ -9,11 +9,12 @@ import { getUserData } from "@/utils/action";
 import { SideBar } from "@/utils/SidebarData";
 import { IoMdClose } from "react-icons/io";
 
-const LeftSideBar = ({ }) => {
+const LeftSideBar = ({}) => {
   const router = useRouter();
   const [option, setOption] = useState("Dashboard");
   const [open, setOpen] = useState(false);
   const [data, setData] = useState();
+  const [minimize, setMinimize] = useState(false);
   const fetchUser = async () => {
     try {
       const response = await getUserData();
@@ -26,6 +27,7 @@ const LeftSideBar = ({ }) => {
       toast.error(error.message);
     }
   };
+
   useEffect(() => {
     fetchUser();
   }, []);
@@ -45,7 +47,11 @@ const LeftSideBar = ({ }) => {
         <RxHamburgerMenu />
       </div>
       <div
-        className={`py-4 border-r-2 bg-clip-padding backdrop-filter backdrop-blur-[5px]  bg-opacity-10 border-[#e4e4e42f] px-5  lg:flex flex-col justify-between h-full lg:static absolute w-[250px] md:w-[100px] md:hover:w-[250px] group md:transition-all Transition ${open ? 'top-0 left-[0%]' : 'top-0 -left-[100%]'}  z-10`}
+        className={`py-4 border-r-2 bg-clip-padding backdrop-filter backdrop-blur-[5px] bg-opacity-10 border-[#e4e4e42f] px-5  lg:flex flex-col justify-between h-full lg:static absolute w-[250px] ${
+          minimize ? "md:w-[100px]" : "md:w-[250px]"
+        }  group md:transition-all Transition ${
+          open ? "top-0 left-[0%]" : "top-0 -left-[100%]"
+        }  z-10`}
       >
         <div
           className="block cursor-pointer absolute top-0 right-0 lg:hidden text-[30px] text-white px-4 py-8"
@@ -54,7 +60,12 @@ const LeftSideBar = ({ }) => {
           <IoMdClose />
         </div>
         <div>
-          <div className="h-auto w-[15%] min-w-[50px]">
+          <div
+            className="h-auto w-[15%] min-w-[50px]"
+            onClick={() => {
+              setMinimize((prev) => !prev);
+            }}
+          >
             <svg
               width="987"
               height="987"
@@ -88,9 +99,8 @@ const LeftSideBar = ({ }) => {
             </svg>
           </div>
           <ul className=" mt-5 w-full py-4 flex flex-col gap-3 text-xl font-light text-white">
-            {
-              data?.role === "company" ? (
-                SideBar.company.map((item, ind) => (
+            {data?.role === "company"
+              ? SideBar.company.map((item, ind) => (
                   <div key={ind}>
                     <Link
                       onClick={() => {
@@ -100,54 +110,33 @@ const LeftSideBar = ({ }) => {
                       href={item.Link}
                     >
                       <li
-                        className={`w-full p-2 md:justify-center md:group-hover:justify-start  rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33]  ${option === item.LinkName ? "bg-[#dfdfdf1e]" : "bg-transparent"
-                          }`}
+                        className={`w-full p-2 ${
+                          minimize ? "md:justify-center" : "md:justify-start"
+                        }  rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33]  ${
+                          option === item.LinkName
+                            ? "bg-[#dfdfdf1e]"
+                            : "bg-transparent"
+                        }`}
                       >
                         <div
                           className={
-                            option === item.LinkName ? "text-[#8C7CFD] scale-125" : "scale-125 text-white"
+                            option === item.LinkName
+                              ? "text-[#8C7CFD] scale-125"
+                              : "scale-125 text-white"
                           }
                         >
                           {item.icon}
                         </div>
-                        <span className="md:group-hover:inline-block md:hidden">{item.LinkName}</span>
+                        <span
+                          className={minimize ? "md:hidden" : "md:inline-block"}
+                        >
+                          {item.LinkName}
+                        </span>
                       </li>
                     </Link>
-                    {/* Nested Links for Company Specific */}
-                    <ul className="w-full  md:group-hover:inline-block md:hidden pt-3 flex flex-col gap-3 text-[1.1rem] font-light text-white">
-                      {
-                        item?.nested?.map((subitem, subind) => (
-                          <Link
-                            key={subind}
-                            onClick={() => {
-                              setOption(subitem.LinkName);
-                              setOpen(false);
-                            }}
-                            href={subitem.Link}
-                          >
-                            <li
-                              className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${option === subitem.LinkName ? "bg-[#dfdfdf1e]" : "bg-transparent"
-                                }`}
-                            >
-                              <div
-                                className={`
-                                ${option === subitem.LinkName ? "text-[#8C7CFD]" : "text-white "}
-                               
-                                  
-                                `}
-                              >
-                                {subitem.icon}
-                              </div>
-                              <span >{subitem.LinkName}</span>
-                            </li>
-                          </Link>
-                        ))
-                      }
-                    </ul>
                   </div>
                 ))
-              ) : (
-                SideBar.all?.map((item, ind) => (
+              : SideBar.all?.map((item, ind) => (
                   <div key={ind}>
                     <Link
                       onClick={() => {
@@ -157,55 +146,28 @@ const LeftSideBar = ({ }) => {
                       href={item.Link}
                     >
                       <li
-                        className={`w-full p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${option === item.LinkName ? "bg-[#dfdfdf1e]" : "bg-transparent"
-                          }`}
+                        className={`w-full p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
+                          option === item.LinkName
+                            ? "bg-[#dfdfdf1e]"
+                            : "bg-transparent"
+                        }`}
                       >
                         <div
                           className={
-                            option === item.LinkName ? "text-[#8C7CFD] scale-125" : "text-white scale-125"
+                            option === item.LinkName
+                              ? "text-[#8C7CFD] scale-125"
+                              : "text-white scale-125"
                           }
                         >
                           {item.icon}
                         </div>
-                        <span className="md:group-hover:inline-block md:hidden">{item.LinkName}</span>
+                        <span className="md:group-hover:inline-block md:hidden">
+                          {item.LinkName}
+                        </span>
                       </li>
                     </Link>
-                    {/* Nested Links for General Users */}
-                    <ul className="w-full  md:group-hover:inline-block md:hidden pt-3 flex flex-col gap-3 text-[1.1rem] font-light text-white">
-                      {
-                        item?.nested?.map((subitem, subind) => (
-                          <Link
-                            key={subind}
-                            onClick={() => {
-                              setOption(subitem.LinkName);
-                              setOpen(false);
-                            }}
-                            href={subitem.Link}
-                          >
-                            <li
-                              className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${option === subitem.LinkName ? "bg-[#dfdfdf1e]" : "bg-transparent"
-                                }`}
-                            >
-                              <div
-                                className={`
-                                ${option === subitem.LinkName ? "text-[#8C7CFD]" : "text-white"}
-                               
-                                  
-                                `}
-                              >
-                                {subitem.icon}
-                              </div>
-                              <span>{subitem.LinkName}</span>
-                            </li>
-                          </Link>
-                        ))
-                      }
-                    </ul>
                   </div>
-                ))
-              )
-            }
-
+                ))}
           </ul>
         </div>
       </div>
