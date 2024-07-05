@@ -1,30 +1,31 @@
 "use client";
-import { loginUser } from "@/utils/action";
-// import { ClientData } from "@/redux/ReduxSlice";
+import { getCaptcha, loginUser } from "@/utils/action";
 import Loader from "@/components/ui/Loader";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-// import { useDispatch } from "react-redux";
-import {
-  loadCaptchaEnginge,
-  LoadCanvasTemplate,
-  validateCaptcha,
-} from "react-simple-captcha";
-import { jwtDecode } from "jwt-decode";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const Login = () => {
   const [data, setData] = useState({ username: "", password: "", captcha: "" });
   const [hide, setHide] = useState(false);
   const [load, setLoad] = useState(false);
-
-  // const dispatch = useDispatch();
+  const [captchaSrc, setCaptchaSrc] = useState("");
 
   const router = useRouter();
-  //   useEffect(() => {
-  //     loadCaptchaEnginge(6);
-  //   }, []);
+
+  const fetchCaptcha = async () => {
+    try {
+      const captcha = await getCaptcha();
+      setCaptchaSrc(captcha.responseData);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchCaptcha();
+  }, []);
 
   const handelChange = (e) => {
     let { name, value } = e.target;
@@ -37,26 +38,21 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { username, password, captcha } = data;
+    const { username, password } = data;
     if (!username || !password) {
       toast.remove();
       return toast.error("All fields are required");
     }
-    if (!validateCaptcha(captcha)) {
-      toast.remove();
-      return toast.error("Invalid Captcha");
-    }
+
     setLoad(true);
     try {
       const response = await loginUser({ username, password });
-      console.log("login response", response);
       const { token, message, role } = response.responseData;
       if (token) {
         if (role !== "player") {
           toast.success(message);
           Cookies.set("userToken", token);
           router.push("/");
-          // dispatch(ClientData(""));
         } else {
           toast.remove();
           toast.error("Access denied");
@@ -66,6 +62,8 @@ const Login = () => {
       }
     } catch (error) {
       toast.remove();
+      fetchCaptcha();
+      data.captcha = "";
       toast.error(error.message);
     } finally {
       setLoad(false);
@@ -158,6 +156,30 @@ const Login = () => {
                           </svg>
                         )}
                       </div>
+                    )}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="captcha" className="text-xl font-extralight">
+                    Captcha
+                  </label>
+                  <div className="flex justify-between w-full flex-1 gap-4">
+                    <div className="flex items-center space-x-3 border-[1px] border-[#dfdfdfbc] bg-[#dfdfdf37] rounded-md">
+                      <input
+                        type="text"
+                        name="captcha"
+                        placeholder="Enter Captcha"
+                        value={data.captcha}
+                        onChange={(e) => handelChange(e)}
+                        autoComplete="new-captcha"
+                        className="outline-none w-full text-xl px-3 py-2 placeholder:text-xl font-extralight bg-transparent placeholder:font-extralight placeholder:text-white"
+                      />
+                    </div>
+                    {captchaSrc && (
+                      <div
+                        dangerouslySetInnerHTML={{ __html: captchaSrc }}
+                        className="h-full border-[#dfdfdfbc] bg-[#ffffffc5] rounded-md"
+                      ></div>
                     )}
                   </div>
                 </div>

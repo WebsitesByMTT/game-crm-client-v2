@@ -8,12 +8,15 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { getUserData } from "@/utils/action";
 import { SideBar } from "@/utils/SidebarData";
 import { IoMdClose } from "react-icons/io";
+import { RiArrowDropDownLine } from "react-icons/ri";
 
-const LeftSideBar = ({ }) => {
+const LeftSideBar = ({}) => {
   const router = useRouter();
   const [option, setOption] = useState("Dashboard");
   const [open, setOpen] = useState(false);
   const [data, setData] = useState();
+  const [openDropdown, setOpenDropdown] = useState(false);
+  const [minimize, setMinimize] = useState(false);
   const fetchUser = async () => {
     try {
       const response = await getUserData();
@@ -45,7 +48,9 @@ const LeftSideBar = ({ }) => {
         <RxHamburgerMenu />
       </div>
       <div
-        className={`py-4 border-r-2 bg-clip-padding backdrop-filter backdrop-blur-[5px]  bg-opacity-10 border-[#e4e4e42f] px-5  lg:flex flex-col justify-between h-full lg:static absolute w-[250px] md:w-[100px] md:hover:w-[250px] group md:transition-all Transition ${open ? 'top-0 left-[0%]' : 'top-0 -left-[100%]'}  z-10`}
+        className={`py-4 border-r-2 bg-clip-padding backdrop-filter backdrop-blur-[5px]  bg-opacity-10 border-[#e4e4e42f] px-5  lg:flex flex-col justify-between h-full lg:static absolute w-[250px] md:w-[250px] group md:transition-all Transition ${
+          open ? "top-0 left-[0%]" : "top-0 -left-[100%]"
+        }  z-10`}
       >
         <div
           className="block cursor-pointer absolute top-0 right-0 lg:hidden text-[30px] text-white px-4 py-8"
@@ -88,35 +93,45 @@ const LeftSideBar = ({ }) => {
             </svg>
           </div>
           <ul className=" mt-5 w-full py-4 flex flex-col gap-3 text-xl font-light text-white">
-            {
-              data?.role === "company" ? (
-                SideBar.company.map((item, ind) => (
+            {data?.role === "company"
+              ? SideBar.company.map((item, ind) => (
                   <div key={ind}>
                     <Link
                       onClick={() => {
-                        setOption(item.LinkName);
-                        setOpen(false);
+                        setOpenDropdown(openDropdown === ind ? null : ind);
+                        setOption(item?.LinkName);
                       }}
                       href={item.Link}
                     >
                       <li
-                        className={`w-full p-2 md:justify-center md:group-hover:justify-start  rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33]  ${option === item.LinkName ? "bg-[#dfdfdf1e]" : "bg-transparent"
-                          }`}
+                        className={`w-full p-2 md:justify-between rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33]  ${
+                          option === item.LinkName
+                            ? "bg-[#dfdfdf1e]"
+                            : "bg-transparent"
+                        }`}
                       >
-                        <div
-                          className={
-                            option === item.LinkName ? "text-[#8C7CFD] scale-125" : "scale-125 text-white"
-                          }
-                        >
-                          {item.icon}
+                        <div className="flex items-center gap-2">
+                          <div
+                            className={
+                              option === item.LinkName
+                                ? "text-[#8C7CFD] scale-125"
+                                : "scale-125 text-white"
+                            }
+                          >
+                            {item.icon}
+                          </div>
+                          <span>{item.LinkName}</span>
                         </div>
-                        <span className="md:group-hover:inline-block md:hidden">{item.LinkName}</span>
+                        {item.showDropDown && (
+                          <div>
+                            <RiArrowDropDownLine />
+                          </div>
+                        )}
                       </li>
                     </Link>
-                    {/* Nested Links for Company Specific */}
-                    <ul className="w-full  md:group-hover:inline-block md:hidden pt-3 flex flex-col gap-3 text-[1.1rem] font-light text-white">
-                      {
-                        item?.nested?.map((subitem, subind) => (
+                    {openDropdown === ind && (
+                      <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light text-white">
+                        {item?.nested?.map((subitem, subind) => (
                           <Link
                             key={subind}
                             onClick={() => {
@@ -126,71 +141,19 @@ const LeftSideBar = ({ }) => {
                             href={subitem.Link}
                           >
                             <li
-                              className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${option === subitem.LinkName ? "bg-[#dfdfdf1e]" : "bg-transparent"
-                                }`}
+                              className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
+                                option === subitem.LinkName
+                                  ? "bg-[#dfdfdf1e]"
+                                  : "bg-transparent"
+                              }`}
                             >
                               <div
                                 className={`
-                                ${option === subitem.LinkName ? "text-[#8C7CFD]" : "text-white "}
-                               
-                                  
-                                `}
-                              >
-                                {subitem.icon}
-                              </div>
-                              <span >{subitem.LinkName}</span>
-                            </li>
-                          </Link>
-                        ))
-                      }
-                    </ul>
-                  </div>
-                ))
-              ) : (
-                SideBar.all?.map((item, ind) => (
-                  <div key={ind}>
-                    <Link
-                      onClick={() => {
-                        setOption(item.LinkName);
-                        setOpen(false);
-                      }}
-                      href={item.Link}
-                    >
-                      <li
-                        className={`w-full p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${option === item.LinkName ? "bg-[#dfdfdf1e]" : "bg-transparent"
-                          }`}
-                      >
-                        <div
-                          className={
-                            option === item.LinkName ? "text-[#8C7CFD] scale-125" : "text-white scale-125"
-                          }
-                        >
-                          {item.icon}
-                        </div>
-                        <span className="md:group-hover:inline-block md:hidden">{item.LinkName}</span>
-                      </li>
-                    </Link>
-                    {/* Nested Links for General Users */}
-                    <ul className="w-full  md:group-hover:inline-block md:hidden pt-3 flex flex-col gap-3 text-[1.1rem] font-light text-white">
-                      {
-                        item?.nested?.map((subitem, subind) => (
-                          <Link
-                            key={subind}
-                            onClick={() => {
-                              setOption(subitem.LinkName);
-                              setOpen(false);
-                            }}
-                            href={subitem.Link}
-                          >
-                            <li
-                              className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${option === subitem.LinkName ? "bg-[#dfdfdf1e]" : "bg-transparent"
-                                }`}
-                            >
-                              <div
-                                className={`
-                                ${option === subitem.LinkName ? "text-[#8C7CFD]" : "text-white"}
-                               
-                                  
+                                ${
+                                  option === subitem.LinkName
+                                    ? "text-[#8C7CFD]"
+                                    : "text-white "
+                                }
                                 `}
                               >
                                 {subitem.icon}
@@ -198,15 +161,85 @@ const LeftSideBar = ({ }) => {
                               <span>{subitem.LinkName}</span>
                             </li>
                           </Link>
-                        ))
-                      }
-                    </ul>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 ))
-              )
-            }
-
+              : SideBar.all?.map((item, ind) => (
+                  <div key={ind}>
+                    <Link
+                      onClick={() => {
+                        setOption(item.LinkName);
+                        setOpen(false);
+                      }}
+                      href={item.Link}
+                    >
+                      <li
+                        className={`w-full p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
+                          option === item.LinkName
+                            ? "bg-[#dfdfdf1e]"
+                            : "bg-transparent"
+                        }`}
+                      >
+                        <div
+                          className={
+                            option === item.LinkName
+                              ? "text-[#8C7CFD] scale-125"
+                              : "text-white scale-125"
+                          }
+                        >
+                          {item.icon}
+                        </div>
+                        <span>{item.LinkName}</span>
+                      </li>
+                    </Link>
+                    <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light text-white">
+                      {item?.nested?.map((subitem, subind) => (
+                        <Link
+                          key={subind}
+                          onClick={() => {
+                            setOption(subitem.LinkName);
+                            setOpen(false);
+                          }}
+                          href={subitem.Link}
+                        >
+                          <li
+                            className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
+                              option === subitem.LinkName
+                                ? "bg-[#dfdfdf1e]"
+                                : "bg-transparent"
+                            }`}
+                          >
+                            <div
+                              className={`
+                                ${
+                                  option === subitem.LinkName
+                                    ? "text-[#8C7CFD]"
+                                    : "text-white"
+                                }
+                               
+                                  
+                                `}
+                            >
+                              {subitem.icon}
+                            </div>
+                            <span>{subitem.LinkName}</span>
+                          </li>
+                        </Link>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
           </ul>
+        </div>
+        <div className="pt-5 lg:pt-0">
+          <button
+            onClick={() => logOutUser()}
+            className="text-center flex justify-center tracking-[0.1rem] items-center gap-2 bg-gradient-to-r from-[#8C7CFD] hover:from-[#BC89F1] hover:to-[#8C7CFD] to-[#BC89F1] mx-auto text-white text-xl rounded-md p-2 font-[600] hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out w-full"
+          >
+            <span>LOGOUT</span>
+          </button>
         </div>
       </div>
     </>
