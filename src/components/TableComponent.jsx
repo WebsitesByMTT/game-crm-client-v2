@@ -28,8 +28,8 @@ const TableComponent = ({ tableData, DashboardFetchedData, rowClick, openModal, 
     }));
   };
   return (
-    <Table>
-      <TableHeader className="sticky top-0 bg-[#252525] z-50">
+    <Table className="bg-white  rounded-2xl overflow-hidden">
+      <TableHeader className="sticky text-black bg-white  text-opacity-70 top-0 z-50">
         <TableRow>
           {
             tableData?.tableHead?.map((item) => (
@@ -77,7 +77,7 @@ const TableComponent = ({ tableData, DashboardFetchedData, rowClick, openModal, 
       </TableHeader>
       <TableBody>
         {DashboardFetchedData?.map((item, index) => (
-          <TableRow className={` ${index % 2 === 0 ? 'bg-[#111828]' : ''} #1F2937`} key={index}
+          <TableRow className="text-black  text-opacity-60" key={index}
             onClick={pageType === "transaction" ? () => {
               rowClick(item);
               openModal("Transaction Details");
@@ -101,7 +101,7 @@ const TableComponent = ({ tableData, DashboardFetchedData, rowClick, openModal, 
                           <div className="text-[8px]">
                             <FaCircle />
                           </div>
-                          <span className="text-white opacity-50">{item.status}</span>
+                          <span className="text-black">{item.status}</span>
                         </div>
                       </TableCell>
                     );
