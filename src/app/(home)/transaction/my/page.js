@@ -1,11 +1,12 @@
-import Clients from "@/components/Clients";
+import Transactions from "@/components/Transaction";
 import { config } from "@/utils/config";
 import { getCookie } from "@/utils/cookie";
+import React from "react";
 
-const getMyClients = async (id) => {
+const getTransactions = async () => {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/users/${id}`, {
+    const response = await fetch(`${config.server}/api/transactions`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -25,9 +26,14 @@ const getMyClients = async (id) => {
   }
 };
 
-const page = async ({ params }) => {
-  const clientData = await getMyClients(params.id);
-  return <div> {clientData && <Clients clientData={clientData.data.subordinates} />} </div>;
+const page = async () => {
+  const transactions = await getTransactions();
+  console.log("my", transactions);
+  return (
+    <div>
+      {transactions && <Transactions transactions={transactions?.data} />}
+    </div>
+  );
 };
 
 export default page;

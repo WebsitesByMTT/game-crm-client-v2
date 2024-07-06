@@ -6,21 +6,31 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { getUserData } from "@/utils/action";
-import { SideBar } from "@/utils/SidebarData";
 import { IoMdClose } from "react-icons/io";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import { setUserData, clearUserData } from "../store/userSlice";
+import { FaUserTie, FaUsers } from "react-icons/fa";
+import { MdOutlinePlayCircleFilled } from "react-icons/md";
+import { RiDashboardFill, RiMoneyRupeeCircleFill } from "react-icons/ri";
+import { SiGamedeveloper } from "react-icons/si";
+import { IoLogoGameControllerB } from "react-icons/io";
+import { AiOutlineTransaction } from "react-icons/ai";
+import { RiUserAddFill } from "react-icons/ri";
 
 const LeftSideBar = ({}) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [option, setOption] = useState("Dashboard");
   const [open, setOpen] = useState(false);
   const [data, setData] = useState();
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [minimize, setMinimize] = useState(false);
+
   const fetchUser = async () => {
     try {
       const response = await getUserData();
       setData(response.data);
+      dispatch(setUserData(response.data));
     } catch (error) {
       if (error.message === "Token has expired") {
         logOutUser();
@@ -29,11 +39,129 @@ const LeftSideBar = ({}) => {
       toast.error(error.message);
     }
   };
+
   useEffect(() => {
     fetchUser();
   }, []);
+  const SideBar = {
+    company: [
+      {
+        LinkName: "Dashboard",
+        Link: "/",
+        icon: <RiDashboardFill />,
+      },
+      {
+        LinkName: "Clients",
+        icon: <FaUsers />,
+        Link: "",
+        showDropDown: true,
+        nested: [
+          {
+            LinkName: "My Clients",
+            Link: `/clients/${data?._id}`,
+            icon: <FaUserTie />,
+          },
+          {
+            LinkName: "All Clients",
+            Link: "/clients/all",
+            icon: <FaUsers />,
+          },
+          {
+            LinkName: "Add Client",
+            Link: "/clients/add",
+            icon: <RiUserAddFill />,
+          },
+        ],
+      },
+      {
+        LinkName: "Transaction",
+        Link: "",
+        icon: <RiMoneyRupeeCircleFill />,
+        showDropDown: true,
+        nested: [
+          {
+            LinkName: "My Transaction",
+            Link: "/transaction/my",
+            icon: <AiOutlineTransaction />,
+          },
+          {
+            LinkName: "All Transaction",
+            Link: "/transaction/all",
+            icon: <RiMoneyRupeeCircleFill />,
+          },
+        ],
+      },
+      {
+        LinkName: "Games",
+        Link: "",
+        icon: <MdOutlinePlayCircleFilled />,
+        showDropDown: true,
+        nested: [
+          {
+            LinkName: "Hosted Game",
+            Link: "/game",
+            icon: <IoLogoGameControllerB />,
+          },
+          {
+            LinkName: "Add Game",
+            Link: "/add-game",
+            icon: <SiGamedeveloper />,
+          },
+        ],
+      },
+    ],
+    all: [
+      {
+        LinkName: "Dashboard",
+        Link: "/",
+        icon: <RiDashboardFill />,
+      },
+      {
+        LinkName: "Clients",
+        icon: <FaUsers />,
+        Link: "",
+        showDropDown: true,
+        nested: [
+          {
+            LinkName: "My Clients",
+            Link: "/clients",
+            icon: <FaUserTie />,
+          },
+          {
+            LinkName: "All Clients",
+            Link: "/clients",
+            icon: <FaUsers />,
+          },
+          {
+            LinkName: "Add Clients",
+            Link: "/add-client",
+            icon: <FaUsers />,
+          },
+        ],
+      },
+      {
+        LinkName: "Transaction",
+        Link: "",
+        icon: <RiMoneyRupeeCircleFill />,
+        showDropDown: true,
+        nested: [
+          {
+            LinkName: "My Transaction",
+            Link: "/transaction",
+            icon: <RiMoneyRupeeCircleFill />,
+          },
+          {
+            LinkName: "All Transaction",
+            Link: "/transaction",
+            icon: <RiMoneyRupeeCircleFill />,
+          },
+        ],
+      },
+    ],
+  };
 
   const logOutUser = () => {
+    dispatch(clearUserData());
     Cookies.remove("userToken");
     router.push("/login");
     toast.success("Logout Successfully");

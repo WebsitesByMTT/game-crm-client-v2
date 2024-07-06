@@ -1,8 +1,8 @@
 "use client";
 import { addClient, getUserData } from "@/utils/action";
-import { getCookie } from "@/utils/cookie";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const AddClient = () => {
   const [user, setUser] = useState({
@@ -12,7 +12,29 @@ const AddClient = () => {
     role: "",
     credits: "",
   });
-  const [myRole, setMyrole] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const data = useSelector((state) => state.user.userData);
+  const myRole = data.role;
+
+  useEffect(() => {
+    switch (myRole) {
+      case "master":
+        setUserRole("distributor");
+        break;
+      case "distributor":
+        setUserRole("subdistributor");
+        break;
+      case "subdistributor":
+        setUserRole("store");
+        break;
+      case "store":
+        setUserRole("player");
+        break;
+      default:
+        setUserRole("");
+        break;
+    }
+  }, [myRole]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,41 +43,6 @@ const AddClient = () => {
       [name]: value,
     });
   };
-
-  const [userRole, setUserRole] = useState("");
-
-  const fetchUserData = async () => {
-    try {
-      const response = await getUserData();
-      setMyrole(response?.data?.role);
-      switch (response?.data?.role) {
-        case "master":
-          setUserRole("distributor");
-          break;
-
-        case "distributor":
-          setUserRole("subdistributor");
-          break;
-
-        case "subdistributor":
-          setUserRole("store");
-          break;
-
-        case "store":
-          setUserRole("player");
-          break;
-
-        default:
-          setUserRole("");
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserData();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

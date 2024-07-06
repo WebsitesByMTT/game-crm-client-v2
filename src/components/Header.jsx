@@ -3,20 +3,10 @@ import React, { useEffect, useState } from "react";
 import { PiUserCircleThin } from "react-icons/pi";
 import { getUserData } from "@/utils/action";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const Header = () => {
-  const [data, setData] = useState();
-  const fetchUserData = async () => {
-    try {
-      const response = await getUserData();
-      setData(response.data);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+  const data = useSelector((state) => state.user.userData);
 
   return (
     <div className="w-full flex flex-col">

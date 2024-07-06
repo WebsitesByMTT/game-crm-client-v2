@@ -201,29 +201,6 @@ export const editStatus = async (status, id) => {
   }
 };
 
-export const getTransactions = async () => {
-  const token = await getCookie();
-  try {
-    const response = await fetch(`${config.server}/api/transactions`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message);
-    }
-    const data = await response.json();
-    return { data };
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const getGames = async () => {
   const token = await getCookie();
   try {
