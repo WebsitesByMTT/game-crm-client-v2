@@ -42,8 +42,8 @@ const TableComponent = ({
   };
 
   return (
-    <Table>
-      <TableHeader className="sticky top-0 bg-[#252525] z-50">
+    <Table className="bg-white  rounded-2xl overflow-hidden">
+      <TableHeader className="sticky text-black bg-white  text-opacity-70 top-0 z-50">
         <TableRow>
           {tableData?.tableHead?.map((item) => (
             <TableHead key={item} className="py-5">
@@ -115,50 +115,42 @@ const TableComponent = ({
       </TableHeader>
       <TableBody>
         {DashboardFetchedData?.map((item, index) => (
-          <TableRow
-            className={` ${index % 2 === 0 ? "bg-[#111828]" : ""} #1F2937`}
-            key={index}
-            onClick={
-              pageType === "transaction"
-                ? () => {
-                    rowClick(item);
-                    openModal("Transaction Details");
-                  }
-                : null
-            }
-          >
-            {tableData?.tableBody?.map((subitem) => {
-              switch (subitem) {
-                case "username":
-                  return (
-                    <TableCell
-                      onClick={() =>
-                        router.push(`/clients/${userId}/${item._id}`)
-                      }
-                    >
-                      {item.username}
-                    </TableCell>
-                  );
+          <TableRow className="text-black  text-opacity-60" key={index}
+            onClick={pageType === "transaction" ? () => {
+              rowClick(item);
+              openModal("Transaction Details");
+            } : null}>
+            {
+              tableData?.tableBody?.map((subitem) => {
+                switch (subitem) {
+                  case "username":
+                    return (
+                      <TableCell
+                        onClick={() =>
+                          router.push(`/clients/${userId}/${item._id}`)
+                        }
+                      >
+                        {item.username}
+                      </TableCell>
+                    );
 
-                case "status":
-                  return (
-                    <TableCell
-                      className={
-                        item.status === "active"
-                          ? "text-[#70ef44]"
-                          : "text-[#ef4444]"
-                      }
-                    >
-                      <div className="w-full flex gap-2 items-center justify-center">
-                        <div className="text-[8px]">
-                          <FaCircle />
+                  case "status":
+                    return (
+                      <TableCell
+                        className={
+                          item.status === "active"
+                            ? "text-[#70ef44]"
+                            : "text-[#ef4444]"
+                        }
+                      >
+                        <div className="w-full flex gap-2 items-center justify-center">
+                          <div className="text-[8px]">
+                            <FaCircle />
+                          </div>
+                          <span className="text-black">{item.status}</span>
                         </div>
-                        <span className="text-white opacity-50">
-                          {item.status}
-                        </span>
-                      </div>
-                    </TableCell>
-                  );
+                      </TableCell>
+                    );
 
                 case "role":
                   return <TableCell>{item.role}</TableCell>;
