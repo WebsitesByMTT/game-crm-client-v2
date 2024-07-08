@@ -29,7 +29,7 @@ const ClientPieChart = () => {
     <ResponsiveContainer
       width="40%"
       height="100%"
-      className={"relative rounded-2xl shadow-sm bg-white pb-20 pt-8 "}
+      className={"relative rounded-2xl shadow-sm dark:bg-Dark_light bg-white pb-20 pt-8 "}
     >
       <PieChart width="100%" height="100%">
         <Pie
@@ -48,17 +48,17 @@ const ClientPieChart = () => {
       {data?.length > 0 && (
         <>
           <div className="absolute top-[50%] left-[50%] text-center  translate-x-[-50%] translate-y-[-50%]">
-            <div className="text-black  text-[1.2rem] ">Clients</div>
-            <div className="text-black  text-[1.5rem] font-semibold">
+            <div className="text-black dark:text-white text-[1.2rem] ">Clients</div>
+            <div className="text-black dark:text-white text-[1.5rem] font-semibold">
               {data?.length}
             </div>
           </div>
           <div className="text-center">
-            <div className="text-black  text-[1.2rem] ">
+            <div className="text-black dark:text-white text-[1.2rem] ">
               Active
               <span className="inline-block w-[15px] h-[15px] ml-2 rounded-full bg-[#6D81F5]"></span>
             </div>
-            <div className="text-black  text-[1.2rem] ">
+            <div className="text-black dark:text-white text-[1.2rem] ">
               InActive
               <span className="inline-block w-[15px] h-[15px] ml-2 rounded-full bg-cyan-300"></span>
             </div>

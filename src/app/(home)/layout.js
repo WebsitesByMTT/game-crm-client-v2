@@ -16,8 +16,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
       <div
-        className="bg-cover h-screen bg-[#F3F4F6] flex"
+        className="bg-cover h-screen bg-[#F3F4F6] dark:bg-Dark flex"
       >
+       
         <div>
           <div className="w-full h-full">
             <Sidebar />

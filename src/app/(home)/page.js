@@ -30,7 +30,7 @@ const getUserData = async () => {
 export default async function Home() {
   const data = await getUserData();
   return (
-    <main>
+    <main className="space-y-3">
       <Dashboard data={data?.data} />
       <div className="rounded-2xl flex space-x-10  h-[60vh]  w-[95%] mx-auto">
         <PaymentChart />

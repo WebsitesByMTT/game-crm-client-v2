@@ -32,7 +32,7 @@ const TableComponent = ({
   const router = useRouter();
   const [filterCountData, setFilterCountData] = useState({ From: 0, To: 0 });
   const userData = useSelector((state) => state.userData);
-  const userId = userData._id;
+  const userId = userData?._id;
   console.log("userData",userData);
 
   const handleInputChange = (e) => {
@@ -44,8 +44,9 @@ const TableComponent = ({
   };
 
   return (
-    <Table className="bg-white  rounded-2xl overflow-hidden">
-      <TableHeader className="sticky text-black bg-white  text-opacity-70 top-0 z-50">
+    <div className="rounded-md  h-[80vh] w-full mx-auto overflow-y-scroll">
+    <Table className="bg-white dark:bg-Dark_light  rounded-2xl overflow-hidden">
+      <TableHeader className="sticky text-black dark:text-white bg-white dark:bg-Dark_light text-opacity-70 top-0 ">
         <TableRow>
           {tableData?.tableHead?.map((item) => (
             <TableHead key={item} className="py-5">
@@ -117,7 +118,7 @@ const TableComponent = ({
       </TableHeader>
       <TableBody>
         {DashboardFetchedData?.map((item, index) => (
-          <TableRow className="text-black  text-opacity-60" key={index}
+          <TableRow className="text-black dark:text-gray-300" key={index}
             onClick={pageType === "transaction" ? () => {
               rowClick(item);
               openModal("Transaction Details");
@@ -149,7 +150,7 @@ const TableComponent = ({
                           <div className="text-[8px]">
                             <FaCircle />
                           </div>
-                          <span className="text-black">{item.status}</span>
+                          <span className="text-black dark:text-gray-300">{item.status}</span>
                         </div>
                       </TableCell>
                     );
@@ -308,6 +309,7 @@ const TableComponent = ({
         ))}
       </TableBody>
     </Table>
+    </div>
   );
 };
 
