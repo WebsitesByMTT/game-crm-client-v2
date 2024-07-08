@@ -1,6 +1,8 @@
 import { getCookie } from "@/utils/cookie";
 import Dashboard from "../../components/Dashboard";
 import { config } from "@/utils/config";
+import PaymentChart from "../../components/ui/chart/PaymentChart";
+import ClientPieChart from "../../components/ui/chart/ClientPieChart";
 
 const getUserData = async () => {
   const token = await getCookie();
@@ -30,6 +32,10 @@ export default async function Home() {
   return (
     <main>
       <Dashboard data={data?.data} />
+      <div className="rounded-2xl flex space-x-10  h-[60vh]  w-[95%] mx-auto">
+        <PaymentChart />
+        <ClientPieChart />
+      </div>
     </main>
   );
 }
