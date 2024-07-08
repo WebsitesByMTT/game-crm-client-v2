@@ -31,7 +31,7 @@ const TableComponent = ({
   Filter,
 }) => {
   const router = useRouter();
-  const [filterCountData, setFilterCountData] = useState({ From: 0, To: 0 });
+  const [filterCountData, setFilterCountData] = useState({ From: '', To: '' });
   const userData = useSelector((state) => state.user.userData);
   const userId = userData?._id;
 
@@ -43,6 +43,14 @@ const TableComponent = ({
     }));
   };
 
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
+    setFilterCountData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   return (
     <div className="rounded-md  h-[80vh] w-full mx-auto overflow-y-scroll">
     <Table className="bg-white dark:bg-Dark_light  rounded-2xl overflow-hidden">
@@ -50,7 +58,7 @@ const TableComponent = ({
         <TableRow>
           {tableData?.tableHead?.map((item) => (
             <TableHead key={item} className="py-5">
-              <div className="flex justify-center items-center space-x-2">
+              <div className="flex justify-center  items-center space-x-2">
                 <span className="capitalize">
                   {item == "totalRedeemed"
                     ? "redeem"
@@ -76,25 +84,25 @@ const TableComponent = ({
                         {(item == "totalRedeemed" ||
                           item == "totalRecharged" ||
                           item == "credits" ||
-                          item == "amount") && (
+                          item == "amount" || item == "Updated At") && (
                           <div className="p-2 space-x-3">
                             <input
-                              type="number"
+                              type={item=="Updated At"?'date':'number'}
                               name="From"
                               placeholder="From"
-                              onChange={handleInputChange}
+                              onChange={item!="Updated At"?handleInputChange:handleDateChange}
                               className="outline-none border border-gray-700 bg-black text-white rounded-[.4rem] px-4 py-2"
                             />
                             <input
-                              type="number"
+                              type={item=="Updated At"?'date':'number'}
                               name="To"
                               placeholder="To"
-                              onChange={handleInputChange}
+                              onChange={item!="Updated At"?handleInputChange:handleDateChange}
                               className="outline-none border border-gray-700 bg-black text-white rounded-[.4rem] px-4 py-2"
                             />
                             <button
                               onClick={() =>
-                                Filter(item, filterCountData, "Numbers")
+                                Filter(item, filterCountData, item=="Updated At"?"Calender":"Numbers")
                               }
                               type="button"
                               class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"

@@ -57,11 +57,6 @@ const GameList = ({ games }) => {
     }
   };
 
-  //   const filteredData = data.filter((item) =>
-  //     Object.values(item).some((value) =>
-  //       value?.toString().toLowerCase().includes(search.toLowerCase())
-  //     )
-  //   );
 
   const tableData = {
     tableHead: ["name", "category", "type", "status", "slug", "action"],
@@ -71,14 +66,14 @@ const GameList = ({ games }) => {
 
   return (
     <div className="h-full w-[95%] mx-auto flex flex-col">
-      <div className="w-[50%] pb-4">
-        <div className="w-full flex shadow-lg items-center gap-2 text-white  rounded-md  font-extralight bg-[#dfdfdf1d] py-2 px-4 ">
+      <div className="w-[50%] pt-4">
+        <div className="w-full flex shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light border dark:border-none rounded-md  font-extralight py-2 px-4">
           <div className="text-lg">
             <FiSearch />
           </div>
           <input
             name="search"
-            className="focus:outline-none placeholder:text-[#fffbfb7c] text-md bg-transparent w-full"
+            className="ocus:outline-none placeholder:text-black dark:placeholder:text-[#fffbfb7c] text-md bg-transparent w-full"
             placeholder="Search"
             value={search}
             onChange={(e) => {
