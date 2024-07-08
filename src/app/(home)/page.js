@@ -6,16 +6,16 @@ import ClientPieChart from "../../components/ui/chart/ClientPieChart";
 
 const getUserData = async () => {
   const token = await getCookie();
-    const response = await fetch(`${config.server}/api/users`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
-    const data = await response.json();
-    return { data };
+  const response = await fetch(`${config.server}/api/users`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `userToken=${token}`,
+    },
+  });
+  const data = await response.json();
+  return { data };
 };
 
 export default async function Home() {

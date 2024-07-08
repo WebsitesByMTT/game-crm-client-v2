@@ -308,22 +308,15 @@ const LeftSideBar = ({ userData }) => {
                       </li>
                     </Link>
                     {openDropdown === ind && (
-                    <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light dark:text-white text-[#8A8F98]">
-                      {item?.nested?.map((subitem, subind) => (
-                        <Link
-                          key={subind}
-                          onClick={() => {
-                            setOption(subitem.LinkName);
-                            setOpen(false);
-                          }}
-                          href={subitem.Link}
-                        >
-                          <li
-                            className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
-                              option === subitem.LinkName
-                                ? "bg-[#dfdfdf1e]"
-                                : "bg-transparent"
-                            }`}
+                      <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light dark:text-white text-[#8A8F98]">
+                        {item?.nested?.map((subitem, subind) => (
+                          <Link
+                            key={subind}
+                            onClick={() => {
+                              setOption(subitem.LinkName);
+                              setOpen(false);
+                            }}
+                            href={subitem.Link}
                           >
                             <li
                               className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
@@ -332,28 +325,33 @@ const LeftSideBar = ({ userData }) => {
                                   : "bg-transparent"
                               }`}
                             >
-                              <div
-                                className={`
+                              <li
+                                className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
+                                  option === subitem.LinkName
+                                    ? "bg-[#dfdfdf1e]"
+                                    : "bg-transparent"
+                                }`}
+                              >
+                                <div
+                                  className={`
                                 ${
                                   option === subitem.LinkName
                                     ? "text-[#8C7CFD]"
                                     : "dark:text-white text-black text-opacity-90 "
                                 }   
                                 `}
-                              >
-                                {subitem.icon}
-                              </div>
-                              <span>{subitem.LinkName}</span>
+                                >
+                                  {subitem.icon}
+                                </div>
+                                <span>{subitem.LinkName}</span>
+                              </li>
                             </li>
-                          </li>  
                           </Link>
                         ))}
                       </ul>
                     )}
-                    </div>
-
+                  </div>
                 ))}
-
           </ul>
         </div>
         <div className="pt-5 lg:pt-0">

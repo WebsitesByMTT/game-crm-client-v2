@@ -36,6 +36,8 @@ export const loginUser = async (data) => {
     return { responseData };
   } catch (error) {
     throw error;
+  } finally {
+    revalidatePath("/");
   }
 };
 
