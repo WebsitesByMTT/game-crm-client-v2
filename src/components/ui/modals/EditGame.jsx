@@ -1,10 +1,10 @@
 "use client";
 import { editGames, uploadImage } from "@/utils/action";
+import { revalidatePath } from "next/cache";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-const EditGame = ({ prevData, id, setRefresh, setOpen, refresh }) => {
-  console.log(prevData);
+const EditGame = ({ prevData, id, setOpen }) => {
   const [game, setGame] = useState({
     name: prevData.name,
     type: prevData.type,
@@ -70,7 +70,6 @@ const EditGame = ({ prevData, id, setRefresh, setOpen, refresh }) => {
       }
     }
     try {
-      setRefresh(!refresh);
       const response = await editGames(data, id);
       toast.success("Game updated succesfully!");
       setOpen(false);

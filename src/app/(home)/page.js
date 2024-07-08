@@ -6,7 +6,6 @@ import ClientPieChart from "../../components/ui/chart/ClientPieChart";
 
 const getUserData = async () => {
   const token = await getCookie();
-  try {
     const response = await fetch(`${config.server}/api/users`, {
       method: "GET",
       credentials: "include",
@@ -15,16 +14,8 @@ const getUserData = async () => {
         Cookie: `userToken=${token}`,
       },
     });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message);
-    }
     const data = await response.json();
     return { data };
-  } catch (error) {
-    throw error;
-  }
 };
 
 export default async function Home() {

@@ -42,7 +42,7 @@ body {
   border-radius: 10px;
   background: linear-gradient(135deg, #d9d9d9 0%, #ef4444 100%);
 }
-.viewgradient{
+.viewgradient {
   border-radius: 10px;
   background: linear-gradient(135deg, #d9d9d9 0%, #8fef44 100%);
 }
@@ -85,10 +85,46 @@ input[type="radio"] {
   accent-color: #8c7cfd;
 }
 
-@media (max-width:768px) {
-  .Transition{
-    transition: .5s;
+@media (max-width: 768px) {
+  .Transition {
+    transition: 0.5s;
   }
 }
 
+.loader {
+  width: 3.25em;
+  transform-origin: center;
+  animation: rotate4 2s linear infinite;
+}
 
+.loader circle {
+  fill: none;
+  stroke: hsl(214, 97%, 59%);
+  stroke-width: 2;
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: dash4 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate4 {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash4 {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -35px;
+  }
+
+  100% {
+    stroke-dashoffset: -125px;
+  }
+}

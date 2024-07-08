@@ -31,8 +31,7 @@ const page = async ({ params }) => {
   const subordinateData = await getSubordinates(params.subid);
   return (
     <div>
-      
-      {subordinateData && <Subordinate subordinateData={subordinateData.data} />}
+      {subordinateData && <Subordinate subordinateData={subordinateData?.data} />}
     </div>
   );
 };

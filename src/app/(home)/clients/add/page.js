@@ -13,7 +13,7 @@ const AddClient = () => {
     credits: "",
   });
   const [userRole, setUserRole] = useState("");
-  const data = useSelector((state) => state.userData);
+  const data = useSelector((state) => state.user.userData);
   const myRole = data.role;
 
   useEffect(() => {

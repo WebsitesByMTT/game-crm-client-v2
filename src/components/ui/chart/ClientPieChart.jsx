@@ -1,15 +1,17 @@
 "use client";
-import { getClients } from "@/utils/action";
+import { getClients, getMyClients } from "@/utils/action";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { PieChart, Pie, ResponsiveContainer, Cell } from "recharts";
 
 const ClientPieChart = () => {
   const [data, setData] = useState();
-
+  const userData = useSelector((state) => state.user.userData);
+  const userId = userData?._id;
   useEffect(() => {
     const fetchMyClients = async () => {
-      const response = await getClients();
-      setData(response.data);
+      const response = await getMyClients(userId);
+      setData(response.data.subordinates);
     };
     fetchMyClients();
   }, []);

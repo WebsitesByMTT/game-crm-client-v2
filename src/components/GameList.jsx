@@ -1,29 +1,42 @@
 "use client";
 import Modal from "@/components/ui/Modal";
-import { getTransactions } from "@/utils/action";
+import { deleteGame, getGames } from "@/utils/action";
 import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import TransactionDetails from "@/components/ui/modals/TransactionDetails";
+import toast from "react-hot-toast";
+import GameDetails from "@/components/ui/modals/GameDetails";
+import EditGame from "@/components/ui/modals/EditGame";
+import Loader from "@/components/ui/Loader";
 import TableComponent from "@/components/TableComponent";
-import { handleFilter } from "@/utils/Filter";
-const Transactions = ({ transactions }) => {
-  const [data, setData] = useState(transactions);
+
+const GameList = ({ games }) => {
+  const [data, setData] = useState(games);
+  const [filteredData, setFilteredData] = useState(games);
   const [open, setOpen] = useState(false);
   const [rowData, setRowData] = useState();
   const [modalType, setModalType] = useState("");
   const [search, setSearch] = useState("");
-  const [filteredData, setFilteredData] = useState(transactions);
+  const optionList = [];
 
   let ModalContent;
   switch (modalType) {
-    case "Transaction Details":
-      ModalContent = <TransactionDetails data={rowData} />;
+    case "Game Details":
+      ModalContent = <GameDetails data={rowData} />;
+      break;
+
+    case "Edit Game":
+      ModalContent = (
+        <EditGame
+          prevData={rowData}
+          id={rowData._id}
+          setOpen={setOpen}
+        />
+      );
       break;
 
     default:
       ModalContent = null;
   }
-
   const handleModalOpen = (type) => {
     setModalType(type);
     setOpen(true);
@@ -33,26 +46,27 @@ const Transactions = ({ transactions }) => {
     setRowData(data);
   };
 
-  const handleSearch = (searchTerm) => {
-    const filtered = data.filter((item) => {
-      const creditor = item.creditor.toLowerCase();
-      const debtor = item.debtor.toLowerCase();
-      const search = searchTerm.toLowerCase();
-      return creditor.includes(search) || debtor.includes(search);
-    });
-
-    setFilteredData(filtered);
+  const handleDelete = async (id, e) => {
+    e.stopPropagation();
+    try {
+      const response = await deleteGame(id);
+      toast.success(response.data.message);
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
-  const handleFilterData = (key, value, Num) => {
-    const dataFiltered = handleFilter(data, key, value, Num);
-    setFilteredData(dataFiltered);
-  };
+  //   const filteredData = data.filter((item) =>
+  //     Object.values(item).some((value) =>
+  //       value?.toString().toLowerCase().includes(search.toLowerCase())
+  //     )
+  //   );
 
   const tableData = {
-    tableHead: ["type", "amount", "creditor", "debitor", "Updated At"],
-    tableBody: ["type", "amount", "creditor", "debtor", "updatedAt"],
-    Filter: ["recharge", "redeem"],
+    tableHead: ["name", "category", "type", "status", "slug", "action"],
+    tableBody: ["name", "category", "type", "status", "slug", "action"],
+    Status: ["active", "inactive"]
   };
 
   return (
@@ -69,19 +83,18 @@ const Transactions = ({ transactions }) => {
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
-              handleSearch(e.target.value);
             }}
           />
         </div>
       </div>
-      <div className="overflow-y-auto h-[78vh]">
+      <div className="overflow-y-auto">
         <TableComponent
-          pageType="transaction"
+          pageType="game"
           tableData={tableData}
           rowClick={handleRowClick}
           openModal={handleModalOpen}
           DashboardFetchedData={filteredData}
-          Filter={handleFilterData}
+          deleteTableData={handleDelete}
         />
       </div>
       <Modal
@@ -96,4 +109,4 @@ const Transactions = ({ transactions }) => {
   );
 };
 
-export default Transactions;
+export default GameList;

@@ -28,7 +28,6 @@ const getTransactions = async () => {
 
 const page = async () => {
   const transactions = await getTransactions();
-  console.log("my", transactions);
   return (
     <div>
       {transactions && <Transactions transactions={transactions?.data} />}

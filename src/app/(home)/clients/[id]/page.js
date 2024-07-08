@@ -27,7 +27,11 @@ const getMyClients = async (id) => {
 
 const page = async ({ params }) => {
   const clientData = await getMyClients(params.id);
-  return <div> {clientData && <Clients clientData={clientData.data.subordinates} />} </div>;
+  return (
+    <div>
+      {clientData && <Clients clientData={clientData?.data?.subordinates} />}
+    </div>
+  );
 };
 
 export default page;

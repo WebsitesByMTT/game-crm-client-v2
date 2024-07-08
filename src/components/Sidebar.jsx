@@ -2,14 +2,13 @@
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { getUserData } from "@/utils/action";
 import { IoMdClose } from "react-icons/io";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
-import { setUserData, clearUserData } from "../store/userSlice";
+import { clearUserData } from "../store/userSlice";
 import { FaUserTie, FaUsers } from "react-icons/fa";
 import { MdOutlinePlayCircleFilled } from "react-icons/md";
 import { RiDashboardFill, RiMoneyRupeeCircleFill } from "react-icons/ri";
@@ -18,31 +17,14 @@ import { IoLogoGameControllerB } from "react-icons/io";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { RiUserAddFill } from "react-icons/ri";
 
-const LeftSideBar = ({}) => {
+const LeftSideBar = ({ userData }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [option, setOption] = useState("Dashboard");
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState();
+  const [data, setData] = useState(userData);
   const [openDropdown, setOpenDropdown] = useState(false);
 
-  const fetchUser = async () => {
-    try {
-      const response = await getUserData();
-      setData(response.data);
-      dispatch(setUserData(response.data));
-    } catch (error) {
-      if (error.message === "Token has expired") {
-        logOutUser();
-      }
-      toast.remove();
-      toast.error(error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
   const SideBar = {
     company: [
       {
@@ -124,17 +106,12 @@ const LeftSideBar = ({}) => {
         nested: [
           {
             LinkName: "My Clients",
-            Link: "/clients",
+            Link: `/clients/${data?._id}`,
             icon: <FaUserTie />,
           },
           {
-            LinkName: "All Clients",
-            Link: "/clients",
-            icon: <FaUsers />,
-          },
-          {
             LinkName: "Add Clients",
-            Link: "/add-client",
+            Link: "/clients/add",
             icon: <FaUsers />,
           },
         ],
@@ -147,12 +124,12 @@ const LeftSideBar = ({}) => {
         nested: [
           {
             LinkName: "My Transaction",
-            Link: "/transaction",
+            Link: "/transaction/my",
             icon: <RiMoneyRupeeCircleFill />,
           },
           {
             LinkName: "All Transaction",
-            Link: "/transaction",
+            Link: "/transaction/all",
             icon: <RiMoneyRupeeCircleFill />,
           },
         ],
@@ -298,6 +275,7 @@ const LeftSideBar = ({}) => {
                   <div key={ind}>
                     <Link
                       onClick={() => {
+                        setOpenDropdown(openDropdown === ind ? null : ind);
                         setOption(item.LinkName);
                         setOpen(false);
                       }}
@@ -310,37 +288,45 @@ const LeftSideBar = ({}) => {
                             : "bg-transparent"
                         }`}
                       >
-                        <div
-                          className={
-                            option === item.LinkName
-                              ? "text-[#8C7CFD] scale-125"
-                              : "text-black text-opacity-90  scale-125"
-                          }
-                        >
-                          {item.icon}
+                        <div className="flex items-center gap-2 w-full">
+                          <div
+                            className={
+                              option === item.LinkName
+                                ? "text-[#8C7CFD] scale-125"
+                                : "text-black text-opacity-90  scale-125"
+                            }
+                          >
+                            {item.icon}
+                          </div>
+                          <span>{item.LinkName}</span>
                         </div>
-                        <span>{item.LinkName}</span>
+                        {item.showDropDown && (
+                          <div>
+                            <RiArrowDropDownLine />
+                          </div>
+                        )}
                       </li>
                     </Link>
-                    <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light text-[#8A8F98]">
-                      {item?.nested?.map((subitem, subind) => (
-                        <Link
-                          key={subind}
-                          onClick={() => {
-                            setOption(subitem.LinkName);
-                            setOpen(false);
-                          }}
-                          href={subitem.Link}
-                        >
-                          <li
-                            className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
-                              option === subitem.LinkName
-                                ? "bg-[#dfdfdf1e]"
-                                : "bg-transparent"
-                            }`}
+                    {openDropdown === ind && (
+                      <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light text-[#8A8F98]">
+                        {item?.nested?.map((subitem, subind) => (
+                          <Link
+                            key={subind}
+                            onClick={() => {
+                              setOption(subitem.LinkName);
+                              setOpen(false);
+                            }}
+                            href={subitem.Link}
                           >
-                            <div
-                              className={`
+                            <li
+                              className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
+                                option === subitem.LinkName
+                                  ? "bg-[#dfdfdf1e]"
+                                  : "bg-transparent"
+                              }`}
+                            >
+                              <div
+                                className={`
                                 ${
                                   option === subitem.LinkName
                                     ? "text-[#8C7CFD]"
@@ -349,14 +335,15 @@ const LeftSideBar = ({}) => {
                                
                                   
                                 `}
-                            >
-                              {subitem.icon}
-                            </div>
-                            <span>{subitem.LinkName}</span>
-                          </li>
-                        </Link>
-                      ))}
-                    </ul>
+                              >
+                                {subitem.icon}
+                              </div>
+                              <span>{subitem.LinkName}</span>
+                            </li>
+                          </Link>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 ))}
           </ul>
