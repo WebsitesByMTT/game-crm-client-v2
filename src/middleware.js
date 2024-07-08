@@ -1,22 +1,21 @@
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
-
 export default function middleware(req) {
-    const loggedin = req.cookies.get("userToken");
-    const { pathname } = req.nextUrl;
-    if(!loggedin&&pathname!=='/'){
-        return NextResponse.redirect(new URL("/", req.url));
-    }
-    if (loggedin && pathname === "/") {
-      return NextResponse.redirect(new URL(`/dashboard`, req.url));
-    }
-    // Check if the user's designation is not 'company' and redirect them away from the games route
-    if (jwt.decode(loggedin?.value)?.designation!== 'company' && pathname === '/games') {
-      return NextResponse.redirect(new URL(`/dashboard`, req.url));
+  const loggedin = req.cookies.get("userToken");
+  const { pathname } = req.nextUrl;
+  if (!loggedin && pathname !== "/login") {
+    return NextResponse.redirect(new URL("/login", req.url));
   }
-    // For any other cases return
-  return NextResponse.next()
+  if (loggedin && pathname === "/login") {
+    return NextResponse.redirect(new URL(`/`, req.url));
+  }
+  // Check if the user's designation is not 'company' and redirect them away from the games route
+  if (jwt.decode(loggedin?.value)?.role !== "company" && pathname === "/game") {
+    return NextResponse.redirect(new URL(`/`, req.url));
+  }
+  // For any other cases return
+  return NextResponse.next();
 }
 
 export const config = { matcher: "/((?!api|static|.*\\..*|_next).*)" };
