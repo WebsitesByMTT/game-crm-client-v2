@@ -2,38 +2,143 @@
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { getUserData } from "@/utils/action";
-import { SideBar } from "@/utils/SidebarData";
 import { IoMdClose } from "react-icons/io";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import { clearUserData } from "../store/userSlice";
+import { FaUserTie, FaUsers } from "react-icons/fa";
+import { MdOutlinePlayCircleFilled } from "react-icons/md";
+import { RiDashboardFill, RiMoneyRupeeCircleFill } from "react-icons/ri";
+import { SiGamedeveloper } from "react-icons/si";
+import { IoLogoGameControllerB } from "react-icons/io";
+import { AiOutlineTransaction } from "react-icons/ai";
+import { RiUserAddFill } from "react-icons/ri";
 
-const LeftSideBar = ({}) => {
+const LeftSideBar = ({ userData }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [option, setOption] = useState("Dashboard");
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState();
+  const [data, setData] = useState(userData);
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [minimize, setMinimize] = useState(false);
-  const fetchUser = async () => {
-    try {
-      const response = await getUserData();
-      setData(response.data);
-    } catch (error) {
-      if (error.message === "Token has expired") {
-        logOutUser();
-      }
-      toast.remove();
-      toast.error(error.message);
-    }
+
+  const SideBar = {
+    company: [
+      {
+        LinkName: "Dashboard",
+        Link: "/",
+        icon: <RiDashboardFill />,
+      },
+      {
+        LinkName: "Clients",
+        icon: <FaUsers />,
+        Link: "",
+        showDropDown: true,
+        nested: [
+          {
+            LinkName: "My Clients",
+            Link: `/clients/${data?._id}`,
+            icon: <FaUserTie />,
+          },
+          {
+            LinkName: "All Clients",
+            Link: "/clients/all",
+            icon: <FaUsers />,
+          },
+          {
+            LinkName: "Add Client",
+            Link: "/clients/add",
+            icon: <RiUserAddFill />,
+          },
+        ],
+      },
+      {
+        LinkName: "Transaction",
+        Link: "",
+        icon: <RiMoneyRupeeCircleFill />,
+        showDropDown: true,
+        nested: [
+          {
+            LinkName: "My Transaction",
+            Link: "/transaction/my",
+            icon: <AiOutlineTransaction />,
+          },
+          {
+            LinkName: "All Transaction",
+            Link: "/transaction/all",
+            icon: <RiMoneyRupeeCircleFill />,
+          },
+        ],
+      },
+      {
+        LinkName: "Games",
+        Link: "",
+        icon: <MdOutlinePlayCircleFilled />,
+        showDropDown: true,
+        nested: [
+          {
+            LinkName: "Hosted Game",
+            Link: "/game",
+            icon: <IoLogoGameControllerB />,
+          },
+          {
+            LinkName: "Add Game",
+            Link: "/add-game",
+            icon: <SiGamedeveloper />,
+          },
+        ],
+      },
+    ],
+    all: [
+      {
+        LinkName: "Dashboard",
+        Link: "/",
+        icon: <RiDashboardFill />,
+      },
+      {
+        LinkName: "Clients",
+        icon: <FaUsers />,
+        Link: "",
+        showDropDown: true,
+        nested: [
+          {
+            LinkName: "My Clients",
+            Link: `/clients/${data?._id}`,
+            icon: <FaUserTie />,
+          },
+          {
+            LinkName: "Add Clients",
+            Link: "/clients/add",
+            icon: <FaUsers />,
+          },
+        ],
+      },
+      {
+        LinkName: "Transaction",
+        Link: "",
+        icon: <RiMoneyRupeeCircleFill />,
+        showDropDown: true,
+        nested: [
+          {
+            LinkName: "My Transaction",
+            Link: "/transaction/my",
+            icon: <RiMoneyRupeeCircleFill />,
+          },
+          {
+            LinkName: "All Transaction",
+            Link: "/transaction/all",
+            icon: <RiMoneyRupeeCircleFill />,
+          },
+        ],
+      },
+    ],
   };
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   const logOutUser = () => {
+    dispatch(clearUserData());
     Cookies.remove("userToken");
     router.push("/login");
     toast.success("Logout Successfully");
@@ -42,18 +147,18 @@ const LeftSideBar = ({}) => {
   return (
     <>
       <div
-        className="block absolute cursor-pointer top-0 left-0 lg:hidden text-[30px] text-white px-4 py-8"
+        className="block absolute cursor-pointer top-0  left-0 lg:hidden text-[30px] text-white px-4 py-8"
         onClick={() => setOpen((prev) => !prev)}
       >
         <RxHamburgerMenu />
       </div>
       <div
-        className={`py-4 border-r-2 bg-clip-padding backdrop-filter backdrop-blur-[5px]  bg-opacity-10 border-[#e4e4e42f] px-5  lg:flex flex-col justify-between h-full lg:static absolute w-[250px] md:w-[250px] group md:transition-all Transition ${
+        className={`py-4 border-r-2 bg-clip-padding backdrop-filter backdrop-blur-[5px] bg-white dark:bg-Dark_light shadow-sm border-[#e4e4e42f] px-5  lg:flex flex-col justify-between h-full lg:static absolute w-[250px] md:w-[250px] group md:transition-all Transition ${
           open ? "top-0 left-[0%]" : "top-0 -left-[100%]"
         }  z-10`}
       >
         <div
-          className="block cursor-pointer absolute top-0 right-0 lg:hidden text-[30px] text-white px-4 py-8"
+          className="block cursor-pointer absolute top-0 right-0 lg:hidden text-[30px] dark:text-white text-black text-opacity-90 px-4 py-8"
           onClick={() => setOpen((prev) => !prev)}
         >
           <IoMdClose />
@@ -92,7 +197,7 @@ const LeftSideBar = ({}) => {
               </defs>
             </svg>
           </div>
-          <ul className=" mt-5 w-full py-4 flex flex-col gap-3 text-xl font-light text-white">
+          <ul className=" mt-5 w-full py-4 flex flex-col gap-3 text-xl font-light text-black dark:text-white text-opacity-90 ">
             {data?.role === "company"
               ? SideBar.company.map((item, ind) => (
                   <div key={ind}>
@@ -115,7 +220,7 @@ const LeftSideBar = ({}) => {
                             className={
                               option === item.LinkName
                                 ? "text-[#8C7CFD] scale-125"
-                                : "scale-125 text-white"
+                                : "scale-125 text-black dark:text-white text-opacity-90 "
                             }
                           >
                             {item.icon}
@@ -130,7 +235,7 @@ const LeftSideBar = ({}) => {
                       </li>
                     </Link>
                     {openDropdown === ind && (
-                      <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light text-white">
+                      <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light dark:text-white text-black text-opacity-90 ">
                         {item?.nested?.map((subitem, subind) => (
                           <Link
                             key={subind}
@@ -152,7 +257,7 @@ const LeftSideBar = ({}) => {
                                 ${
                                   option === subitem.LinkName
                                     ? "text-[#8C7CFD]"
-                                    : "text-white "
+                                    : "text-black dark:text-white text-opacity-90 "
                                 }
                                 `}
                               >
@@ -170,6 +275,7 @@ const LeftSideBar = ({}) => {
                   <div key={ind}>
                     <Link
                       onClick={() => {
+                        setOpenDropdown(openDropdown === ind ? null : ind);
                         setOption(item.LinkName);
                         setOpen(false);
                       }}
@@ -182,53 +288,68 @@ const LeftSideBar = ({}) => {
                             : "bg-transparent"
                         }`}
                       >
-                        <div
-                          className={
-                            option === item.LinkName
-                              ? "text-[#8C7CFD] scale-125"
-                              : "text-white scale-125"
-                          }
-                        >
-                          {item.icon}
+                        <div className="flex items-center gap-2 w-full">
+                          <div
+                            className={
+                              option === item.LinkName
+                                ? "text-[#8C7CFD] scale-125"
+                                : "text-black dark:text-white text-opacity-90  scale-125"
+                            }
+                          >
+                            {item.icon}
+                          </div>
+                          <span>{item.LinkName}</span>
                         </div>
-                        <span>{item.LinkName}</span>
+                        {item.showDropDown && (
+                          <div>
+                            <RiArrowDropDownLine />
+                          </div>
+                        )}
                       </li>
                     </Link>
-                    <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light text-white">
-                      {item?.nested?.map((subitem, subind) => (
-                        <Link
-                          key={subind}
-                          onClick={() => {
-                            setOption(subitem.LinkName);
-                            setOpen(false);
-                          }}
-                          href={subitem.Link}
-                        >
-                          <li
-                            className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
-                              option === subitem.LinkName
-                                ? "bg-[#dfdfdf1e]"
-                                : "bg-transparent"
-                            }`}
+                    {openDropdown === ind && (
+                      <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light dark:text-white text-[#8A8F98]">
+                        {item?.nested?.map((subitem, subind) => (
+                          <Link
+                            key={subind}
+                            onClick={() => {
+                              setOption(subitem.LinkName);
+                              setOpen(false);
+                            }}
+                            href={subitem.Link}
                           >
-                            <div
-                              className={`
+                            <li
+                              className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
+                                option === subitem.LinkName
+                                  ? "bg-[#dfdfdf1e]"
+                                  : "bg-transparent"
+                              }`}
+                            >
+                              <li
+                                className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
+                                  option === subitem.LinkName
+                                    ? "bg-[#dfdfdf1e]"
+                                    : "bg-transparent"
+                                }`}
+                              >
+                                <div
+                                  className={`
                                 ${
                                   option === subitem.LinkName
                                     ? "text-[#8C7CFD]"
-                                    : "text-white"
-                                }
-                               
-                                  
+                                    : "dark:text-white text-black text-opacity-90 "
+                                }   
                                 `}
-                            >
-                              {subitem.icon}
-                            </div>
-                            <span>{subitem.LinkName}</span>
-                          </li>
-                        </Link>
-                      ))}
-                    </ul>
+                                >
+                                  {subitem.icon}
+                                </div>
+                                <span>{subitem.LinkName}</span>
+                              </li>
+                            </li>
+                          </Link>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 ))}
           </ul>

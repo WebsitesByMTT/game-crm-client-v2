@@ -1,8 +1,10 @@
 import Clients from "@/components/Clients";
+import Subordinate from "@/components/Subordinate";
 import { config } from "@/utils/config";
 import { getCookie } from "@/utils/cookie";
+import React from "react";
 
-const getMyClients = async (id) => {
+const getSubordinates = async (id) => {
   const token = await getCookie();
   try {
     const response = await fetch(`${config.server}/api/users/${id}`, {
@@ -26,10 +28,10 @@ const getMyClients = async (id) => {
 };
 
 const page = async ({ params }) => {
-  const clientData = await getMyClients(params.id);
+  const subordinateData = await getSubordinates(params.subid);
   return (
     <div>
-      {clientData && <Clients clientData={clientData?.data?.subordinates} />}
+      {subordinateData && <Subordinate subordinateData={subordinateData?.data} />}
     </div>
   );
 };

@@ -1,8 +1,8 @@
 "use client";
 import { addClient, getUserData } from "@/utils/action";
-import { getCookie } from "@/utils/cookie";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const AddClient = () => {
   const [user, setUser] = useState({
@@ -12,7 +12,29 @@ const AddClient = () => {
     role: "",
     credits: "",
   });
-  const [myRole, setMyrole] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const data = useSelector((state) => state.user.userData);
+  const myRole = data.role;
+
+  useEffect(() => {
+    switch (myRole) {
+      case "master":
+        setUserRole("distributor");
+        break;
+      case "distributor":
+        setUserRole("subdistributor");
+        break;
+      case "subdistributor":
+        setUserRole("store");
+        break;
+      case "store":
+        setUserRole("player");
+        break;
+      default:
+        setUserRole("");
+        break;
+    }
+  }, [myRole]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,41 +43,6 @@ const AddClient = () => {
       [name]: value,
     });
   };
-
-  const [userRole, setUserRole] = useState("");
-
-  const fetchUserData = async () => {
-    try {
-      const response = await getUserData();
-      setMyrole(response?.data?.role);
-      switch (response?.data?.role) {
-        case "master":
-          setUserRole("distributor");
-          break;
-
-        case "distributor":
-          setUserRole("subdistributor");
-          break;
-
-        case "subdistributor":
-          setUserRole("store");
-          break;
-
-        case "store":
-          setUserRole("player");
-          break;
-
-        default:
-          setUserRole("");
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserData();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,31 +77,31 @@ const AddClient = () => {
   };
 
   return (
-    <div className="h-full w-full flex items-center justify-center">
+    <div className="h-[90%] w-full  flex items-center dark:bg-Dark justify-center">
       <form
         onSubmit={handleSubmit}
-        className="grid grid-cols-2 gap-4 gap-y-10 overflow-hidden w-[50%] m-auto px-8 py-6 rounded-md text-white border-[#8b7cfd5b] border-[1px]"
+        className="grid grid-cols-2 gap-4 gap-y-10 overflow-hidden w-[50%] dark:bg-Dark_light shadow-xl bg-white m-auto px-16 py-12 rounded-2xl text-black dark:text-white border-[#8b7cfd5b] border-[1px]"
       >
         <p className="text-left font-light">Username :</p>
         <input
           name="username"
           onChange={handleChange}
           value={user.username}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
+          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
         />
         <p className="text-left font-light">Name :</p>
         <input
           name="name"
           onChange={handleChange}
           value={user.name}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
+          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
         />
         <p className="text-left font-light">Password :</p>
         <input
           name="password"
           onChange={handleChange}
           value={user.password}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
+          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
         />
         <p className="text-left font-light">Role :</p>
         {myRole === "company" ? (
@@ -123,7 +110,7 @@ const AddClient = () => {
             id="role"
             value={user.role}
             onChange={handleChange}
-            className="outline-none bg-transparent w-full text-left font-extralight text-gray-400 border-b-[1px] border-[#dfdfdf2e]"
+            className="outline-none bg-transparent w-full text-left font-extralight text-gray-400 border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]"
           >
             <option value="master">master</option>
             <option value="distributor">distributor</option>
@@ -136,7 +123,7 @@ const AddClient = () => {
             name="role"
             type="text"
             value={userRole}
-            className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
+            className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]"
           />
         )}
         <p className="text-left font-light">Credits :</p>
@@ -145,7 +132,7 @@ const AddClient = () => {
           type="number"
           onChange={handleChange}
           value={user.credits}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
+          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]"
         />
         <div className="col-span-2 flex justify-center mt-2">
           <button

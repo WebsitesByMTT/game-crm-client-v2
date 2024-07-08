@@ -1,5 +1,5 @@
 "use client";
-import { getCaptcha, loginUser } from "@/utils/action";
+import { loginUser } from "@/utils/action";
 import Loader from "@/components/ui/Loader";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
@@ -7,25 +7,25 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const [data, setData] = useState({ username: "", password: "", captcha: "" });
+  const [data, setData] = useState({ username: "", password: ""});
   const [hide, setHide] = useState(false);
   const [load, setLoad] = useState(false);
-  const [captchaSrc, setCaptchaSrc] = useState("");
+  // const [captchaSrc, setCaptchaSrc] = useState("");
 
   const router = useRouter();
 
-  const fetchCaptcha = async () => {
-    try {
-      const captcha = await getCaptcha();
-      setCaptchaSrc(captcha.responseData);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
+  // const fetchCaptcha = async () => {
+  //   try {
+  //     const captcha = await getCaptcha();
+  //     setCaptchaSrc(captcha.responseData);
+  //   } catch (error) {
+  //     toast.error(error.message);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchCaptcha();
-  }, []);
+  // useEffect(() => {
+  //   fetchCaptcha();
+  // }, []);
 
   const handelChange = (e) => {
     let { name, value } = e.target;
@@ -38,7 +38,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { username, password, captcha } = data;
+    const { username, password } = data;
     if (!username || !password) {
       toast.remove();
       return toast.error("All fields are required");
@@ -46,7 +46,7 @@ const Login = () => {
 
     setLoad(true);
     try {
-      const response = await loginUser({ username, password, captcha });
+      const response = await loginUser({ username, password });
       const { token, message, role } = response.responseData;
       if (token) {
         if (role !== "player") {
@@ -62,7 +62,7 @@ const Login = () => {
       }
     } catch (error) {
       toast.remove();
-      fetchCaptcha();
+      // fetchCaptcha();
       data.captcha = "";
       toast.error(error.message);
     } finally {
@@ -159,7 +159,7 @@ const Login = () => {
                     )}
                   </div>
                 </div>
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <label htmlFor="captcha" className="text-xl font-extralight">
                     Captcha
                   </label>
@@ -182,7 +182,7 @@ const Login = () => {
                       ></div>
                     )}
                   </div>
-                </div>
+                </div> */}
                 <div className="flex justify-center">
                   <button
                     type="submit"

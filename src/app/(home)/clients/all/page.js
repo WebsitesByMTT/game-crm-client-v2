@@ -2,10 +2,10 @@ import Clients from "@/components/Clients";
 import { config } from "@/utils/config";
 import { getCookie } from "@/utils/cookie";
 
-const getMyClients = async (id) => {
+const getAllClients = async () => {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/users/${id}`, {
+    const response = await fetch(`${config.server}/api/users/all`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -13,7 +13,6 @@ const getMyClients = async (id) => {
         Cookie: `userToken=${token}`,
       },
     });
-
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message);
@@ -25,13 +24,9 @@ const getMyClients = async (id) => {
   }
 };
 
-const page = async ({ params }) => {
-  const clientData = await getMyClients(params.id);
-  return (
-    <div>
-      {clientData && <Clients clientData={clientData?.data?.subordinates} />}
-    </div>
-  );
+const page = async () => {
+  const clientData = await getAllClients();
+  return <div>{clientData && <Clients clientData={clientData.data} />}</div>;
 };
 
 export default page;

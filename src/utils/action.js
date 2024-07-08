@@ -3,20 +3,20 @@ import { revalidatePath } from "next/cache";
 import { config } from "./config";
 import { getCookie } from "./cookie";
 
-export const getCaptcha = async () => {
-  try {
-    const response = await fetch(`${config.server}/captcha`);
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message);
-    }
-    const responseData = await response.json();
-    console.log(responseData);
-    return { responseData };
-  } catch (error) {
-    throw error;
-  }
-};
+// export const getCaptcha = async () => {
+//   try {
+//     const response = await fetch(`${config.server}/captcha`);
+//     if (!response.ok) {
+//       const error = await response.json();
+//       throw new Error(error.message);
+//     }
+//     const responseData = await response.json();
+//     console.log(responseData);
+//     return { responseData };
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 export const loginUser = async (data) => {
   try {
@@ -36,6 +36,8 @@ export const loginUser = async (data) => {
     return { responseData };
   } catch (error) {
     throw error;
+  } finally {
+    revalidatePath("/");
   }
 };
 
@@ -73,6 +75,29 @@ export const getClients = async () => {
         Cookie: `userToken=${token}`,
       },
     });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const data = await response.json();
+    return { data };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getMyClients = async (id) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/users/${id}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message);
@@ -201,29 +226,6 @@ export const editStatus = async (status, id) => {
   }
 };
 
-export const getTransactions = async () => {
-  const token = await getCookie();
-  try {
-    const response = await fetch(`${config.server}/api/transactions`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message);
-    }
-    const data = await response.json();
-    return { data };
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const getGames = async () => {
   const token = await getCookie();
   try {
@@ -249,7 +251,6 @@ export const getGames = async () => {
 
 export const editGames = async (game, id) => {
   const token = await getCookie();
-  console.log(game);
   try {
     const response = await fetch(`${config.server}/api/games/${id}`, {
       method: "PUT",
@@ -268,6 +269,8 @@ export const editGames = async (game, id) => {
     return { data };
   } catch (error) {
     throw error;
+  } finally {
+    revalidatePath("/game");
   }
 };
 
@@ -307,11 +310,9 @@ export const uploadImage = async (image) => {
     });
     if (!response.ok) {
       const error = await response.json();
-      console.log(error);
       throw new Error(error.message);
     }
     const data = await response.json();
-    console.log("ImageData", data);
     return { data };
   } catch (error) {
     throw error;
@@ -320,7 +321,6 @@ export const uploadImage = async (image) => {
 
 export const addGame = async (game) => {
   const token = await getCookie();
-  console.log(game);
   try {
     const response = await fetch(`${config.server}/api/games`, {
       method: "POST",
