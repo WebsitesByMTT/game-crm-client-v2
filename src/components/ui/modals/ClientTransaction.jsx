@@ -94,7 +94,7 @@ const ClientTransactions = ({ data, setOpenTransaction, openTransaction }) => {
                 <IoMdCloseCircle />
               </button>
             </div>
-            <div className="overflow-y-auto">
+            <div className="overflow-y-auto text-white">
               <Table className="overflow-y-auto">
                 <TableHeader>
                   <TableRow>

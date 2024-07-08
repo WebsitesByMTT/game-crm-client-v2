@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react";
 import {
   Table,
@@ -43,8 +44,9 @@ const TableComponent = ({
   };
 
   return (
-    <Table className="bg-white  rounded-2xl overflow-hidden">
-      <TableHeader className="sticky text-black bg-white  text-opacity-70 top-0 z-50">
+    <div className="rounded-md  h-[80vh] w-full mx-auto overflow-y-scroll">
+    <Table className="bg-white dark:bg-Dark_light  rounded-2xl overflow-hidden">
+      <TableHeader className="sticky text-black dark:text-white bg-white dark:bg-Dark_light text-opacity-70 top-0 ">
         <TableRow>
           {tableData?.tableHead?.map((item) => (
             <TableHead key={item} className="py-5">
@@ -125,46 +127,40 @@ const TableComponent = ({
       </TableHeader>
       <TableBody>
         {DashboardFetchedData?.map((item, index) => (
-          <TableRow
-            className="text-black  text-opacity-60"
-            key={index}
-            onClick={
-              pageType === "transaction"
-                ? () => {
-                    rowClick(item);
-                    openModal("Transaction Details");
-                  }
-                : null
-            }
-          >
-            {tableData?.tableBody?.map((subitem) => {
-              switch (subitem) {
-                case "username":
-                  return (
-                    <TableCell
-                      onClick={() =>
-                        router.push(`/clients/${userId}/${item._id}`)
-                      }
-                    >
-                      {item.username}
-                    </TableCell>
-                  );
+          <TableRow className="text-black dark:text-gray-300" key={index}
+            onClick={pageType === "transaction" ? () => {
+              rowClick(item);
+              openModal("Transaction Details");
+            } : null}>
+            {
+              tableData?.tableBody?.map((subitem) => {
+                switch (subitem) {
+                  case "username":
+                    return (
+                      <TableCell
+                        onClick={() =>
+                          router.push(`/clients/${userId}/${item._id}`)
+                        }
+                      >
+                        {item.username}
+                      </TableCell>
+                    );
 
-                case "status":
-                  return (
-                    <TableCell
-                      className={
-                        item.status === "active"
-                          ? "text-[#70ef44]"
-                          : "text-[#ef4444]"
-                      }
-                    >
-                      <div className="w-full flex gap-2 items-center justify-center">
-                        <div className="text-[8px]">
-                          <FaCircle />
+                  case "status":
+                    return (
+                      <TableCell
+                        className={
+                          item.status === "active"
+                            ? "text-[#70ef44]"
+                            : "text-[#ef4444]"
+                        }
+                      >
+                        <div className="w-full flex gap-2 items-center justify-center">
+                          <div className="text-[8px]">
+                            <FaCircle />
+                          </div>
+                          <span className="text-black dark:text-gray-300">{item.status}</span>
                         </div>
-                        <span className="text-black">{item.status}</span>
-                      </div>
                     </TableCell>
                   );
 
@@ -322,6 +318,7 @@ const TableComponent = ({
         ))}
       </TableBody>
     </Table>
+    </div>
   );
 };
 

@@ -8,8 +8,8 @@ const Subordinate = ({ subordinateData }) => {
   const [option, setOption] = useState("report");
   return (
     <div>
-      <div className="w-[95%] m-auto">
-        <h1 className="text-3xl text-white ">{subordinateData.name}</h1>
+      <div className="w-[94%] pt-3  m-auto">
+        <h1 className="text-2xl text-black dark:text-gray-400 ">{subordinateData.name}</h1>
       </div>
       <Dashboard data={subordinateData} />
       <div className="flex w-[95%] mx-auto gap-5 my-5">
@@ -18,7 +18,7 @@ const Subordinate = ({ subordinateData }) => {
             setOption("report");
           }}
           className={`px-4 py-2 bg-[#7969ed50] rounded-md ${
-            option === "report" ? "text-white" : "text-[#f4f2f2ac]"
+            option === "report" ? "text-white bg-[#8D7CFD]" : "text-[#f4f2f2ac]"
           } border-[1px] border-[#e3e2eb56]`}
         >
           Report
@@ -28,7 +28,7 @@ const Subordinate = ({ subordinateData }) => {
             setOption("subordinates");
           }}
           className={`px-4 py-2 bg-[#7969ed50] rounded-md ${
-            option === "subordinates" ? "text-white" : "text-[#f4f2f2ac]"
+            option === "subordinates" ? "text-white bg-[#8D7CFD]" : "text-[#f4f2f2ac]"
           } border-[1px] border-[#e3e2eb56] transition-all`}
         >
           Subordinates
@@ -38,7 +38,7 @@ const Subordinate = ({ subordinateData }) => {
             setOption("transactions");
           }}
           className={`px-4 py-2 bg-[#7969ed50] rounded-md ${
-            option === "transactions" ? "text-white" : "text-[#f4f2f2ac]"
+            option === "transactions" ? "text-white bg-[#8D7CFD]" : "text-[#f4f2f2ac]"
           } border-[1px] border-[#e3e2eb56] transition-all`}
         >
           Transactions

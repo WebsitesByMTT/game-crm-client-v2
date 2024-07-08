@@ -92,45 +92,45 @@ const AddGame = () => {
   };
 
   return (
-    <div className="h-full w-full flex items-center justify-center">
+    <div className="h-[90%] w-full flex items-center dark:bg-Dark justify-center">
       <form
         onSubmit={handleSubmit}
-        className="grid grid-cols-2 gap-4 gap-y-10 overflow-hidden w-[50%] m-auto px-8 py-6 rounded-md text-white border-[#8b7cfd5b] border-[1px]"
+        className="grid grid-cols-2 gap-x-4 gap-y-6 overflow-hidden w-[50%] m-auto px-8 py-6 rounded-xl bg-white dark:bg-Dark_light text-black dark:text-white border-[#8b7cfd5b] border-[1px]"
       >
         <p className="text-left font-light">Name :</p>
         <input
           name="name"
           onChange={handleChange}
-          value={game.name}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
+          value={game.name}bo
+          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
         />
         <p className="text-left font-light">Category :</p>
         <input
           name="category"
           onChange={handleChange}
           value={game.category}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
+          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]"
         />
         <p className="text-left font-light">Type :</p>
         <input
           name="type"
           onChange={handleChange}
           value={game.type}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
+          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]"
         />
         <p className="text-left font-light">Tag Name :</p>
         <input
           name="tagName"
           onChange={handleChange}
           value={game.tagName}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
+          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
         />
         <p className="text-left font-light">Slug :</p>
         <input
           name="slug"
           onChange={handleChange}
           value={game.slug}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
+          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
         />
         <p className="text-left font-light">Status :</p>
         <div className="flex gap-5 items-center">
@@ -160,13 +160,13 @@ const AddGame = () => {
           name="url"
           onChange={handleChange}
           value={game.url}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
+          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
         />
         <p className="text-left font-light">Thumbnail :</p>
         <input
           onChange={(e) => handleImageChange(e)}
           type="file"
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
+          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]"
           id="fileUpload"
           accept="image/*"
         />
@@ -177,7 +177,7 @@ const AddGame = () => {
           accept=".json"
           onChange={handleChange}
           required
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
+          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
         />
         <div className="col-span-2 flex justify-center mt-2">
           <button

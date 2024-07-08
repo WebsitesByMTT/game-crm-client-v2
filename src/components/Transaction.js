@@ -57,14 +57,14 @@ const Transactions = ({ transactions }) => {
 
   return (
     <div className="h-full w-[95%] mx-auto flex flex-col">
-      <div className="w-[50%] pb-4">
-        <div className="w-full flex shadow-lg items-center gap-2 text-white  rounded-md  font-extralight bg-[#dfdfdf1d] py-2 px-4 ">
+      <div className="w-[50%] pt-5">
+        <div className="w-full flex shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light border dark:border-none rounded-md  font-extralight py-2 px-4 ">
           <div className="text-lg">
             <FiSearch />
           </div>
           <input
             name="search"
-            className="focus:outline-none placeholder:text-[#fffbfb7c] text-md bg-transparent w-full"
+            className="focus:outline-none placeholder:text-black dark:placeholder:text-[#fffbfb7c] text-md bg-transparent w-full"
             placeholder="Search"
             value={search}
             onChange={(e) => {
@@ -74,7 +74,7 @@ const Transactions = ({ transactions }) => {
           />
         </div>
       </div>
-      <div className="overflow-y-auto h-[78vh]">
+      <div className="pb-[6rem]">
         <TableComponent
           pageType="transaction"
           tableData={tableData}

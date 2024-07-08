@@ -33,7 +33,7 @@ const getUserData = async () => {
 export default async function RootLayout({ children }) {
   const data = await getUserData();
   return (
-    <div className="bg-cover h-screen bg-[#F3F4F6] flex">
+    <div className="bg-cover h-screen bg-[#F3F4F6] dark:bg-Dark flex">
       <DataSetter data={data.data} />
       <div>
         <div className="w-full h-full">

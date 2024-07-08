@@ -77,11 +77,11 @@ const PaymentChart = () => {
         }
     ];
     return (
-        <ResponsiveContainer width="60%" height="100%" className={'bg-white rounded-2xl shadow-sm pb-28 pt-8 '}>
+        <ResponsiveContainer width="60%" height="100%" className={'bg-white dark:bg-Dark_light rounded-2xl shadow-sm pb-28 pt-8 '}>
             <div className="flex justify-between p-4">
-                <div className="text-[1.2rem] text-black font-semibold">Payment Overview</div>
+                <div className="text-[1.2rem] text-black dark:text-white font-semibold">Payment Overview</div>
                 <div className="flex items-center space-x-2">
-                    <div className="text-[1.1rem] ">SHORT BY:</div>
+                    <div className="text-[1.1rem] dark:text-white">SHORT BY:</div>
                     <select className="bg-white border border-gray-300 text-black py-2 px-4 pr-8 rounded leading-tight focus:outline-none  focus:border-blue-500">
                         <option value="monthly">Monthly</option>
                         <option value="weakly">Weakly</option>

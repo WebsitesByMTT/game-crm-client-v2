@@ -153,12 +153,12 @@ const LeftSideBar = ({ userData }) => {
         <RxHamburgerMenu />
       </div>
       <div
-        className={`py-4 border-r-2 bg-clip-padding backdrop-filter backdrop-blur-[5px] bg-white shadow-sm border-[#e4e4e42f] px-5  lg:flex flex-col justify-between h-full lg:static absolute w-[250px] md:w-[250px] group md:transition-all Transition ${
+        className={`py-4 border-r-2 bg-clip-padding backdrop-filter backdrop-blur-[5px] bg-white dark:bg-Dark_light shadow-sm border-[#e4e4e42f] px-5  lg:flex flex-col justify-between h-full lg:static absolute w-[250px] md:w-[250px] group md:transition-all Transition ${
           open ? "top-0 left-[0%]" : "top-0 -left-[100%]"
         }  z-10`}
       >
         <div
-          className="block cursor-pointer absolute top-0 right-0 lg:hidden text-[30px] text-black text-opacity-90 px-4 py-8"
+          className="block cursor-pointer absolute top-0 right-0 lg:hidden text-[30px] dark:text-white text-black text-opacity-90 px-4 py-8"
           onClick={() => setOpen((prev) => !prev)}
         >
           <IoMdClose />
@@ -197,7 +197,7 @@ const LeftSideBar = ({ userData }) => {
               </defs>
             </svg>
           </div>
-          <ul className=" mt-5 w-full py-4 flex flex-col gap-3 text-xl font-light text-black text-opacity-90 ">
+          <ul className=" mt-5 w-full py-4 flex flex-col gap-3 text-xl font-light text-black dark:text-white text-opacity-90 ">
             {data?.role === "company"
               ? SideBar.company.map((item, ind) => (
                   <div key={ind}>
@@ -220,7 +220,7 @@ const LeftSideBar = ({ userData }) => {
                             className={
                               option === item.LinkName
                                 ? "text-[#8C7CFD] scale-125"
-                                : "scale-125 text-black text-opacity-90 "
+                                : "scale-125 text-black dark:text-white text-opacity-90 "
                             }
                           >
                             {item.icon}
@@ -235,7 +235,7 @@ const LeftSideBar = ({ userData }) => {
                       </li>
                     </Link>
                     {openDropdown === ind && (
-                      <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light text-black text-opacity-90 ">
+                      <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light dark:text-white text-black text-opacity-90 ">
                         {item?.nested?.map((subitem, subind) => (
                           <Link
                             key={subind}
@@ -257,7 +257,7 @@ const LeftSideBar = ({ userData }) => {
                                 ${
                                   option === subitem.LinkName
                                     ? "text-[#8C7CFD]"
-                                    : "text-black text-opacity-90 "
+                                    : "text-black dark:text-white text-opacity-90 "
                                 }
                                 `}
                               >
@@ -293,7 +293,7 @@ const LeftSideBar = ({ userData }) => {
                             className={
                               option === item.LinkName
                                 ? "text-[#8C7CFD] scale-125"
-                                : "text-black text-opacity-90  scale-125"
+                                : "text-black dark:text-white text-opacity-90  scale-125"
                             }
                           >
                             {item.icon}
@@ -308,15 +308,22 @@ const LeftSideBar = ({ userData }) => {
                       </li>
                     </Link>
                     {openDropdown === ind && (
-                      <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light text-[#8A8F98]">
-                        {item?.nested?.map((subitem, subind) => (
-                          <Link
-                            key={subind}
-                            onClick={() => {
-                              setOption(subitem.LinkName);
-                              setOpen(false);
-                            }}
-                            href={subitem.Link}
+                    <ul className="w-full pt-3 flex flex-col gap-3 text-[1.1rem] font-light dark:text-white text-[#8A8F98]">
+                      {item?.nested?.map((subitem, subind) => (
+                        <Link
+                          key={subind}
+                          onClick={() => {
+                            setOption(subitem.LinkName);
+                            setOpen(false);
+                          }}
+                          href={subitem.Link}
+                        >
+                          <li
+                            className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
+                              option === subitem.LinkName
+                                ? "bg-[#dfdfdf1e]"
+                                : "bg-transparent"
+                            }`}
                           >
                             <li
                               className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
@@ -330,22 +337,23 @@ const LeftSideBar = ({ userData }) => {
                                 ${
                                   option === subitem.LinkName
                                     ? "text-[#8C7CFD]"
-                                    : "text-black text-opacity-90 "
-                                }
-                               
-                                  
+                                    : "dark:text-white text-black text-opacity-90 "
+                                }   
                                 `}
                               >
                                 {subitem.icon}
                               </div>
                               <span>{subitem.LinkName}</span>
                             </li>
+                          </li>  
                           </Link>
                         ))}
                       </ul>
                     )}
-                  </div>
+                    </div>
+
                 ))}
+
           </ul>
         </div>
         <div className="pt-5 lg:pt-0">

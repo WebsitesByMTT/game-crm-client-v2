@@ -9,12 +9,6 @@ const Dashboard = ({ data }) => {
   const [userData, setUserData] = useState(data);
   return (
     <div className="h-full w-full">
-      <button
-        className="border p-2"
-        onClick={() => document.body.classList.toggle("dark")}
-      >
-        Switch theme
-      </button>
       <div className="w-full m-auto  py-3 px-2 h-[25vh]  flex gap-5 flex-wrap items-center justify-center">
         <div className="h-auto lg:h-[200px] w-[71%] rounded-xl space-x-5 flex justify-between">
           <Card
@@ -42,7 +36,7 @@ const Dashboard = ({ data }) => {
               Credits
             </span>
           </div>
-          <span className="text-center lg:text-[4.8rem] text-[2rem] dark:text-white text-black ">
+          <span className="text-center lg:text-[3.6rem] text-[2rem] dark:text-white text-black ">
             {userData?.credits !== null ? userData?.credits : "\u221E"}
           </span>
         </div>
@@ -69,7 +63,7 @@ const Card = ({ name, icon, amount }) => {
         </span>
       </div>
       <div className="flex justify-between items-center">
-        <span className="lg:text-[4.5rem] text-[2rem] dark:text-white text-black ">
+        <span className="lg:text-[3.6rem] text-[2rem] dark:text-white text-black ">
           {amount}
         </span>
         <ResponsiveContainer width="40%" height="100%">
