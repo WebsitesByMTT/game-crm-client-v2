@@ -103,10 +103,10 @@ const Clients = ({ clientData }) => {
     }
   };
 
-  useEffect(() => {
-    setData(clientData);
-    setFilteredData(clientData);
-  }, []);
+  // useEffect(() => {
+  //   setData(clientData);
+  //   setFilteredData(clientData);
+  // }, []);
 
   const handleSearch = (searchTerm) => {
     const filtered = data.filter((item) =>

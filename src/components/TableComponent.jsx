@@ -31,8 +31,10 @@ const TableComponent = ({
 }) => {
   const router = useRouter();
   const [filterCountData, setFilterCountData] = useState({ From: 0, To: 0 });
-  const userData = useSelector((state) => state.user.userData);
+  const userData = useSelector((state) => state.userData);
   const userId = userData._id;
+  console.log("userData",userData);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFilterCountData((prevData) => ({

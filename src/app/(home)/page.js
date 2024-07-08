@@ -1,5 +1,6 @@
 import { getCookie } from "@/utils/cookie";
 import Dashboard from "../../components/Dashboard";
+import Report from "../../components/Report";
 import { config } from "@/utils/config";
 
 const getUserData = async () => {
@@ -30,6 +31,7 @@ export default async function Home() {
   return (
     <main>
       <Dashboard data={data?.data} />
+      <Report />
     </main>
   );
 }

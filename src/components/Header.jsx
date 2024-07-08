@@ -1,12 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { PiUserCircleThin } from "react-icons/pi";
-import { getUserData } from "@/utils/action";
-import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
 const Header = () => {
-  const data = useSelector((state) => state.user.userData);
+  const data = useSelector((state) => state.userData);
 
   return (
     <div className="w-full flex flex-col bg-white shadow-sm">

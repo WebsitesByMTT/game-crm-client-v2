@@ -18,6 +18,7 @@ const getAllClients = async () => {
       throw new Error(error.message);
     }
     const data = await response.json();
+    console.log("Client",data);
     return { data };
   } catch (error) {
     throw error;
