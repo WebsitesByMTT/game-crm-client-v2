@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Dashboard from "./Dashboard";
 import Clients from "./Clients";
 import Transactions from "./Transaction";
-import Report from "./Report";
 
 const Subordinate = ({ subordinateData }) => {
   const [option, setOption] = useState("report");
@@ -45,9 +44,6 @@ const Subordinate = ({ subordinateData }) => {
           Transactions
         </button>
       </div>
-      {subordinateData && option === "report" && (
-        <Report />
-      )}
       {subordinateData && option === "subordinates" && (
         <Clients clientData={subordinateData?.subordinates} />
       )}
