@@ -4,6 +4,7 @@ import Dashboard from "./Dashboard";
 import Clients from "./Clients";
 import Transactions from "./Transaction";
 import { useSelector } from "react-redux";
+import Report from "./Report";
 
 const Subordinate = ({ subordinateData }) => {
   const [option, setOption] = useState("report");
@@ -16,14 +17,13 @@ const Subordinate = ({ subordinateData }) => {
         </h1>
       </div>
       <Dashboard data={subordinateData} />
-      <div className="flex w-[95%] mx-auto gap-5 my-5">
+      <div className="flex w-[95%] mx-auto gap-5 my-5 border">
         <button
           onClick={() => {
             setOption("report");
           }}
-          className={`px-4 py-2 bg-[#7969ed50] rounded-md ${
-            option === "report" ? "text-white bg-[#8D7CFD]" : "text-[#f4f2f2ac]"
-          } border-[1px] border-[#e3e2eb56]`}
+          className={`px-4 py-2 bg-[#7969ed50] rounded-md ${option === "report" ? "text-white bg-[#8D7CFD]" : "text-[#f4f2f2ac]"
+            } border-[1px] border-[#e3e2eb56]`}
         >
           Report
         </button>
@@ -32,11 +32,10 @@ const Subordinate = ({ subordinateData }) => {
             onClick={() => {
               setOption("subordinates");
             }}
-            className={`px-4 py-2 bg-[#7969ed50] rounded-md ${
-              option === "subordinates"
-                ? "text-white bg-[#8D7CFD]"
-                : "text-[#f4f2f2ac]"
-            } border-[1px] border-[#e3e2eb56] transition-all`}
+            className={`px-4 py-2 bg-[#7969ed50] rounded-md ${option === "subordinates"
+              ? "text-white bg-[#8D7CFD]"
+              : "text-[#f4f2f2ac]"
+              } border-[1px] border-[#e3e2eb56] transition-all`}
           >
             Subordinates
           </button>
@@ -45,21 +44,27 @@ const Subordinate = ({ subordinateData }) => {
           onClick={() => {
             setOption("transactions");
           }}
-          className={`px-4 py-2 bg-[#7969ed50] rounded-md ${
-            option === "transactions"
-              ? "text-white bg-[#8D7CFD]"
-              : "text-[#f4f2f2ac]"
-          } border-[1px] border-[#e3e2eb56] transition-all`}
+          className={`px-4 py-2 bg-[#7969ed50] rounded-md ${option === "transactions"
+            ? "text-white bg-[#8D7CFD]"
+            : "text-[#f4f2f2ac]"
+            } border-[1px] border-[#e3e2eb56] transition-all`}
         >
           Transactions
         </button>
       </div>
+
       {subordinateData && option === "subordinates" && (
         <Clients clientData={subordinateData?.subordinates} />
       )}
       {subordinateData && option === "transactions" && (
         <Transactions transactions={subordinateData?.transactions} />
       )}
+
+      {
+        subordinateData && option === "report" && (
+          <Report id={subordinateData?._id} />
+        )
+      }
     </div>
   );
 };

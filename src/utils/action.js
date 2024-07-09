@@ -352,3 +352,32 @@ export const addGame = async (game) => {
     throw error;
   }
 };
+
+
+export async function getUserReport(id, type) {
+  const token = await getCookie();
+
+  try {
+    const response = await fetch(`${config.server}/api/users/report/${id}?type=${type.toLowerCase()}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+
+    const data = await response.json();
+    console.log("data : ", data);
+
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
