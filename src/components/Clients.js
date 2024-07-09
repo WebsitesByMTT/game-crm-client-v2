@@ -140,8 +140,8 @@ const Clients = ({ clientData }) => {
 
   return (
     <div className="h-full w-[95%] mx-auto flex flex-col">
-      <div className="w-[50%] pt-5">
-        <div className="w-full flex shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light border dark:border-none rounded-md  font-extralight py-2 px-4 ">
+      <div className="md:w-[50%] pt-5">
+        <div className="w-full flex shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light border dark:border-none rounded-md  font-extralight py-4 md:py-2 px-4 ">
           <div className="text-lg">
             <FiSearch />
           </div>
