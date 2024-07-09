@@ -1,10 +1,15 @@
 "use client";
-import React from 'react'
 
-const error = () => {
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+
+export default function Error({ error, reset }) {
+  useEffect(() => {
+    toast.error(error.message);
+  }, [error]);
+
   return (
-    <div>error</div>
-  )
+    <main className="bg-transparent h-screen w-screen border-2">
+    </main>
+  );
 }
-
-export default error

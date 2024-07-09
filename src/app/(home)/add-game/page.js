@@ -18,8 +18,6 @@ const AddGame = () => {
   const [gameThumbnail, setGameThumbnail] = useState(null);
   const [disable, setDisable] = useState(true);
 
-  
-
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setGame({
@@ -50,6 +48,7 @@ const AddGame = () => {
 
     try {
       const response = await addGame(data);
+      setGameThumbnail(null);
       toast.success("Game Added successfully!");
       setGame({
         name: "",
@@ -62,7 +61,6 @@ const AddGame = () => {
         thumbnail: "",
         file: null,
       });
-      setGameThumbnail(null);
       setDisable(true);
     } catch (error) {
       toast.error(error.message);
@@ -101,7 +99,8 @@ const AddGame = () => {
         <input
           name="name"
           onChange={handleChange}
-          value={game.name}bo
+          value={game.name}
+          bo
           className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
         />
         <p className="text-left font-light">Category :</p>

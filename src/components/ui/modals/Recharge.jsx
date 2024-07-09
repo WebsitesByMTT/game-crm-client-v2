@@ -3,7 +3,7 @@ import { editClient, editCredits } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-const Recharge = ({ setOpen, setRefresh, id, refresh }) => {
+const Recharge = ({ setOpen, id }) => {
   const [amount, setAmount] = useState();
   const credits = {
     type: "recharge",
@@ -16,7 +16,6 @@ const Recharge = ({ setOpen, setRefresh, id, refresh }) => {
       return toast.error("Enter a valid amount");
     }
     try {
-      setRefresh(!refresh);
       const response = await editCredits(credits, id);
       setOpen(false);
       toast.success(response.responseData.message);

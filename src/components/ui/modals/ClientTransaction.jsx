@@ -46,7 +46,7 @@ const ClientTransactions = ({ data, setOpenTransaction, openTransaction }) => {
           <div className="h-[80%] w-[90%] lg:w-[50%] flex flex-col bg-[#1a1a1a] py-2 px-5 rounded-md">
             <div className="w-full flex items-center justify-between my-2">
               <div className="w-[70%] flex gap-2">
-                <div className="w-full flex shadow-lg items-center gap-2 text-white  rounded-md  font-extralight bg-[#dfdfdf1d] py-2 px-4 ">
+                <div className="w-full mb-3 flex shadow-lg items-center gap-2 text-white  rounded-md  font-extralight bg-[#dfdfdf1d] py-2 px-4 ">
                   <div className="text-lg">
                     <FiSearch />
                   </div>

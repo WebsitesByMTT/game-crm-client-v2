@@ -3,7 +3,7 @@ import { editClient, editStatus } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-const ClientStatus = ({ setOpen, setRefresh, id, prevStatus, refresh }) => {
+const ClientStatus = ({ setOpen, id, prevStatus }) => {
   const [status, setStatus] = useState(prevStatus);
 
   const handleSubmit = async (e) => {
@@ -12,7 +12,6 @@ const ClientStatus = ({ setOpen, setRefresh, id, prevStatus, refresh }) => {
       return toast.error("Status is required");
     }
     try {
-      setRefresh(!refresh);
       const response = await editStatus(status, id);
       setOpen(false);
       toast.success(response.responseData.message);

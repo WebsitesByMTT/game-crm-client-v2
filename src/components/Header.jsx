@@ -5,8 +5,8 @@ import { FaMoon } from "react-icons/fa";
 import { IoSunny } from "react-icons/io5";
 import { useEffect, useState } from "react";
 
-const Header = ({ userData }) => {
-  const data = useSelector((state) => state.userData);
+const Header = () => {
+  const userData = useSelector((state) => state.user.userData);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
