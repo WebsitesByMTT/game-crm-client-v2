@@ -64,7 +64,7 @@ export const getUserData = async () => {
   }
 };
 
-export const getClients = async () => {
+export const getAllClients = async () => {
   const token = await getCookie();
   try {
     const response = await fetch(`${config.server}/api/users/all`, {
@@ -83,6 +83,8 @@ export const getClients = async () => {
     return { data };
   } catch (error) {
     throw error;
+  } finally {
+    revalidatePath("/clients/all");
   }
 };
 
@@ -106,6 +108,8 @@ export const getMyClients = async (id) => {
     return { data };
   } catch (error) {
     throw error;
+  } finally {
+    revalidatePath(`/clients/${id}`);
   }
 };
 
@@ -131,7 +135,7 @@ export const addClient = async (user) => {
   } catch (error) {
     throw error;
   } finally {
-    revalidatePath("/");
+    revalidatePath("/clients/all", "page");
   }
 };
 
@@ -154,6 +158,8 @@ export const deleteClient = async (id) => {
     return { data };
   } catch (error) {
     throw error;
+  } finally {
+    revalidatePath("/clients/all", "page");
   }
 };
 
@@ -177,6 +183,8 @@ export const editPassword = async (existingPassword, password, id) => {
     return { responseData };
   } catch (error) {
     throw error;
+  } finally {
+    revalidatePath("/clients/all", "page");
   }
 };
 
@@ -200,6 +208,8 @@ export const editCredits = async (credits, id) => {
     return { responseData };
   } catch (error) {
     throw error;
+  } finally {
+    revalidatePath("/clients/all", "page");
   }
 };
 
@@ -223,6 +233,8 @@ export const editStatus = async (status, id) => {
     return { responseData };
   } catch (error) {
     throw error;
+  } finally {
+    revalidatePath("/clients/all", "page");
   }
 };
 

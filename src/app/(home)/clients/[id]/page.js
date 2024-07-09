@@ -1,6 +1,7 @@
 import Clients from "@/components/Clients";
 import { config } from "@/utils/config";
 import { getCookie } from "@/utils/cookie";
+import { revalidatePath } from "next/cache";
 
 const getMyClients = async (id) => {
   const token = await getCookie();
@@ -22,6 +23,8 @@ const getMyClients = async (id) => {
     return { data };
   } catch (error) {
     throw error;
+  } finally {
+    revalidatePath(`/clients/${id}`);
   }
 };
 

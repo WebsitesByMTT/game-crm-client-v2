@@ -2,12 +2,12 @@
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoMdClose } from "react-icons/io";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearUserData } from "../store/userSlice";
 import { FaUserTie, FaUsers } from "react-icons/fa";
 import { MdOutlinePlayCircleFilled } from "react-icons/md";
@@ -17,13 +17,13 @@ import { IoLogoGameControllerB } from "react-icons/io";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { RiUserAddFill } from "react-icons/ri";
 
-const LeftSideBar = ({ userData }) => {
+const LeftSideBar = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [option, setOption] = useState("Dashboard");
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState(userData);
   const [openDropdown, setOpenDropdown] = useState(false);
+  const userdata = useSelector((state) => state.user.userData);
 
   const SideBar = {
     company: [
@@ -40,7 +40,7 @@ const LeftSideBar = ({ userData }) => {
         nested: [
           {
             LinkName: "My Clients",
-            Link: `/clients/${data?._id}`,
+            Link: `/clients/${userdata?._id}`,
             icon: <FaUserTie />,
           },
           {
@@ -106,7 +106,7 @@ const LeftSideBar = ({ userData }) => {
         nested: [
           {
             LinkName: "My Clients",
-            Link: `/clients/${data?._id}`,
+            Link: `/clients/${userdata?._id}`,
             icon: <FaUserTie />,
           },
           {
@@ -117,22 +117,10 @@ const LeftSideBar = ({ userData }) => {
         ],
       },
       {
-        LinkName: "Transaction",
-        Link: "",
+        LinkName: "Transactions",
+        Link: "/transaction/my",
         icon: <RiMoneyRupeeCircleFill />,
-        showDropDown: true,
-        nested: [
-          {
-            LinkName: "My Transaction",
-            Link: "/transaction/my",
-            icon: <RiMoneyRupeeCircleFill />,
-          },
-          {
-            LinkName: "All Transaction",
-            Link: "/transaction/all",
-            icon: <RiMoneyRupeeCircleFill />,
-          },
-        ],
+        showDropDown: false,
       },
     ],
   };
@@ -198,8 +186,8 @@ const LeftSideBar = ({ userData }) => {
             </svg>
           </div>
           <ul className=" mt-5 w-full py-4 flex flex-col gap-3 text-xl font-light text-black dark:text-white text-opacity-90 ">
-            {data?.role === "company"
-              ? SideBar.company.map((item, ind) => (
+            {userdata?.role === "company"
+              ? SideBar.company?.map((item, ind) => (
                   <div key={ind}>
                     <Link
                       onClick={() => {
@@ -325,26 +313,18 @@ const LeftSideBar = ({ userData }) => {
                                   : "bg-transparent"
                               }`}
                             >
-                              <li
-                                className={`w-[90%] ml-auto p-2 rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33] transition-all ${
-                                  option === subitem.LinkName
-                                    ? "bg-[#dfdfdf1e]"
-                                    : "bg-transparent"
-                                }`}
-                              >
-                                <div
-                                  className={`
+                              <div
+                                className={`
                                 ${
                                   option === subitem.LinkName
                                     ? "text-[#8C7CFD]"
                                     : "dark:text-white text-black text-opacity-90 "
                                 }   
                                 `}
-                                >
-                                  {subitem.icon}
-                                </div>
-                                <span>{subitem.LinkName}</span>
-                              </li>
+                              >
+                                {subitem.icon}
+                              </div>
+                              <span>{subitem.LinkName}</span>
                             </li>
                           </Link>
                         ))}

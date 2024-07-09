@@ -6,7 +6,7 @@ import React from "react";
 const getTransactions = async () => {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/transactions`, {
+    const response = await fetch(`${config.server}/api/transactions/all`, {
       method: "GET",
       credentials: "include",
       headers: {

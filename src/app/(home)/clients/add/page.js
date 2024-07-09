@@ -5,36 +5,72 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
 const AddClient = () => {
-  const [user, setUser] = useState({
-    username: "",
-    name: "",
-    password: "",
-    role: "",
-    credits: "",
-  });
-  const [userRole, setUserRole] = useState("");
-  const data = useSelector((state) => state.user.userData);
-  const myRole = data.role;
+  // const [user, setUser] = useState({
+  //   username: "",
+  //   name: "",
+  //   password: "",
+  //   role: "",
+  //   credits: 0,
+  // });
+  // const [userRole, setUserRole] = useState("");
+  // const data = useSelector((state) => state.user.userData);
+  // const myRole = data?.role;
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   switch (myRole) {
+  //     case "master":
+  //       setUserRole("distributor");
+  //       break;
+  //     case "distributor":
+  //       setUserRole("subdistributor");
+  //       break;
+  //     case "subdistributor":
+  //       setUserRole("store");
+  //       break;
+  //     case "store":
+  //       setUserRole("player");
+  //       break;
+  //     case "company":
+  //       setUserRole("master");
+  //       break;
+  //     default:
+  //       setUserRole("");
+  //       break;
+  //   }
+  // }, [myRole]);
+  const data = useSelector((state) => state.user.userData);
+  const myRole = data?.role;
+  const [user, setUser] = useState(() => {
+    let initialRole = "";
     switch (myRole) {
+      case "company":
+        initialRole = "master";
+        break;
       case "master":
-        setUserRole("distributor");
+        initialRole = "distributor";
         break;
       case "distributor":
-        setUserRole("subdistributor");
+        initialRole = "subdistributor";
         break;
       case "subdistributor":
-        setUserRole("store");
+        initialRole = "store";
         break;
       case "store":
-        setUserRole("player");
+        initialRole = "player";
         break;
       default:
-        setUserRole("");
+        initialRole = "";
         break;
     }
-  }, [myRole]);
+
+    return {
+      username: "",
+      name: "",
+      password: "",
+      role: initialRole,
+      credits: 0,
+    };
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,10 +82,6 @@ const AddClient = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (myRole !== "company") {
-      user.role = userRole;
-    }
-
     if (
       user.username === "" ||
       user.name === "" ||
@@ -122,18 +154,11 @@ const AddClient = () => {
           <input
             name="role"
             type="text"
-            value={userRole}
+            value={user.role}
+            disabled
             className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]"
           />
         )}
-        <p className="text-left font-light">Credits :</p>
-        <input
-          name="credits"
-          type="number"
-          onChange={handleChange}
-          value={user.credits}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]"
-        />
         <div className="col-span-2 flex justify-center mt-2">
           <button
             type="submit"

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Modal from "@/components/ui/Modal";
 import { deleteClient } from "@/utils/action";
@@ -157,7 +157,7 @@ const Clients = ({ clientData }) => {
           />
         </div>
       </div>
-     
+      <Suspense fallback={<p>Loading.....</p>}>
         <TableComponent
           tableData={tableData}
           Filter={handleFilterData}
@@ -166,6 +166,7 @@ const Clients = ({ clientData }) => {
           openModal={handleModalOpen}
           deleteTableData={handleDelete}
         />
+      </Suspense>
       <Modal
         open={open}
         setOpen={setOpen}

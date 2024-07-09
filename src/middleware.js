@@ -11,7 +11,13 @@ export default function middleware(req) {
     return NextResponse.redirect(new URL(`/`, req.url));
   }
   // Check if the user's designation is not 'company' and redirect them away from the games route
-  if (jwt.decode(loggedin?.value)?.role !== "company" && pathname === "/game") {
+  if (
+    jwt.decode(loggedin?.value)?.role !== "company" &&
+    (pathname === "/game" ||
+      pathname === "/transaction/all" ||
+      pathname === "/clients/all" ||
+      pathname === "/add-game")
+  ) {
     return NextResponse.redirect(new URL(`/`, req.url));
   }
   // For any other cases return
