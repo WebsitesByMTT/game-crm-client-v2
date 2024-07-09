@@ -32,6 +32,7 @@ const page = async ({ params }) => {
   const clientData = await getMyClients(params.id);
   return (
     <div>
+      <h1 className=" text-white">Clients</h1>
       {clientData && <Clients clientData={clientData?.data?.subordinates} />}
     </div>
   );

@@ -4,6 +4,7 @@ import Dashboard from "./Dashboard";
 import Clients from "./Clients";
 import Transactions from "./Transaction";
 import { useSelector } from "react-redux";
+import Report from "./Report";
 
 const Subordinate = ({ subordinateData }) => {
   const [option, setOption] = useState("report");
@@ -30,21 +31,21 @@ const Subordinate = ({ subordinateData }) => {
         >
           Report
         </button>
-        {userData?.role === "company" ||
-          (subordinateData?.role === "Player" && (
-            <button
-              onClick={() => {
-                setOption("subordinates");
-              }}
-              className={`px-4 py-2 bg-[#7969ed50] rounded-md ${
-                option === "subordinates"
-                  ? "text-white bg-[#8D7CFD]"
-                  : "text-[#f4f2f2ac]"
-              } border-[1px] border-[#e3e2eb56] transition-all`}
-            >
-              Subordinates
-            </button>
-          ))}
+        {(userData?.role === "company" ||
+          subordinateData?.role != "player") && (
+          <button
+            onClick={() => {
+              setOption("subordinates");
+            }}
+            className={`px-4 py-2 bg-[#7969ed50] rounded-md ${
+              option === "subordinates"
+                ? "text-white bg-[#8D7CFD]"
+                : "text-[#f4f2f2ac]"
+            } border-[1px] border-[#e3e2eb56] transition-all`}
+          >
+            Subordinates
+          </button>
+        )}
         <button
           onClick={() => {
             setOption("transactions");
@@ -58,11 +59,16 @@ const Subordinate = ({ subordinateData }) => {
           Transactions
         </button>
       </div>
+
       {subordinateData && option === "subordinates" && (
         <Clients clientData={subordinateData?.subordinates} />
       )}
       {subordinateData && option === "transactions" && (
         <Transactions transactions={subordinateData?.transactions} />
+      )}
+
+      {subordinateData && option === "report" && (
+        <Report id={subordinateData?._id} />
       )}
     </div>
   );
