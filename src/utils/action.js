@@ -1,5 +1,5 @@
 "use server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { config } from "./config";
 import { getCookie } from "./cookie";
 
@@ -64,7 +64,7 @@ export const getUserData = async () => {
   }
 };
 
-export const getClients = async () => {
+export const getAllClients = async () => {
   const token = await getCookie();
   try {
     const response = await fetch(`${config.server}/api/users/all`, {
@@ -74,6 +74,7 @@ export const getClients = async () => {
         "Content-Type": "application/json",
         Cookie: `userToken=${token}`,
       },
+      next: { tags: ["client"] },
     });
     if (!response.ok) {
       const error = await response.json();
@@ -131,7 +132,7 @@ export const addClient = async (user) => {
   } catch (error) {
     throw error;
   } finally {
-    revalidatePath("/");
+    revalidatePath("/clients/all");
   }
 };
 
@@ -154,6 +155,8 @@ export const deleteClient = async (id) => {
     return { data };
   } catch (error) {
     throw error;
+  } finally {
+    revalidatePath("/clients/all");
   }
 };
 
@@ -177,6 +180,8 @@ export const editPassword = async (existingPassword, password, id) => {
     return { responseData };
   } catch (error) {
     throw error;
+  } finally {
+    revalidateTag("client");
   }
 };
 
@@ -200,6 +205,8 @@ export const editCredits = async (credits, id) => {
     return { responseData };
   } catch (error) {
     throw error;
+  } finally {
+    revalidateTag("client");
   }
 };
 
@@ -223,6 +230,8 @@ export const editStatus = async (status, id) => {
     return { responseData };
   } catch (error) {
     throw error;
+  } finally {
+    revalidateTag("client");
   }
 };
 
@@ -340,3 +349,32 @@ export const addGame = async (game) => {
     throw error;
   }
 };
+
+
+export async function getUserReport(id, type) {
+  const token = await getCookie();
+
+  try {
+    const response = await fetch(`${config.server}/api/users/report/${id}?type=${type.toLowerCase()}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+
+    const data = await response.json();
+    console.log("data : ", data);
+
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

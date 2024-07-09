@@ -1,12 +1,11 @@
 "use client";
 import Modal from "@/components/ui/Modal";
-import { deleteGame} from "@/utils/action";
-import React, {useState } from "react";
+import { deleteGame } from "@/utils/action";
+import React, { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import toast from "react-hot-toast";
-import GameDetails from "@/components/ui/modals/GameDetails";
 import EditGame from "@/components/ui/modals/EditGame";
-import Loader from "@/components/ui/Loader";
+import DeleteModal from "@/components/ui/modals/DeleteModal";
 import TableComponent from "@/components/TableComponent";
 import { handleFilter } from "@/utils/Filter";
 
@@ -17,24 +16,35 @@ const GameList = ({ games }) => {
   const [rowData, setRowData] = useState();
   const [modalType, setModalType] = useState("");
   const [search, setSearch] = useState("");
-  const optionList = [];
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await deleteGame(id);
+      toast.success(response.data.message);
+      setOpen(false);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   let ModalContent;
   switch (modalType) {
-    case "Game Details":
-      ModalContent = <GameDetails data={rowData} />;
-      break;
-
     case "Edit Game":
       ModalContent = (
-        <EditGame
-          prevData={rowData}
-          id={rowData._id}
-          setOpen={setOpen}
-        />
+        <EditGame prevData={rowData} id={rowData._id} setOpen={setOpen} />
       );
       break;
 
+    case "Delete":
+      ModalContent = (
+        <DeleteModal
+          title="game"
+          setOpen={setOpen}
+          id={rowData._id}
+          handleDelete={handleDelete}
+        />
+      );
+      break;
     default:
       ModalContent = null;
   }
@@ -47,23 +57,11 @@ const GameList = ({ games }) => {
     setRowData(data);
   };
 
-  
   const handleSearch = (searchTerm) => {
     const filtered = data.filter((item) =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(filtered);
-  };
-
-  const handleDelete = async (id, e) => {
-    e.stopPropagation();
-    try {
-      const response = await deleteGame(id);
-      toast.success(response.data.message);
-      setRefresh((prev) => !prev);
-    } catch (error) {
-      toast.error(error.message);
-    }
   };
 
   const handleFilterData = (key, value, Num) => {
@@ -74,13 +72,13 @@ const GameList = ({ games }) => {
   const tableData = {
     tableHead: ["name", "category", "type", "status", "slug", "action"],
     tableBody: ["name", "category", "type", "status", "slug", "action"],
-    Status: ["active", "inactive"]
+    Status: ["active", "inactive"],
   };
 
   return (
     <div className="h-full w-[95%] mx-auto flex flex-col">
       <div className="lg:w-[50%] pt-4">
-        <div className="w-full flex shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light border dark:border-none rounded-md  font-extralight py-4 lg:py-2 px-4">
+        <div className="w-full mb-3 flex shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light border dark:border-none rounded-md  font-extralight py-4 lg:py-2 px-4">
           <div className="text-lg">
             <FiSearch />
           </div>
@@ -91,7 +89,7 @@ const GameList = ({ games }) => {
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
-              handleSearch(e.target.value)
+              handleSearch(e.target.value);
             }}
           />
         </div>

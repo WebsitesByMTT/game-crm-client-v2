@@ -1,5 +1,5 @@
-"use client"
-import React, { useState } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -31,10 +31,19 @@ const TableComponent = ({
   Filter,
 }) => {
   const router = useRouter();
-  const [filterCountData, setFilterCountData] = useState({ From: '', To: '' });
+  const [filterCountData, setFilterCountData] = useState({ From: "", To: "" });
   const [isDropdownOpen, setIsDropdownOpen] = useState({});
   const userData = useSelector((state) => state.user.userData);
   const userId = userData?._id;
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    setData(DashboardFetchedData);
+  }, [DashboardFetchedData]);
+
+  useEffect(() => {
+    console.log("Changedv: ", DashboardFetchedData);
+  }, [DashboardFetchedData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -71,10 +80,10 @@ const TableComponent = ({
     closeDropdown(item);
   };
 
-  const PassFilterData=(item,subitem)=>{
-    Filter(item,subitem)
-    toggleDropdown(item)
-  }
+  const PassFilterData = (item, subitem) => {
+    Filter(item, subitem);
+    toggleDropdown(item);
+  };
 
   return (
     <div className="rounded-md  h-[80vh] w-full mx-auto overflow-y-scroll">
@@ -88,8 +97,8 @@ const TableComponent = ({
                     {item === "totalRedeemed"
                       ? "redeem"
                       : item === "totalRecharged"
-                        ? "Recharge"
-                        : item}
+                      ? "Recharge"
+                      : item}
                   </span>
                   {item !== "action" &&
                     item !== "username" &&
@@ -114,41 +123,58 @@ const TableComponent = ({
                               item === "credits" ||
                               item === "amount" ||
                               item === "Updated At") && (
-                                <div className="p-2 space-x-3">
-                                  <input
-                                    type={item === "Updated At" ? 'date' : 'number'}
-                                    name="From"
-                                    placeholder="From"
-                                    onChange={item !== "Updated At" ? handleInputChange : handleDateChange}
-                                    className="outline-none border border-gray-700 bg-black text-white rounded-[.4rem] px-4 py-2"
-                                  />
-                                  <input
-                                    type={item === "Updated At" ? 'date' : 'number'}
-                                    name="To"
-                                    placeholder="To"
-                                    onChange={item !== "Updated At" ? handleInputChange : handleDateChange}
-                                    className="outline-none border border-gray-700 bg-black text-white rounded-[.4rem] px-4 py-2"
-                                  />
-                                  <button
-                                    onClick={() =>
-                                      handleSearchClick(item, item === "Updated At" ? "Calender" : "Numbers")
-                                    }
-                                    type="button"
-                                    className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-                                  >
-                                    Search
-                                  </button>
-                                </div>
-                              )}
+                              <div className="p-2 space-x-3">
+                                <input
+                                  type={
+                                    item === "Updated At" ? "date" : "number"
+                                  }
+                                  name="From"
+                                  placeholder="From"
+                                  onChange={
+                                    item !== "Updated At"
+                                      ? handleInputChange
+                                      : handleDateChange
+                                  }
+                                  className="outline-none border border-gray-700 bg-black text-white rounded-[.4rem] px-4 py-2"
+                                />
+                                <input
+                                  type={
+                                    item === "Updated At" ? "date" : "number"
+                                  }
+                                  name="To"
+                                  placeholder="To"
+                                  onChange={
+                                    item !== "Updated At"
+                                      ? handleInputChange
+                                      : handleDateChange
+                                  }
+                                  className="outline-none border border-gray-700 bg-black text-white rounded-[.4rem] px-4 py-2"
+                                />
+                                <button
+                                  onClick={() =>
+                                    handleSearchClick(
+                                      item,
+                                      item === "Updated At"
+                                        ? "Calender"
+                                        : "Numbers"
+                                    )
+                                  }
+                                  type="button"
+                                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                                >
+                                  Search
+                                </button>
+                              </div>
+                            )}
                             {(item === "role" || item === "type"
                               ? tableData?.Filter
                               : item === "status"
-                                ? tableData?.Status
-                                : null
+                              ? tableData?.Status
+                              : null
                             )?.map((subitem) => (
                               <DropdownMenuItem
                                 key={subitem}
-                                onClick={() =>PassFilterData(item, subitem)}
+                                onClick={() => PassFilterData(item, subitem)}
                                 className="capitalize"
                               >
                                 {subitem}
@@ -164,195 +190,163 @@ const TableComponent = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {DashboardFetchedData?.map((item, index) => (
-            <TableRow className={`${pageType === "transaction"&&'hover:bg-gray-700 transition-all cursor-pointer'} text-black dark:text-gray-300`} key={index}
-              onClick={pageType === "transaction" ? () => {
-                rowClick(item);
-                openModal("Transaction Details");
-              } : null}>
-              {
-                tableData?.tableBody?.map((subitem) => {
-                  switch (subitem) {
-                    case "username":
-                      return (
-                        <TableCell
-                        className="cursor-pointer hover:bg-gray-600 transition-all"
-                          onClick={() =>
-                            router.push(`/clients/${userId}/${item._id}`)
-                          }
-                        >
-                          {item.username}
-                        </TableCell>
-                      );
+          {data?.map((item, index) => (
+            <TableRow
+              className="dark:hover:bg-gray-700 hover:bg-[#64616149] transition-all
+              text-black dark:text-gray-300"
+              key={index}
+            >
+              {tableData?.tableBody?.map((subitem) => {
+                switch (subitem) {
+                  case "username":
+                    return (
+                      <TableCell
+                        className="cursor-pointer hover:scale-[1.2] transition-all"
+                        onClick={() =>
+                          router.push(`/clients/${userId}/${item._id}`)
+                        }
+                      >
+                        {item.username}
+                      </TableCell>
+                    );
 
-                    case "status":
-                      return (
-                        <TableCell
-                          className={
-                            item.status === "active"
-                              ? "text-[#70ef44]"
-                              : "text-[#ef4444]"
-                          }
-                        >
-                          <div className="w-full flex gap-2 items-center justify-center">
-                            <div className="text-[8px]">
-                              <FaCircle />
-                            </div>
-                            <span className="text-black dark:text-gray-300">{item.status}</span>
+                  case "status":
+                    return (
+                      <TableCell
+                        className={
+                          item.status === "active"
+                            ? "text-[#70ef44]"
+                            : "text-[#ef4444]"
+                        }
+                      >
+                        <div className="w-full flex gap-2 items-center justify-center">
+                          <div className="text-[8px]">
+                            <FaCircle />
                           </div>
-                        </TableCell>
-                      );
+                          <span className="text-black dark:text-gray-300">
+                            {item.status}
+                          </span>
+                        </div>
+                      </TableCell>
+                    );
 
-                    case "role":
-                      return <TableCell>{item.role}</TableCell>;
+                  case "role":
+                    return <TableCell>{item.role}</TableCell>;
 
-                    case "totalRedeemed":
-                      return (
-                        <TableCell>
-                          {item.totalRedeemed}
-                        </TableCell>
-                      );
+                  case "totalRedeemed":
+                    return <TableCell>{item.totalRedeemed}</TableCell>;
 
-                    case "totalRecharged":
-                      return (
-                        <TableCell>
-                          {item?.totalRecharged}
-                        </TableCell>
-                      );
+                  case "totalRecharged":
+                    return <TableCell>{item?.totalRecharged}</TableCell>;
 
-                    case "credits":
-                      return (
-                        <TableCell>
-                          {item.credits}
-                        </TableCell>
-                      );
+                  case "credits":
+                    return <TableCell>{item.credits}</TableCell>;
 
-                    case "action":
-                      return (
-                        <TableCell>
-                          <div className="flex gap-5 text-2xl justify-center relative">
-                            {pageType === "game" ? (
-                              <div
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  rowClick(item);
-                                  openModal("Edit Game");
-                                }}
-                                className="flex gap-5 text-2xl justify-center relative"
-                              >
-                                <div className="text-[#1b1b1e] editgradient p-1 rounded-md">
-                                  <MdEdit />
-                                </div>
-                              </div>
-                            ) : (
-                              <>
-                                <div
-                                  className="text-[#1b1b1e] flex items-center justify-center text-sm viewgradient px-2 p-1 leading-3 font-[500] rounded-md cursor-pointer"
-                                  onClick={() => {
-                                    rowClick(item);
-                                    openModal("Client Details");
-                                  }}
-                                >
-                                  View
-                                </div>
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger className="text-[#1b1b1e] editgradient p-1 rounded-md">
-                                    <BsThreeDotsVertical />
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent>
-                                    <DropdownMenuItem
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        openModal("Change Password");
-                                        rowClick(item);
-                                      }}
-                                    >
-                                      Change Password
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        rowClick(item);
-                                        openModal("Recharge Client");
-                                      }}
-                                    >
-                                      Recharge Client
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        rowClick(item);
-                                        openModal("Redeem Client");
-                                      }}
-                                    >
-                                      Redeem Client
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        rowClick(item);
-                                        openModal("Update Status");
-                                      }}
-                                    >
-                                      Update Status
-                                    </DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
-                              </>
-                            )}
+                  case "action":
+                    return (
+                      <TableCell>
+                        <div className="flex gap-5 text-2xl justify-center relative">
+                          {pageType === "game" ? (
                             <div
                               onClick={(e) => {
-                                deleteTableData(item._id, e);
+                                e.stopPropagation();
+                                rowClick(item);
+                                openModal("Edit Game");
                               }}
-                              className="text-[#1b1b1e] deletegradient p-1 rounded-md"
+                              className="flex gap-5 text-2xl justify-center relative"
                             >
-                              <MdDeleteOutline />
+                              <div className="text-[#1b1b1e] editgradient p-1 rounded-md">
+                                <MdEdit />
+                              </div>
                             </div>
+                          ) : (
+                            <>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger className="text-[#1b1b1e] editgradient p-1 rounded-md">
+                                  <BsThreeDotsVertical />
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                  <DropdownMenuItem
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      openModal("Change Password");
+                                      rowClick(item);
+                                    }}
+                                  >
+                                    Change Password
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      rowClick(item);
+                                      openModal("Recharge Client");
+                                    }}
+                                  >
+                                    Recharge Client
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      rowClick(item);
+                                      openModal("Redeem Client");
+                                    }}
+                                  >
+                                    Redeem Client
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      rowClick(item);
+                                      openModal("Update Status");
+                                    }}
+                                  >
+                                    Update Status
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </>
+                          )}
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openModal("Delete");
+                              rowClick(item);
+                            }}
+                            className="text-[#1b1b1e] deletegradient p-1 rounded-md"
+                          >
+                            <MdDeleteOutline />
                           </div>
-                        </TableCell>
-                      );
+                        </div>
+                      </TableCell>
+                    );
 
-                    case "type":
-                      return <TableCell>{item.type}</TableCell>;
+                  case "type":
+                    return <TableCell>{item.type}</TableCell>;
 
-                    case "amount":
-                      return <TableCell>{item.amount}</TableCell>;
+                  case "amount":
+                    return <TableCell>{item.amount}</TableCell>;
 
-                    case "creditor":
-                      return (
-                        <TableCell>
-                          {item.creditor}
-                        </TableCell>
-                      );
+                  case "creditor":
+                    return <TableCell>{item.creditor}</TableCell>;
 
-                    case "debtor":
-                      return (
-                        <TableCell>
-                          {item.debtor}
-                        </TableCell>
-                      );
+                  case "debtor":
+                    return <TableCell>{item.debtor}</TableCell>;
 
-                    case "updatedAt":
-                      return (
-                        <TableCell>
-                          {item?.updatedAt?.split("T")[0]}
-                        </TableCell>
-                      );
+                  case "updatedAt":
+                    return (
+                      <TableCell>{item?.updatedAt?.split("T")[0]}</TableCell>
+                    );
 
-                    case "name":
-                      return <TableCell>{item.name}</TableCell>;
+                  case "name":
+                    return <TableCell>{item.name}</TableCell>;
 
-                    case "category":
-                      return <TableCell>{item.category}</TableCell>;
+                  case "category":
+                    return <TableCell>{item.category}</TableCell>;
 
-                    case "slug":
-                      return (
-                        <TableCell>
-                          {item.slug}
-                        </TableCell>
-                      );
-                  }
-                })}
+                  case "slug":
+                    return <TableCell>{item.slug}</TableCell>;
+                }
+              })}
             </TableRow>
           ))}
         </TableBody>
