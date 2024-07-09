@@ -24,10 +24,10 @@ const ClientStatus = ({ setOpen, setRefresh, id, prevStatus, refresh }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-2 gap-4 overflow-hidden px-5"
+      className="grid grid-cols-2 md:gap-4 overflow-hidden px-5"
     >
       <p className="text-left font-light">Status : </p>
-      <div className="flex gap-5 items-center">
+      <div className="flex gap-2 md:gap-5 items-center">
         <div className="min-w-fit w-[30%] flex gap-2">
           <input
             type="radio"

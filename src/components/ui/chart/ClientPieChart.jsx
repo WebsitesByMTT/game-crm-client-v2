@@ -29,15 +29,13 @@ const ClientPieChart = () => {
   const COLORS = ["#6D81F5", "cyan"];
   return (
     <ResponsiveContainer
-      width="40%"
-      height="100%"
-      className={"relative rounded-2xl shadow-sm dark:bg-Dark_light bg-white pb-20 pt-8 "}
+      className={"relative rounded-2xl md:w-[40%] h-full shadow-sm dark:bg-Dark_light bg-white pb-[12rem] md:pb-20 pt-8 "}
     >
       <PieChart width="100%" height="100%">
         <Pie
           data={piedata}
-          innerRadius={140}
-          outerRadius={180}
+          innerRadius={'80%'}
+          outerRadius={'100%'}
           fill="#8884d8"
           paddingAngle={2}
           dataKey="value"

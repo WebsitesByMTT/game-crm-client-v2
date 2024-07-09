@@ -77,7 +77,7 @@ const PaymentChart = () => {
         }
     ];
     return (
-        <ResponsiveContainer width="60%" height="100%" className={'bg-white dark:bg-Dark_light rounded-2xl shadow-sm pb-28 pt-8 '}>
+        <ResponsiveContainer className={'bg-white  md:w-[60%] md:h-full dark:bg-Dark_light rounded-2xl shadow-sm pb-28 pt-8 '}>
             <div className="flex justify-between p-4">
                 <div className="text-[1.2rem] text-black dark:text-white font-semibold">Payment Overview</div>
                 <div className="flex items-center space-x-2">

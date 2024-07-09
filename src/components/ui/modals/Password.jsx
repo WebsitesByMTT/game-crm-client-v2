@@ -27,7 +27,7 @@ const Password = ({ id, setRefresh, setOpen, refresh }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-2 gap-4 overflow-hidden px-5"
+      className="grid grid-cols-2 md:gap-4 overflow-hidden px-5"
     >
       <p className="text-left font-light">Existing Password :</p>
       <input
