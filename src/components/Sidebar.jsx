@@ -147,7 +147,7 @@ const LeftSideBar = ({ userData }) => {
   return (
     <>
       <div
-        className="block absolute cursor-pointer top-0  left-0 lg:hidden text-[30px] text-white px-4 py-8"
+        className="block absolute cursor-pointer top-0  left-0 lg:hidden text-[30px] text-black dark:text-white px-4 py-8"
         onClick={() => setOpen((prev) => !prev)}
       >
         <RxHamburgerMenu />
@@ -205,6 +205,7 @@ const LeftSideBar = ({ userData }) => {
                       onClick={() => {
                         setOpenDropdown(openDropdown === ind ? null : ind);
                         setOption(item?.LinkName);
+                        setOpen(item.LinkName=="Dashboard"?false:true);
                       }}
                       href={item.Link}
                     >

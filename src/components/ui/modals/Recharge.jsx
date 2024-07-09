@@ -28,7 +28,7 @@ const Recharge = ({ setOpen, setRefresh, id, refresh }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-2 gap-4 overflow-hidden px-5"
+      className="grid grid-cols-2 space-x-2 md:space-x-0 md:gap-4 overflow-hidden px-5"
     >
       <p className="text-left font-light">Recharge Amount : </p>
       <input

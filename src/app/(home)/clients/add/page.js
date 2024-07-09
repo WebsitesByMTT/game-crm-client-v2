@@ -80,7 +80,7 @@ const AddClient = () => {
     <div className="h-[90%] w-full  flex items-center dark:bg-Dark justify-center">
       <form
         onSubmit={handleSubmit}
-        className="grid grid-cols-2 gap-4 gap-y-10 overflow-hidden w-[50%] dark:bg-Dark_light shadow-xl bg-white m-auto px-16 py-12 rounded-2xl text-black dark:text-white border-[#8b7cfd5b] border-[1px]"
+        className="grid grid-cols-2 gap-4 gap-y-10 overflow-hidden w-[90%] md:w-[70%] lg:w-[50%] dark:bg-Dark_light shadow-xl bg-white m-auto px-16 py-12 rounded-2xl text-black dark:text-white border-[#8b7cfd5b] border-[1px]"
       >
         <p className="text-left font-light">Username :</p>
         <input

@@ -1,5 +1,15 @@
+import toast from "react-hot-toast";
+
 export const handleFilter = (data, key, value, Num) => {
-  console.log(value, data);
+  console.log(value,"asdjhaj")
+  if(Num=='Numbers'||Num=='Calender'){
+    if (!value.From || !value.To) {
+      toast.error("Value is missing required properties.");
+      return data;
+    }
+  }
+ 
+
   switch (Num) {
     case 'Numbers':
       return data.filter((item) => item[key] >= value.From && item[key] <= value.To);
