@@ -21,9 +21,9 @@ const getUserData = async () => {
 export default async function Home() {
   const data = await getUserData();
   return (
-    <main className="space-y-3">
+    <main className="space-y-3 lg:h-screnn">
       <Dashboard data={data?.data} />
-      <div className="rounded-2xl flex space-x-10  h-[60vh]  w-[95%] mx-auto">
+      <div className="rounded-2xl space-y-5 md:space-y-0 md:flex md:space-x-5  h-[45vh] md:h-[60vh]  w-[95%] mx-auto">
         <PaymentChart />
         <ClientPieChart />
       </div>

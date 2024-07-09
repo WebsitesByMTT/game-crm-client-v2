@@ -3,7 +3,7 @@ import { editClient, editStatus } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-const ClientStatus = ({ setOpen, setRefresh, id, prevStatus, refresh }) => {
+const ClientStatus = ({ setOpen, id, prevStatus }) => {
   const [status, setStatus] = useState(prevStatus);
 
   const handleSubmit = async (e) => {
@@ -12,7 +12,6 @@ const ClientStatus = ({ setOpen, setRefresh, id, prevStatus, refresh }) => {
       return toast.error("Status is required");
     }
     try {
-      setRefresh(!refresh);
       const response = await editStatus(status, id);
       setOpen(false);
       toast.success(response.responseData.message);
@@ -24,10 +23,10 @@ const ClientStatus = ({ setOpen, setRefresh, id, prevStatus, refresh }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-2 gap-4 overflow-hidden px-5"
+      className="grid grid-cols-2 md:gap-4 overflow-hidden px-5"
     >
       <p className="text-left font-light">Status : </p>
-      <div className="flex gap-5 items-center">
+      <div className="flex gap-2 md:gap-5 items-center">
         <div className="min-w-fit w-[30%] flex gap-2">
           <input
             type="radio"

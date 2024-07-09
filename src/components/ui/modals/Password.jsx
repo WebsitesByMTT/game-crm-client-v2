@@ -3,7 +3,7 @@ import { editPassword } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-const Password = ({ id, setRefresh, setOpen, refresh }) => {
+const Password = ({ id, setOpen }) => {
   const [existingPassword, setExistingPassword] = useState("");
   const [password, setPassword] = useState("");
   const [reEnterPassword, setReEnterPassword] = useState("");
@@ -16,7 +16,6 @@ const Password = ({ id, setRefresh, setOpen, refresh }) => {
       return toast.error("Both the passwords do now match");
     }
     try {
-      setRefresh(!refresh);
       const response = await editPassword(existingPassword, password, id);
       toast.success(response.responseData.message);
       setOpen(false);
@@ -27,7 +26,7 @@ const Password = ({ id, setRefresh, setOpen, refresh }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-2 gap-4 overflow-hidden px-5"
+      className="grid grid-cols-2 md:gap-4 overflow-hidden px-5"
     >
       <p className="text-left font-light">Existing Password :</p>
       <input

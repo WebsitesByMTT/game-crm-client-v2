@@ -10,13 +10,16 @@ const Subordinate = ({ subordinateData }) => {
   const userData = useSelector((state) => state.user.userData);
   return (
     <div>
-      <div className="w-[94%] pt-3  m-auto">
+      <div className="w-[94%] pt-3 m-auto">
         <h1 className="text-2xl text-black dark:text-gray-400 ">
           {subordinateData.name}
         </h1>
+        <p className="text-md text-black dark:text-gray-400 capitalize">
+          <span>{subordinateData.role}</span>
+        </p>
       </div>
       <Dashboard data={subordinateData} />
-      <div className="flex w-[95%] mx-auto gap-5 my-5">
+      <div className="flex h-fit w-[95%] mx-auto gap-5 my-5">
         <button
           onClick={() => {
             setOption("report");
@@ -27,20 +30,21 @@ const Subordinate = ({ subordinateData }) => {
         >
           Report
         </button>
-        {userData?.role === "company" && (
-          <button
-            onClick={() => {
-              setOption("subordinates");
-            }}
-            className={`px-4 py-2 bg-[#7969ed50] rounded-md ${
-              option === "subordinates"
-                ? "text-white bg-[#8D7CFD]"
-                : "text-[#f4f2f2ac]"
-            } border-[1px] border-[#e3e2eb56] transition-all`}
-          >
-            Subordinates
-          </button>
-        )}
+        {userData?.role === "company" ||
+          (subordinateData?.role === "Player" && (
+            <button
+              onClick={() => {
+                setOption("subordinates");
+              }}
+              className={`px-4 py-2 bg-[#7969ed50] rounded-md ${
+                option === "subordinates"
+                  ? "text-white bg-[#8D7CFD]"
+                  : "text-[#f4f2f2ac]"
+              } border-[1px] border-[#e3e2eb56] transition-all`}
+            >
+              Subordinates
+            </button>
+          ))}
         <button
           onClick={() => {
             setOption("transactions");

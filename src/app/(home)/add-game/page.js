@@ -18,8 +18,6 @@ const AddGame = () => {
   const [gameThumbnail, setGameThumbnail] = useState(null);
   const [disable, setDisable] = useState(true);
 
-  
-
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setGame({
@@ -50,6 +48,7 @@ const AddGame = () => {
 
     try {
       const response = await addGame(data);
+      setGameThumbnail(null);
       toast.success("Game Added successfully!");
       setGame({
         name: "",
@@ -62,7 +61,6 @@ const AddGame = () => {
         thumbnail: "",
         file: null,
       });
-      setGameThumbnail(null);
       setDisable(true);
     } catch (error) {
       toast.error(error.message);
@@ -95,13 +93,14 @@ const AddGame = () => {
     <div className="h-[90%] w-full flex items-center dark:bg-Dark justify-center">
       <form
         onSubmit={handleSubmit}
-        className="grid grid-cols-2 gap-x-4 gap-y-6 overflow-hidden w-[50%] m-auto px-8 py-6 rounded-xl bg-white dark:bg-Dark_light text-black dark:text-white border-[#8b7cfd5b] border-[1px]"
+        className="grid grid-cols-2 gap-x-4 gap-y-6 overflow-hidden w-[90%] md:w-[70%] lg:w-[50%] m-auto px-8 py-6 rounded-xl bg-white dark:bg-Dark_light text-black dark:text-white border-[#8b7cfd5b] border-[1px]"
       >
         <p className="text-left font-light">Name :</p>
         <input
           name="name"
           onChange={handleChange}
-          value={game.name}bo
+          value={game.name}
+          bo
           className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
         />
         <p className="text-left font-light">Category :</p>

@@ -1,5 +1,5 @@
 "use server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { config } from "./config";
 import { getCookie } from "./cookie";
 
@@ -74,6 +74,7 @@ export const getAllClients = async () => {
         "Content-Type": "application/json",
         Cookie: `userToken=${token}`,
       },
+      next: { tags: ["client"] },
     });
     if (!response.ok) {
       const error = await response.json();
@@ -83,8 +84,6 @@ export const getAllClients = async () => {
     return { data };
   } catch (error) {
     throw error;
-  } finally {
-    revalidatePath("/clients/all");
   }
 };
 
@@ -108,8 +107,6 @@ export const getMyClients = async (id) => {
     return { data };
   } catch (error) {
     throw error;
-  } finally {
-    revalidatePath(`/clients/${id}`);
   }
 };
 
@@ -135,7 +132,7 @@ export const addClient = async (user) => {
   } catch (error) {
     throw error;
   } finally {
-    revalidatePath("/clients/all", "page");
+    revalidatePath("/clients/all");
   }
 };
 
@@ -159,7 +156,7 @@ export const deleteClient = async (id) => {
   } catch (error) {
     throw error;
   } finally {
-    revalidatePath("/clients/all", "page");
+    revalidatePath("/clients/all");
   }
 };
 
@@ -184,7 +181,7 @@ export const editPassword = async (existingPassword, password, id) => {
   } catch (error) {
     throw error;
   } finally {
-    revalidatePath("/clients/all", "page");
+    revalidateTag("client");
   }
 };
 
@@ -209,7 +206,7 @@ export const editCredits = async (credits, id) => {
   } catch (error) {
     throw error;
   } finally {
-    revalidatePath("/clients/all", "page");
+    revalidateTag("client");
   }
 };
 
@@ -234,7 +231,7 @@ export const editStatus = async (status, id) => {
   } catch (error) {
     throw error;
   } finally {
-    revalidatePath("/clients/all", "page");
+    revalidateTag("client");
   }
 };
 
