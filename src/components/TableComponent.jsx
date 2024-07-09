@@ -165,7 +165,7 @@ const TableComponent = ({
         </TableHeader>
         <TableBody>
           {DashboardFetchedData?.map((item, index) => (
-            <TableRow className="text-black dark:text-gray-300" key={index}
+            <TableRow className={`${pageType === "transaction"&&'hover:bg-gray-700 transition-all cursor-pointer'} text-black dark:text-gray-300`} key={index}
               onClick={pageType === "transaction" ? () => {
                 rowClick(item);
                 openModal("Transaction Details");
