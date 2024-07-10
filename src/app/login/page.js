@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const [data, setData] = useState({ username: "", password: ""});
+  const [data, setData] = useState({ username: "", password: "" });
   const [hide, setHide] = useState(false);
   const [load, setLoad] = useState(false);
   // const [captchaSrc, setCaptchaSrc] = useState("");

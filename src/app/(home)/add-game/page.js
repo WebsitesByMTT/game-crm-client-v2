@@ -62,6 +62,8 @@ const AddGame = () => {
         file: null,
       });
       setDisable(true);
+      document.getElementById("fileUpload").value = "";
+      document.getElementById("payoutFile").value = "";
     } catch (error) {
       toast.error(error.message);
     }
@@ -173,6 +175,7 @@ const AddGame = () => {
         <input
           name="file"
           type="file"
+          id="payoutFile"
           accept=".json"
           onChange={handleChange}
           required

@@ -1,7 +1,6 @@
 import GameList from "@/components/GameList";
 import { config } from "@/utils/config";
 import { getCookie } from "@/utils/cookie";
-import { revalidatePath } from "next/cache";
 
 export const getGames = async () => {
   const token = await getCookie();
@@ -23,8 +22,6 @@ export const getGames = async () => {
     return { data };
   } catch (error) {
     throw error;
-  } finally {
-    revalidatePath("/game");
   }
 };
 
