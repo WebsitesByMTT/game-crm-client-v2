@@ -25,7 +25,6 @@ import { getAllClients } from "@/utils/action";
 
 const page = async () => {
   const clientData = await getAllClients();
-  console.log("All clients", clientData.data.length);
   return <div>{clientData && <Clients clientData={clientData.data} />}</div>;
 };
 

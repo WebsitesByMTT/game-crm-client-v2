@@ -78,12 +78,15 @@ const TableComponent = ({
   const handleSearchClick = (item, filterType) => {
     Filter(item, filterCountData, filterType);
     closeDropdown(item);
+    setFilterCountData({ From: "", To: "" })
   };
 
   const PassFilterData = (item, subitem) => {
     Filter(item, subitem);
     toggleDropdown(item);
   };
+
+  console.log(pageType,"pagetype")
 
   return (
     <div className="rounded-md  h-[80vh] w-full mx-auto overflow-y-scroll">
@@ -107,7 +110,8 @@ const TableComponent = ({
                     item !== "name" &&
                     item !== "category" &&
                     item !== "slug" &&
-                    item !== "type" && (
+                    item !=="Type"&&
+                     (
                       <DropdownMenu>
                         <DropdownMenuTrigger
                           className="focus:outline-none"
@@ -117,7 +121,7 @@ const TableComponent = ({
                         </DropdownMenuTrigger>
 
                         {isDropdownOpen[item] && (
-                          <DropdownMenuContent>
+                          <DropdownMenuContent className="bg-[#F3F4F6] dark:bg-Dark dark:border-gray-700 border-gray-200">
                             {(item === "totalRedeemed" ||
                               item === "totalRecharged" ||
                               item === "credits" ||
@@ -135,7 +139,7 @@ const TableComponent = ({
                                       ? handleInputChange
                                       : handleDateChange
                                   }
-                                  className="outline-none border border-gray-700 bg-black text-white rounded-[.4rem] px-4 py-2"
+                                  className="outline-none border dark:border-gray-700 shadow-lg dark:bg-Dark_light text-black dark:text-white rounded-[.4rem] px-4 py-2"
                                 />
                                 <input
                                   type={
@@ -148,7 +152,7 @@ const TableComponent = ({
                                       ? handleInputChange
                                       : handleDateChange
                                   }
-                                  className="outline-none border border-gray-700 bg-black text-white rounded-[.4rem] px-4 py-2"
+                                  className="outline-none border shadow-lg dark:border-gray-700 dark:bg-Dark_light  text-black dark:text-white rounded-[.4rem] px-4 py-2"
                                 />
                                 <button
                                   onClick={() =>
@@ -160,13 +164,13 @@ const TableComponent = ({
                                     )
                                   }
                                   type="button"
-                                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                                  className="text-white bg-gray-500 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
                                 >
                                   Search
                                 </button>
                               </div>
                             )}
-                            {(item === "role" || item === "type"
+                            {(item === "role" || item === "type" 
                               ? tableData?.Filter
                               : item === "status"
                               ? tableData?.Status
@@ -175,7 +179,7 @@ const TableComponent = ({
                               <DropdownMenuItem
                                 key={subitem}
                                 onClick={() => PassFilterData(item, subitem)}
-                                className="capitalize"
+                                className="capitalize dark:text-white border-b-gray-300 dark:border-b-gray-500 cursor-pointer text-black"
                               >
                                 {subitem}
                               </DropdownMenuItem>
@@ -261,17 +265,18 @@ const TableComponent = ({
                             </div>
                           ) : (
                             <>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger className="text-[#1b1b1e] editgradient p-1 rounded-md">
+                              <DropdownMenu >
+                                <DropdownMenuTrigger className="text-[#1b1b1e]  editgradient p-1 rounded-md">
                                   <BsThreeDotsVertical />
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent>
+                                <DropdownMenuContent className="bg-[#F3F4F6] dark:bg-Dark dark:border-gray-700 border-gray-200">
                                   <DropdownMenuItem
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       openModal("Change Password");
                                       rowClick(item);
                                     }}
+                                    className="text-black dark:text-white dark:border-b-gray-700 border-b-gray-200 cursor-pointer"
                                   >
                                     Change Password
                                   </DropdownMenuItem>
@@ -281,6 +286,7 @@ const TableComponent = ({
                                       rowClick(item);
                                       openModal("Recharge Client");
                                     }}
+                                    className="text-black dark:text-white dark:border-b-gray-700 border-b-gray-200  cursor-pointer"
                                   >
                                     Recharge Client
                                   </DropdownMenuItem>
@@ -290,6 +296,7 @@ const TableComponent = ({
                                       rowClick(item);
                                       openModal("Redeem Client");
                                     }}
+                                    className="text-black dark:text-white dark:border-b-gray-700 border-b-gray-200  cursor-pointer"
                                   >
                                     Redeem Client
                                   </DropdownMenuItem>
@@ -299,6 +306,7 @@ const TableComponent = ({
                                       rowClick(item);
                                       openModal("Update Status");
                                     }}
+                                    className="text-black dark:text-white dark:border-b-gray-700 border-b-gray-200  cursor-pointer"
                                   >
                                     Update Status
                                   </DropdownMenuItem>
