@@ -237,8 +237,10 @@ export const editStatus = async (status, id) => {
 
 export const getGames = async () => {
   const token = await getCookie();
+  const platform="crm"
+  const category="all"
   try {
-    const response = await fetch(`${config.server}/api/games/`, {
+    const response = await fetch(`${config.server}/api/games?platform=${platform}&category=${category},`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -350,19 +352,21 @@ export const addGame = async (game) => {
   }
 };
 
-
 export async function getUserReport(id, type) {
   const token = await getCookie();
 
   try {
-    const response = await fetch(`${config.server}/api/users/report/${id}?type=${type.toLowerCase()}`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
+    const response = await fetch(
+      `${config.server}/api/users/report/${id}?type=${type.toLowerCase()}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       const error = await response.json();
@@ -372,6 +376,61 @@ export async function getUserReport(id, type) {
     const data = await response.json();
     console.log("data : ", data);
 
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const addPlatform = async (platform) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/games/platforms`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(platform), // Ensure platform is stringified
+      headers: {
+        "Content-Type": "application/json", // Specify content type
+        Cookie: `userToken=${token}`,
+      },
+    });
+
+    console.log(response);
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const data = await response.json();
+
+    return { data };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export async function getPlatform() {
+  const token = await getCookie();
+
+  try {
+    const response = await fetch(`${config.server}/api/games/platforms`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+
+    const data = await response.json();
+    console.log("data : ", data);
 
     return data;
   } catch (error) {

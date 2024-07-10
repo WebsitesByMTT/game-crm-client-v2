@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Modal from "@/components/ui/Modal";
 import { deleteClient } from "@/utils/action";
@@ -11,11 +11,13 @@ import ClientStatus from "@/components/ui/modals/ClientStatus";
 import DeleteModal from "@/components/ui/modals/DeleteModal";
 import TableComponent from "./TableComponent";
 import { handleFilter } from "@/utils/Filter";
+import { TfiReload } from "react-icons/tfi";
+import Loader from "./ui/Loader";
 
 const Clients = ({ clientData }) => {
   const [open, setOpen] = useState(false);
   const [rowData, setRowData] = useState();
-  const [refresh, setRefresh] = useState(false);
+  const [filter, setFilter] = useState([])
   const [modalType, setModalType] = useState("");
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
@@ -90,15 +92,43 @@ const Clients = ({ clientData }) => {
   };
 
   const handleSearch = (searchTerm) => {
-    const filtered = data.filter((item) =>
-      item.username.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredData(filtered);
+
+    const sourceData = filteredData?.length > 0 && searchTerm ? filteredData : filter?.length > 0 ? filter : data;
+
+    const substrings = [];
+    for (let i = 1; i <= searchTerm.length; i++) {
+      substrings.push(searchTerm.substring(0, i).toLowerCase());
+    }
+
+    const filtered = sourceData.filter((item) => {
+      const username = item.username.toLowerCase();
+      return substrings.some((substring) => username.includes(substring));
+    });
+
+    // Sort the filtered data to have usernames starting with the search term at the top
+    const sorted = filtered.sort((a, b) => {
+      const usernameA = a.username.toLowerCase();
+      const usernameB = b.username.toLowerCase();
+      const startsWithSearchTermA = usernameA.startsWith(searchTerm.toLowerCase());
+      const startsWithSearchTermB = usernameB.startsWith(searchTerm.toLowerCase());
+
+      if (startsWithSearchTermA && !startsWithSearchTermB) return -1;
+      if (!startsWithSearchTermA && startsWithSearchTermB) return 1;
+      return 0;
+    });
+
+    if (!searchTerm) {
+      setFilteredData(sourceData)
+    } else {
+      setFilteredData(sorted);
+    }
   };
+
 
   const handleFilterData = (key, value, Num) => {
     const dataFiltered = handleFilter(data, key, value, Num);
     setFilteredData(dataFiltered);
+    setFilter(dataFiltered)
   };
 
   const tableData = {
@@ -125,24 +155,26 @@ const Clients = ({ clientData }) => {
   };
 
   return (
-    <div className="h-full w-[95%] mx-auto flex flex-col">
-      <div className="md:w-[50%] pt-5">
-        <div className="w-full mb-3 flex bg-white shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light dark:border-none rounded-md  font-extralight py-4 md:py-2 px-4 ">
-          <div className="text-lg">
-            <FiSearch />
+    <>
+      <div className="h-full w-[95%] mx-auto flex flex-col">
+        <div className="md:w-[50%] flex items-center space-x-4 pt-5">
+          <div className="w-full mb-3 flex bg-white shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light dark:border-none rounded-md  font-extralight py-4 md:py-2 px-4 ">
+            <div className="text-lg">
+              <FiSearch />
+            </div>
+            <input
+              name="search"
+              className="focus:outline-none  placeholder:text-black dark:placeholder:text-[#fffbfb7c] text-md bg-transparent w-full"
+              placeholder="Search by Username"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                handleSearch(e.target.value);
+              }}
+            />
           </div>
-          <input
-            name="search"
-            className="focus:outline-none  placeholder:text-black dark:placeholder:text-[#fffbfb7c] text-md bg-transparent w-full"
-            placeholder="Search by Username"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              handleSearch(e.target.value);
-            }}
-          />
+          <div className="text-Dark_light dark:text-white pb-3" onClick={() => setFilteredData(data)}><TfiReload className="hover:text-gray-500 cursor-pointer" size={30} /></div>
         </div>
-      </div>
         <TableComponent
           tableData={tableData}
           Filter={handleFilterData}
@@ -151,15 +183,18 @@ const Clients = ({ clientData }) => {
           openModal={handleModalOpen}
           deleteTableData={handleDelete}
         />
-      <Modal
-        open={open}
-        setOpen={setOpen}
-        modalType={modalType}
-        setModalType={setModalType}
-      >
-        {ModalContent}
-      </Modal>
-    </div>
+        <Modal
+          open={open}
+          setOpen={setOpen}
+          modalType={modalType}
+          setModalType={setModalType}
+        >
+          {ModalContent}
+        </Modal>
+      </div>
+      <Loader/>
+    </>
+
   );
 };
 

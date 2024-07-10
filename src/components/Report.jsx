@@ -32,14 +32,14 @@ const Report = ({ id }) => {
   };
 
   return (
-    <div className="border p-4 flex flex-col gap-4">
+    <div className="border dark:border-gray-600 p-4 flex flex-col gap-4">
       <div className=" flex items-center justify-between">
-        <h5 className="text-xl">{reportType} Report</h5>
+        <h5 className="text-xl dark:text-white">{reportType} Report</h5>
         <select
           id="reportType"
           value={reportType}
           onChange={handleReportTypeChange}
-          className="border p-2"
+          className="border dark:border-gray-700 px-4 rounded-xl outline-none dark:bg-Dark_light dark:text-white p-2"
         >
           <option value="Daily">Daily</option>
           <option value="Weekly">Weekly</option>
@@ -49,7 +49,7 @@ const Report = ({ id }) => {
 
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 border bg-white flex gap-1 flex-col">
+          <div className="p-4 border dark:border-gray-600 dark:bg-Dark_light dark:text-white bg-white flex gap-1 flex-col">
             <h6 className="text-xl">Credits Given</h6>
             <p className="text-base flex items-center gap-2">
               <svg
@@ -71,7 +71,7 @@ const Report = ({ id }) => {
               <span>{data.creditsGiven}</span>
             </p>
           </div>
-          <div className="p-4 border bg-white flex gap-1 flex-col">
+          <div className="p-4 border dark:border-gray-600 dark:bg-Dark_light dark:text-white bg-white flex gap-1 flex-col">
             <h6 className="text-xl">Credits Spent</h6>
             <p className="text-base flex items-center gap-2">
               <svg
@@ -95,7 +95,7 @@ const Report = ({ id }) => {
           </div>
         </div>
 
-        <div className="border bg-white p-4 flex flex-col gap-4">
+        <div className="border bg-white p-4 dark:border-gray-600 dark:bg-Dark_light dark:text-white flex flex-col gap-4">
           <h5 className="text-base">Transactions</h5>
           <div className="grid gap-2">
             {data.transactions && data.transactions.length > 0 ? (
@@ -132,7 +132,7 @@ const Report = ({ id }) => {
           </div>
         </div>
 
-        <div className="border bg-white p-4 flex flex-col gap-4">
+        <div className="border bg-white dark:border-gray-600 dark:bg-Dark_light dark:text-white p-4 flex flex-col gap-4">
           <h5 className="text-base">Users Created</h5>
           <div className="grid gap-2">
             {data.users && data.users.length > 0 ? (
@@ -154,7 +154,7 @@ const Report = ({ id }) => {
           </div>
         </div>
 
-        <div className="border bg-white p-4 flex flex-col gap-4">
+        <div className="border bg-white dark:border-gray-600 dark:bg-Dark_light dark:text-white p-4 flex flex-col gap-4">
           <h5 className="text-base">Players Created</h5>
           <div className="grid gap-2">
             {data.players && data.players.length > 0 ? (
