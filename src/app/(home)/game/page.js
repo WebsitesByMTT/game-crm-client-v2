@@ -5,7 +5,7 @@ import { getCookie } from "@/utils/cookie";
 export const getGames = async () => {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/games/`, {
+    const response = await fetch(`${config.server}/api/games?platform=crm`, {
       method: "GET",
       credentials: "include",
       headers: {

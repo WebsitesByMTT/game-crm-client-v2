@@ -1,4 +1,5 @@
 "use client";
+import Loader from "@/components/ui/Loader";
 import { addClient, getUserData } from "@/utils/action";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -6,6 +7,7 @@ import { useSelector } from "react-redux";
 
 const AddClient = () => {
   const data = useSelector((state) => state.user.userData);
+  const [load,setLoad]=useState(false)
   const myRole = data?.role;
   const [user, setUser] = useState(() => {
     let initialRole = "";
@@ -61,6 +63,7 @@ const AddClient = () => {
       return toast.error("Credit can't be negative");
     }
     try {
+      setLoad(true)
       const response = await addClient(user);
       toast.success("Client Added successfully!");
       setUser({
@@ -70,12 +73,15 @@ const AddClient = () => {
         role: "",
         credits: "",
       });
+      setLoad(false)
     } catch (error) {
       toast.error(error.message);
+      setLoad(false)
     }
   };
 
   return (
+    <>
     <div className="h-[90%] w-full  flex items-center dark:bg-Dark justify-center">
       <form
         onSubmit={handleSubmit}
@@ -136,6 +142,9 @@ const AddClient = () => {
         </div>
       </form>
     </div>
+    <Loader show={load}/>
+    </>
+    
   );
 };
 
