@@ -1,26 +1,27 @@
 "use client";
 import Loader from "@/components/ui/Loader";
-import { addGame, getPlatform, uploadImage } from "@/utils/action";
+import { addGame, getPlatform} from "@/utils/action";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const AddGame = () => {
-  const [load,setLoad]=useState(false)
-  const [platform,setPlatform]=useState([])
+  const [load, setLoad] = useState(false);
+  const [platform, setPlatform] = useState([]);
   const [game, setGame] = useState({
     name: "",
     type: "",
     category: "",
-    platform:"",
+    platform: "",
     status: "",
     tagName: "",
     slug: "",
     url: "",
-    thumbnail: "",
-    file: null,
+    thumbnail: null,
+    payoutFile: null,
   });
-  const [gameThumbnail, setGameThumbnail] = useState(null);
+
   const [disable, setDisable] = useState(true);
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setGame({
@@ -28,6 +29,11 @@ const AddGame = () => {
       [name]: files ? files[0] : value,
     });
   };
+
+  useEffect(() => {
+    const allFieldsFilled = Object.values(game).every(field => field !== "" && field !== null);
+    setDisable(!allFieldsFilled);
+  }, [game]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,63 +46,37 @@ const AddGame = () => {
       game.platform === "" ||
       game.slug === "" ||
       game.type === "" ||
-      game.thumbnail === "" ||
-      game.file === null
+      game.thumbnail === null ||
+      game.payoutFile === null
     ) {
-      return toast.error("All fileds are required!");
+      return toast.error("All fields are required!");
     }
     const data = new FormData();
     for (const key in game) {
       data.append(key, game[key]);
     }
-
     try {
-      setLoad(true)
+      setLoad(true);
       const response = await addGame(data);
-      setGameThumbnail(null);
       toast.success("Game Added successfully!");
       setGame({
         name: "",
         type: "",
         category: "",
-        platform:"",
+        platform: "",
         status: "",
         tagName: "",
         slug: "",
         url: "",
-        thumbnail: "",
-        file: null,
+        thumbnail: null,
+        payoutFile: null,
       });
       setDisable(true);
-      document.getElementById("fileUpload").value = "";
-      document.getElementById("payoutFile").value = "";
-      setLoad(false)
+      setLoad(false);
     } catch (error) {
       toast.error(error.message);
-      setLoad(false)
+      setLoad(false);
     }
-  };
-
-  const handleImageChange = async (e) => {
-    setGameThumbnail(e.target.files[0]);
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64String = reader.result;
-      const imagedata = {
-        image: base64String,
-      };
-      try {
-        toast.loading("Uploading image on server");
-        const response = await uploadImage(imagedata);
-        setGame({ ...game, thumbnail: response.data.imageUrl });
-        toast.remove();
-        toast.success(response.data.message);
-        setDisable(false);
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
-    reader.readAsDataURL(e.target.files[0]);
   };
 
   //Get Platforms
@@ -198,15 +178,16 @@ const AddGame = () => {
           />
           <p className="text-left font-light">Thumbnail :</p>
           <input
-            onChange={(e) => handleImageChange(e)}
+            onChange={handleChange}
             type="file"
             className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]"
             id="fileUpload"
             accept="image/*"
+            name="thumbnail"
           />
           <p className="text-left font-light">Payout file :</p>
           <input
-            name="file"
+            name="payoutFile"
             type="file"
             id="payoutFile"
             accept=".json"
