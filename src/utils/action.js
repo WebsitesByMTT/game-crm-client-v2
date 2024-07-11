@@ -2,6 +2,7 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { config } from "./config";
 import { getCookie } from "./cookie";
+import { CloudFog } from "lucide-react";
 
 // export const getCaptcha = async () => {
 //   try {
@@ -235,12 +236,10 @@ export const editStatus = async (status, id) => {
   }
 };
 
-export const getGames = async () => {
+export const getGames = async (platform,category) => {
   const token = await getCookie();
-  const platform="crm"
-  const category="all"
   try {
-    const response = await fetch(`${config.server}/api/games?platform=${platform}&category=${category},`, {
+    const response = await fetch(`${config.server}/api/games?platform=${platform}&category=${category}`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -248,7 +247,7 @@ export const getGames = async () => {
         Cookie: `userToken=${token}`,
       },
     });
-
+console.log(response,"getGames")
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message);
@@ -413,16 +412,14 @@ export async function getPlatform() {
   const token = await getCookie();
 
   try {
-    const response = await fetch(`${config.server}/api/games/platforms`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `userToken=${token}`,
-        },
-      }
-    );
+    const response = await fetch(`${config.server}/api/games/platforms`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
 
     if (!response.ok) {
       const error = await response.json();
@@ -430,7 +427,6 @@ export async function getPlatform() {
     }
 
     const data = await response.json();
-    console.log("data : ", data);
 
     return data;
   } catch (error) {

@@ -6,74 +6,50 @@ const PaymentChart = () => {
         {
             name: 'Jan',
             Received_Amount: 20,
-            Due_Amount: 30,
-            amt: 2400,
         },
         {
             name: 'Feb',
             Received_Amount: 60,
-            Due_Amount: 18,
-            amt: 2210,
         },
         {
             name: 'Mar',
             Received_Amount: 45,
-            Due_Amount: 23,
-            amt: 2290,
         },
         {
             name: 'Apr',
             Received_Amount: 56,
-            Due_Amount: 61,
-            amt: 2000,
         },
         {
             name: 'May',
             Received_Amount: 34,
-            Due_Amount: 12,
-            amt: 2181,
         },
         {
             name: 'Jun',
             Received_Amount: 44,
-            Due_Amount: 32,
-            amt: 2500,
         },
         {
             name: 'Jul',
             Received_Amount: 78,
-            Due_Amount: 45,
-            amt: 2100,
         },
         {
             name: 'Aug',
             Received_Amount: 67,
-            Due_Amount: 55,
-            amt: 2100,
         },
         {
             name: 'Sep',
             Received_Amount: 35,
-            Due_Amount: 45,
-            amt: 2100,
         },
         {
             name: 'Oct',
             Received_Amount: 89,
-            Due_Amount: 56,
-            amt: 2100,
         },
         {
             name: 'Nov',
             Received_Amount: 80,
-            Due_Amount: 34,
-            amt: 2100,
         },
         {
             name: 'Dec',
             Received_Amount: 90,
-            Due_Amount: 55,
-            amt: 2100,
         }
     ];
     return (

@@ -22,7 +22,6 @@ const getMyClients = async (id) => {
     return { data };
   } catch (error) {
     throw error;
-  } finally {
   }
 };
 

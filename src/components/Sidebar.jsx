@@ -20,7 +20,7 @@ import { RiUserAddFill } from "react-icons/ri";
 const LeftSideBar = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [option, setOption] = useState("Dashboard");
+  const [option, setOption] = useState("");
   const [open, setOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
   const userdata = useSelector((state) => state.user.userData);

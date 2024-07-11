@@ -1,6 +1,5 @@
 "use client";
-import { editGames, uploadImage } from "@/utils/action";
-import { revalidatePath } from "next/cache";
+import { editGames } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import Loader from "../Loader";
@@ -16,9 +15,8 @@ const EditGame = ({ prevData, id, setOpen }) => {
     slug: prevData.slug,
     url: prevData.url,
     thumbnail: prevData.thumbnail,
-    file: prevData.payout,
+    payoutFile: prevData.payout,
   });
-  const [gameThumbnail, setGameThumbnail] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -26,27 +24,6 @@ const EditGame = ({ prevData, id, setOpen }) => {
       ...game,
       [name]: files ? files[0] : value,
     });
-  };
-
-  const handleImageChange = async (e) => {
-    setGameThumbnail(e.target.files[0]);
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64String = reader.result;
-      const imagedata = {
-        image: base64String,
-      };
-      try {
-        toast.loading("Uploading image on server");
-        const response = await uploadImage(imagedata);
-        setGame({ ...game, thumbnail: response.data.imageUrl });
-        toast.remove();
-        toast.success(response.data.message);
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
-    reader.readAsDataURL(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
@@ -59,8 +36,8 @@ const EditGame = ({ prevData, id, setOpen }) => {
       game.category === "" ||
       game.slug === "" ||
       game.type === "" ||
-      game.thumbnail === "" ||
-      game.file === null
+      game.thumbnail === null ||
+      game.payoutFile === null
     ) {
       return toast.error("All fileds are required!");
     }
@@ -156,7 +133,8 @@ const EditGame = ({ prevData, id, setOpen }) => {
         />
         <p className="text-left font-light">Thumbnail :</p>
         <input
-          onChange={(e) => handleImageChange(e)}
+          onChange={handleChange}
+          name="thumbnail"
           type="file"
           className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
           id="fileUpload"
