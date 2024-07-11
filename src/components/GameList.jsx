@@ -30,9 +30,9 @@ const GameList = ({ platforms }) => {
   }, [selectplatform])
 
   useEffect(() => {
-    setData(games);
-    setFilteredData(games);
-  }, [games]);
+    setData(data);
+    setFilteredData(data);
+  }, [data]);
   
   const handleDelete = async (id) => {
     try {
