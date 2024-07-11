@@ -78,7 +78,7 @@ const TableComponent = ({
   const handleSearchClick = (item, filterType) => {
     Filter(item, filterCountData, filterType);
     closeDropdown(item);
-    setFilterCountData({ From: "", To: "" })
+    setFilterCountData({ From: "", To: "" });
   };
 
   const PassFilterData = (item, subitem) => {
@@ -86,7 +86,7 @@ const TableComponent = ({
     toggleDropdown(item);
   };
 
-  console.log(pageType,"pagetype")
+  console.log(pageType, "pagetype");
 
   return (
     <div className="rounded-md  h-[80vh] w-full mx-auto overflow-y-scroll">
@@ -106,12 +106,11 @@ const TableComponent = ({
                   {item !== "action" &&
                     item !== "username" &&
                     item !== "creditor" &&
-                    item !== "debitor" &&
+                    item !== "debtor" &&
                     item !== "name" &&
                     item !== "category" &&
                     item !== "slug" &&
-                    item !=="Type"&&
-                     (
+                    item !== "Type" && (
                       <DropdownMenu>
                         <DropdownMenuTrigger
                           className="focus:outline-none"
@@ -170,7 +169,7 @@ const TableComponent = ({
                                 </button>
                               </div>
                             )}
-                            {(item === "role" || item === "type" 
+                            {(item === "role" || item === "type"
                               ? tableData?.Filter
                               : item === "status"
                               ? tableData?.Status
@@ -206,9 +205,9 @@ const TableComponent = ({
                     return (
                       <TableCell
                         className="cursor-pointer hover:scale-[1.2] transition-all"
-                        onClick={() =>
-                          router.push(`/clients/${userId}/${item._id}`)
-                        }
+                        onClick={() => {
+                          router.push(`/clients/${userId}/${item._id}`);
+                        }}
                       >
                         {item.username}
                       </TableCell>
@@ -265,7 +264,7 @@ const TableComponent = ({
                             </div>
                           ) : (
                             <>
-                              <DropdownMenu >
+                              <DropdownMenu>
                                 <DropdownMenuTrigger className="text-[#1b1b1e]  editgradient p-1 rounded-md">
                                   <BsThreeDotsVertical />
                                 </DropdownMenuTrigger>

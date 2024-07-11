@@ -1,7 +1,7 @@
 "use client";
 import Modal from "@/components/ui/Modal";
 import { deleteGame } from "@/utils/action";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import toast from "react-hot-toast";
 import EditGame from "@/components/ui/modals/EditGame";
@@ -17,18 +17,23 @@ const GameList = ({ games }) => {
   const [rowData, setRowData] = useState();
   const [modalType, setModalType] = useState("");
   const [search, setSearch] = useState("");
-  const [load,setLoad]=useState(false)
+  const [load, setLoad] = useState(false);
 
+  useEffect(() => {
+    setData(games);
+    setFilteredData(games);
+  }, [games]);
+  
   const handleDelete = async (id) => {
     try {
-      setLoad(true)
+      setLoad(true);
       const response = await deleteGame(id);
       toast.success(response.data.message);
       setOpen(false);
-      setLoad(false)
+      setLoad(false);
     } catch (error) {
       toast.error(error.message);
-      setLoad(false)
+      setLoad(false);
     }
   };
 
@@ -120,9 +125,8 @@ const GameList = ({ games }) => {
           {ModalContent}
         </Modal>
       </div>
-      <Loader show={load}/>
+      <Loader show={load} />
     </>
-
   );
 };
 

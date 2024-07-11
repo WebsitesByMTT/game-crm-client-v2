@@ -7,6 +7,7 @@ import { Cell, Pie, ResponsiveContainer, PieChart } from "recharts";
 
 const Dashboard = ({ data }) => {
   const [userData, setUserData] = useState(data);
+  console.log(data);
   return (
     <div className="h-fit w-full">
       <div className="w-full m-auto  py-3 px-2 lg:h-[25vh]  flex gap-5 flex-wrap items-center justify-center">
@@ -21,11 +22,13 @@ const Dashboard = ({ data }) => {
             icon={<GiTwoCoins />}
             amount={userData?.totalRedeemed}
           ></Card>
-          <Card
-            name="Clients"
-            icon={<FaUserTie />}
-            amount={userData?.subordinates?.length}
-          ></Card>
+          {userData?.role !== "player" && (
+            <Card
+              name="Clients"
+              icon={<FaUserTie />}
+              amount={userData?.subordinates?.length}
+            ></Card>
+          )}
           <Card
             name="Credits"
             icon={<GiTwoCoins />}
@@ -58,25 +61,6 @@ const Card = ({ name, icon, amount }) => {
         <span className="lg:text-[3.6rem] text-[3rem] dark:text-white text-black ">
           {amount}
         </span>
-        <ResponsiveContainer width="40%" height="100%">
-          <PieChart width="100%" height="100%">
-            <Pie
-              data={piedata}
-              innerRadius={"70%"}
-              outerRadius={"100%"}
-              fill="#8884d8"
-              paddingAngle={2}
-              dataKey="value"
-            >
-              {piedata.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
       </div>
     </div>
   );

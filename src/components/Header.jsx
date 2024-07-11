@@ -14,8 +14,8 @@ const Header = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [open, setOpen] = useState(false);
   const [modalType, setModalType] = useState("");
-  const [platform, setPlatform] = useState('')
-  const [load,setLoad]=useState(false)
+  const [platform, setPlatform] = useState("");
+  const [load, setLoad] = useState(false);
 
   const handleModalOpen = (type) => {
     setModalType(type);
@@ -44,22 +44,25 @@ const Header = () => {
   };
 
   //Add Platfrom api
-  const handeladdPlatform=async()=>{
-    try {
-      setLoad(true)
-      const response = await addPlatform({name:platform})
-      if(response?.data?.name){
-        toast.success('Platform added successfuly!')
-        setOpen(false)
-        setPlatform("")
-      }
-      setLoad(false)
-    } catch (error) {
-      toast.error('Somthing Went Wrong!')
-      setOpen(false)
-      setLoad(false)
+  const handeladdPlatform = async () => {
+    if (platform === "") {
+      return toast.error("This is a required field");
     }
-  }
+    try {
+      setLoad(true);
+      const response = await addPlatform({ name: platform });
+      if (response?.data?.name) {
+        toast.success("Platform added successfuly!");
+        setOpen(false);
+        setPlatform("");
+      }
+      setLoad(false);
+    } catch (error) {
+      toast.error("Somthing Went Wrong!");
+      setOpen(false);
+      setLoad(false);
+    }
+  };
 
   return (
     <>
@@ -72,7 +75,12 @@ const Header = () => {
             <span className="dark:text-white text-opacity-75">Game CRM</span>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="text-gray-800 dark:text-white dark:bg-Dark px-5 py-2 rounded-md hover:bg-opacity-70 bg-gray-200  cursor-pointer" onClick={() => handleModalOpen('Add Platform')}>Add Platform</div>
+            <div
+              className="text-gray-800 dark:text-white dark:bg-Dark px-5 py-2 rounded-md hover:bg-opacity-70 bg-gray-200  cursor-pointer"
+              onClick={() => handleModalOpen("Add Platform")}
+            >
+              Add Platform
+            </div>
             <label
               htmlFor="dark-mode-toggle"
               className="flex items-center cursor-pointer"
@@ -87,8 +95,9 @@ const Header = () => {
                 />
                 <div className="block bg-gray-300 dark:bg-gray-600 w-14 h-8 rounded-full"></div>
                 <div
-                  className={`dot absolute left-1 top-1 bg-white dark:bg-gray-800 w-6 h-6 rounded-full transition transform  duration-300 ${isDarkMode ? "translate-x-6" : ""
-                    }`}
+                  className={`dot absolute left-1 top-1 bg-white dark:bg-gray-800 w-6 h-6 rounded-full transition transform  duration-300 ${
+                    isDarkMode ? "translate-x-6" : ""
+                  }`}
                 >
                   {isDarkMode ? (
                     <FaMoon className="mt-1 text-white ml-[0.26rem]" />
@@ -123,11 +132,19 @@ const Header = () => {
       >
         <div className="">
           <div class="mb-5">
-            <input value={platform} onChange={(e) => setPlatform(e.target.value)} type="text" placeholder="Add Plateform" id="password" className="rounded-md shadow-lg bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+            <input
+              value={platform}
+              onChange={(e) => setPlatform(e.target.value)}
+              type="text"
+              placeholder="Add platform"
+              id="password"
+              className="rounded-md shadow-lg bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required
+            />
           </div>
           <div className=" flex justify-center mt-2">
             <button
-            onClick={handeladdPlatform}
+              onClick={handeladdPlatform}
               className="text-center flex justify-center px-4 items-center gap-2 bg-gradient-to-r from-[#8C7CFD] hover:from-[#BC89F1] hover:to-[#8C7CFD] to-[#BC89F1] mx-auto text-white text-xl rounded-md p-2 font-light hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out"
             >
               Add
@@ -135,9 +152,8 @@ const Header = () => {
           </div>
         </div>
       </Modal>
-      <Loader show={load}/>
+      <Loader show={load} />
     </>
-
   );
 };
 

@@ -3,17 +3,15 @@ import React, { useState } from "react";
 import Dashboard from "./Dashboard";
 import Clients from "./Clients";
 import Transactions from "./Transaction";
-import { useSelector } from "react-redux";
 import Report from "./Report";
 
 const Subordinate = ({ subordinateData }) => {
   const [option, setOption] = useState("report");
-  const userData = useSelector((state) => state.user.userData);
   return (
     <div>
       <div className="w-[94%] pt-3 m-auto">
-        <h1 className="text-2xl text-black dark:text-gray-400 ">
-          {subordinateData.name}
+        <h1 className="text-2xl text-black dark:text-gray-400 capitalize">
+          {subordinateData.username}
         </h1>
         <p className="text-md text-black dark:text-gray-400 capitalize">
           <span>{subordinateData.role}</span>
@@ -31,8 +29,7 @@ const Subordinate = ({ subordinateData }) => {
         >
           Report
         </button>
-        {(userData?.role === "company" ||
-          subordinateData?.role != "player") && (
+        {subordinateData?.role !== "player" && (
           <button
             onClick={() => {
               setOption("subordinates");
