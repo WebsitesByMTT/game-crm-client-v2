@@ -1,6 +1,6 @@
 "use client";
 import Modal from "@/components/ui/Modal";
-import { deleteGame } from "@/utils/action";
+import { deleteGame, getGames } from "@/utils/action";
 import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import toast from "react-hot-toast";
@@ -10,14 +10,24 @@ import TableComponent from "@/components/TableComponent";
 import { handleFilter } from "@/utils/Filter";
 import Loader from "./ui/Loader";
 
-const GameList = ({ games }) => {
-  const [data, setData] = useState(games);
-  const [filteredData, setFilteredData] = useState(games);
+const GameList = ({ platforms }) => {
+  const [data, setData] = useState();
+  const [filteredData, setFilteredData] = useState();
   const [open, setOpen] = useState(false);
   const [rowData, setRowData] = useState();
   const [modalType, setModalType] = useState("");
   const [search, setSearch] = useState("");
-  const [load, setLoad] = useState(false);
+
+  const [load, setLoad] = useState(false)
+  const [selectplatform, setSelectplatform] = useState('all')
+  const handelGamesData = async () => {
+    const games = await getGames("milkyway", selectplatform);
+    setData(games?.data)
+    setFilteredData(games?.data)
+  }
+  useEffect(() => {
+    handelGamesData()
+  }, [selectplatform])
 
   useEffect(() => {
     setData(games);
@@ -85,11 +95,16 @@ const GameList = ({ games }) => {
     Status: ["active", "inactive"],
   };
 
+  //Platform Filter
+  const handelPlatformChange = (e) => {
+    setSelectplatform(e.target.value)
+  }
+
   return (
     <>
       <div className="h-full w-[95%] mx-auto flex flex-col">
-        <div className="lg:w-[50%] pt-4">
-          <div className="w-full mb-3 flex shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light border dark:border-none rounded-md  font-extralight py-4 lg:py-2 px-4">
+        <div className="lg:w-[100%] lg:flex items-center justify-between pt-4">
+          <div className="w-full lg:w-[50%]  mb-3 flex shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light border dark:border-none rounded-md  font-extralight py-4 lg:py-2 px-4">
             <div className="text-lg">
               <FiSearch />
             </div>
@@ -103,6 +118,16 @@ const GameList = ({ games }) => {
                 handleSearch(e.target.value);
               }}
             />
+          </div>
+          <div>
+            <select onChange={(e) => handelPlatformChange(e)} className="text-black w-full md:w-auto cursor-pointer dark:text-white bg-[#F3F4F6] dark:bg-Dark_light  px-20 py-2 rounded-md shadow-md  outline-none">
+              <option value={'all'}>All</option>
+              {
+                platforms?.map((item, ind) => (
+                  <option value={item.name} className="text-[1rem] cursor-pointer" key={ind}>{item.name}</option>
+                ))
+              }
+            </select>
           </div>
         </div>
         <div className="overflow-y-auto">

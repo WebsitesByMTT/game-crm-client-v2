@@ -236,23 +236,18 @@ export const editStatus = async (status, id) => {
   }
 };
 
-export const getGames = async () => {
+export const getGames = async (platform,category) => {
   const token = await getCookie();
-  const platform = "crm";
-  const category = "all";
   try {
-    const response = await fetch(
-      `${config.server}/api/games?platform=${platform}&category=${category},`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `userToken=${token}`,
-        },
-      }
-    );
-
+    const response = await fetch(`${config.server}/api/games?platform=${platform}&category=${category}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+console.log(response,"getGames")
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message);
