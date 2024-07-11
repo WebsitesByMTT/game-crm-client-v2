@@ -2,7 +2,6 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { config } from "./config";
 import { getCookie } from "./cookie";
-import { CloudFog } from "lucide-react";
 
 // export const getCaptcha = async () => {
 //   try {
@@ -356,7 +355,7 @@ export async function getUserReport(id, type) {
 
   try {
     const response = await fetch(
-      `${config.server}/api/users/report/${id}?type=${type.toLowerCase()}`,
+      id?`${config.server}/api/users/report/${id}?type=${type.toLowerCase()}`:`${config.server}/api/users/report?type=${type.toLowerCase()}`,
       {
         method: "GET",
         credentials: "include",
@@ -380,6 +379,7 @@ export async function getUserReport(id, type) {
     throw error;
   }
 }
+
 
 export const addPlatform = async (platform) => {
   const token = await getCookie();

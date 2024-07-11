@@ -1,8 +1,7 @@
 import { getCookie } from "@/utils/cookie";
 import Dashboard from "../../components/Dashboard";
 import { config } from "@/utils/config";
-import PaymentChart from "../../components/ui/chart/PaymentChart";
-import ClientPieChart from "../../components/ui/chart/ClientPieChart";
+import Report from "@/components/Report";
 
 const getUserData = async () => {
   try {
@@ -28,14 +27,10 @@ const getUserData = async () => {
 
 export default async function Home() {
   const data = await getUserData();
-
   return (
-    <main className="space-y-3 lg:h-screnn">
+    <main className="space-y-3 w-[96%] overflow-y-scroll h-[90vh] mx-auto">
       <Dashboard data={data?.data} />
-      <div className="rounded-2xl space-y-5 md:space-y-0 md:flex md:space-x-5  h-[45vh] md:h-[60vh]  w-[95%] mx-auto">
-        <PaymentChart />
-        <ClientPieChart />
-      </div>
+      <Report id={data?.role=='company'?'':data?._id}/>
     </main>
   );
 }
