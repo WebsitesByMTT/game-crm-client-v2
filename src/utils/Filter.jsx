@@ -1,7 +1,6 @@
 import toast from "react-hot-toast";
 
 export const handleFilter = (data, key, value, Num) => {
-  console.log(value, Num, "asdjhaj");
 
   if (Num === 'Numbers' || Num === 'Calender') {
     if (value?.From === '' || value?.To === '') {

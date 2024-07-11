@@ -64,15 +64,15 @@ const Header = () => {
   return (
     <>
       <div className="w-full flex flex-col dark:bg-Dark_light bg-white shadow-sm">
-        <div className="w-[95%] mx-auto flex  justify-between items-center py-4">
-          <div className="lg:visible invisible">
+        <div className="w-[95%] mx-auto flex  justify-end items-center py-4">
+          <div className="lg:visible hidden">
             <div className="text-black dark:text-white text-[1.8rem] leading-tight font-semibold">
               Dashboard
             </div>
             <span className="dark:text-white text-opacity-75">Game CRM</span>
           </div>
-          <div className="flex items-center space-x-4">
-            <div className="text-gray-800 dark:text-white dark:bg-Dark px-5 py-2 rounded-md hover:bg-opacity-70 bg-gray-200  cursor-pointer" onClick={() => handleModalOpen('Add Platform')}>Add Platform</div>
+          <div className="flex items-center md:w-auto space-x-4">
+            <div className="text-gray-800 dark:text-white   dark:bg-Dark px-5 py-2 rounded-md hover:bg-opacity-70 bg-gray-200  cursor-pointer" onClick={() => handleModalOpen('Add Platform')}>Add Platform</div>
             <label
               htmlFor="dark-mode-toggle"
               className="flex items-center cursor-pointer"
