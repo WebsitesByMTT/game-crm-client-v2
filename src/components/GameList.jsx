@@ -17,6 +17,7 @@ const GameList = ({ platforms }) => {
   const [rowData, setRowData] = useState();
   const [modalType, setModalType] = useState("");
   const [search, setSearch] = useState("");
+
   const [load, setLoad] = useState(false)
   const [selectplatform, setSelectplatform] = useState('all')
   const handelGamesData = async () => {
@@ -28,16 +29,21 @@ const GameList = ({ platforms }) => {
     handelGamesData()
   }, [selectplatform])
 
+  useEffect(() => {
+    setData(games);
+    setFilteredData(games);
+  }, [games]);
+  
   const handleDelete = async (id) => {
     try {
-      setLoad(true)
+      setLoad(true);
       const response = await deleteGame(id);
       toast.success(response.data.message);
       setOpen(false);
-      setLoad(false)
+      setLoad(false);
     } catch (error) {
       toast.error(error.message);
-      setLoad(false)
+      setLoad(false);
     }
   };
 
@@ -146,7 +152,6 @@ const GameList = ({ platforms }) => {
       </div>
       <Loader show={load} />
     </>
-
   );
 };
 

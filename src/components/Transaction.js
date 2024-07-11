@@ -26,25 +26,26 @@ const Transactions = ({ transactions }) => {
     setFilteredData(dataFiltered);
   };
 
-
-
-
   const tableData = {
-    tableHead: ["type", "amount", "creditor", "debitor", "Updated At"],
+    tableHead: ["type", "amount", "creditor", "debtor", "Updated At"],
     tableBody: ["type", "amount", "creditor", "debtor", "updatedAt"],
     Filter: ["recharge", "redeem"],
   };
 
   return (
     <div className="h-full w-[95%] mx-auto flex flex-col">
-      <div className="pb-[6rem]">
-        <TableComponent
-          pageType="transaction"
-          tableData={tableData}
-          DashboardFetchedData={filteredData}
-          Filter={handleFilterData}
-        />
-      </div>
+      {filteredData?.length > 0 ? (
+        <div className="pt-[3rem]">
+          <TableComponent
+            pageType="transaction"
+            tableData={tableData}
+            DashboardFetchedData={filteredData}
+            Filter={handleFilterData}
+          />
+        </div>
+      ) : (
+        <p className="text-center text-black dark:text-white text-2xl mt-10">No Transactions yet! </p>
+      )}
     </div>
   );
 };

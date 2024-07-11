@@ -2,6 +2,7 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { config } from "./config";
 import { getCookie } from "./cookie";
+import { CloudFog } from "lucide-react";
 
 // export const getCaptcha = async () => {
 //   try {
@@ -411,16 +412,14 @@ export async function getPlatform() {
   const token = await getCookie();
 
   try {
-    const response = await fetch(`${config.server}/api/games/platforms`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `userToken=${token}`,
-        },
-      }
-    );
+    const response = await fetch(`${config.server}/api/games/platforms`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
 
     if (!response.ok) {
       const error = await response.json();

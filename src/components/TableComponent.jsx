@@ -41,10 +41,6 @@ const TableComponent = ({
     setData(DashboardFetchedData);
   }, [DashboardFetchedData]);
 
-  useEffect(() => {
-    console.log("Changedv: ", DashboardFetchedData);
-  }, [DashboardFetchedData]);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFilterCountData((prevData) => ({
@@ -78,15 +74,13 @@ const TableComponent = ({
   const handleSearchClick = (item, filterType) => {
     Filter(item, filterCountData, filterType);
     closeDropdown(item);
-    setFilterCountData({ From: "", To: "" })
+    setFilterCountData({ From: "", To: "" });
   };
 
   const PassFilterData = (item, subitem) => {
     Filter(item, subitem);
     toggleDropdown(item);
   };
-
-  console.log(pageType,"pagetype")
 
   return (
     <div className="rounded-md  h-[80vh] w-full mx-auto overflow-y-scroll">
@@ -106,12 +100,11 @@ const TableComponent = ({
                   {item !== "action" &&
                     item !== "username" &&
                     item !== "creditor" &&
-                    item !== "debitor" &&
+                    item !== "debtor" &&
                     item !== "name" &&
                     item !== "category" &&
                     item !== "slug" &&
-                    item !=="Type"&&
-                     (
+                    item !== "Type" && (
                       <DropdownMenu>
                         <DropdownMenuTrigger
                           className="focus:outline-none"
@@ -170,7 +163,7 @@ const TableComponent = ({
                                 </button>
                               </div>
                             )}
-                            {(item === "role" || item === "type" 
+                            {(item === "role" || item === "type"
                               ? tableData?.Filter
                               : item === "status"
                               ? tableData?.Status
@@ -205,10 +198,11 @@ const TableComponent = ({
                   case "username":
                     return (
                       <TableCell
+                        key={subitem}
                         className="cursor-pointer hover:scale-[1.2] transition-all"
-                        onClick={() =>
-                          router.push(`/clients/${userId}/${item._id}`)
-                        }
+                        onClick={() => {
+                          router.push(`/clients/${userId}/${item._id}`);
+                        }}
                       >
                         {item.username}
                       </TableCell>
@@ -217,6 +211,7 @@ const TableComponent = ({
                   case "status":
                     return (
                       <TableCell
+                        key={subitem}
                         className={
                           item.status === "active"
                             ? "text-[#70ef44]"
@@ -235,20 +230,26 @@ const TableComponent = ({
                     );
 
                   case "role":
-                    return <TableCell>{item.role}</TableCell>;
+                    return <TableCell key={subitem}>{item.role}</TableCell>;
 
                   case "totalRedeemed":
-                    return <TableCell>{item.totalRedeemed}</TableCell>;
+                    return (
+                      <TableCell key={subitem}>{item.totalRedeemed}</TableCell>
+                    );
 
                   case "totalRecharged":
-                    return <TableCell>{item?.totalRecharged}</TableCell>;
+                    return (
+                      <TableCell key={subitem}>
+                        {item?.totalRecharged}
+                      </TableCell>
+                    );
 
                   case "credits":
-                    return <TableCell>{item.credits}</TableCell>;
+                    return <TableCell key={subitem}>{item.credits}</TableCell>;
 
                   case "action":
                     return (
-                      <TableCell>
+                      <TableCell key={subitem}>
                         <div className="flex gap-5 text-2xl justify-center relative">
                           {pageType === "game" ? (
                             <div
@@ -265,7 +266,7 @@ const TableComponent = ({
                             </div>
                           ) : (
                             <>
-                              <DropdownMenu >
+                              <DropdownMenu>
                                 <DropdownMenuTrigger className="text-[#1b1b1e]  editgradient p-1 rounded-md">
                                   <BsThreeDotsVertical />
                                 </DropdownMenuTrigger>
@@ -329,30 +330,32 @@ const TableComponent = ({
                     );
 
                   case "type":
-                    return <TableCell>{item.type}</TableCell>;
+                    return <TableCell key={subitem}>{item.type}</TableCell>;
 
                   case "amount":
-                    return <TableCell>{item.amount}</TableCell>;
+                    return <TableCell key={subitem}>{item.amount}</TableCell>;
 
                   case "creditor":
-                    return <TableCell>{item.creditor}</TableCell>;
+                    return <TableCell key={subitem}>{item.creditor}</TableCell>;
 
                   case "debtor":
-                    return <TableCell>{item.debtor}</TableCell>;
+                    return <TableCell key={subitem}>{item.debtor}</TableCell>;
 
                   case "updatedAt":
                     return (
-                      <TableCell>{item?.updatedAt?.split("T")[0]}</TableCell>
+                      <TableCell key={subitem}>
+                        {item?.updatedAt?.split("T")[0]}
+                      </TableCell>
                     );
 
                   case "name":
-                    return <TableCell>{item.name}</TableCell>;
+                    return <TableCell key={subitem}>{item.name}</TableCell>;
 
                   case "category":
-                    return <TableCell>{item.category}</TableCell>;
+                    return <TableCell key={subitem}>{item.category}</TableCell>;
 
                   case "slug":
-                    return <TableCell>{item.slug}</TableCell>;
+                    return <TableCell key={subitem}>{item.slug}</TableCell>;
                 }
               })}
             </TableRow>
