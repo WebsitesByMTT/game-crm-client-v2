@@ -22,7 +22,7 @@ const getMyClients = async (id) => {
     return { data };
   } catch (error) {
     throw error;
-  }
+  } 
 };
 
 const page = async ({ params }) => {
