@@ -1,17 +1,16 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GiTwoCoins } from "react-icons/gi";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { FaUserTie } from "react-icons/fa6";
-import { Cell, Pie, ResponsiveContainer, PieChart } from "recharts";
 
 const Dashboard = ({ data }) => {
   const [userData, setUserData] = useState(data);
   console.log(data);
   return (
-    <div className="h-fit w-full">
-      <div className="w-full m-auto  py-3 px-2 lg:h-[25vh]  flex gap-5 flex-wrap items-center justify-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 h-full lg:grid-cols-4 w-[96%] gap-5 md:gap-x-5 rounded-xl">
+    <div className=" w-full">
+      <div className="w-full lg:h-[25vh] m-auto  py-3 px-2  flex gap-5 flex-wrap items-center justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 h-full lg:grid-cols-4 w-full gap-5 md:gap-x-5 rounded-xl">
           <Card
             name="Recharge"
             icon={<FaHandHoldingDollar />}
@@ -41,12 +40,6 @@ const Dashboard = ({ data }) => {
 };
 
 const Card = ({ name, icon, amount }) => {
-  const piedata = [
-    { name: "Recharge", value: 35 },
-    { name: "Reddem", value: 65 },
-  ];
-  const COLORS = ["#E6EbF1", "#6D81F5 "];
-
   return (
     <div className="w-full gap-2  md:gap-0 rounded-xl shadow-sm flex bg-white dark:bg-Dark_light flex-col p-6 md:p-4 justify-evenly">
       <div className="flex md:flex-row flex-col md:gap-2 text-2xl font-extralight md:items-center">
