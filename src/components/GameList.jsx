@@ -139,6 +139,7 @@ const GameList = ({ platforms }) => {
             DashboardFetchedData={filteredData}
             deleteTableData={handleDelete}
             Filter={handleFilterData}
+            loadingStatus={data}
           />
         </div>
         <Modal
