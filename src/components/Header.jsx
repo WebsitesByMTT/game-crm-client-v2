@@ -75,12 +75,12 @@ const Header = () => {
             <span className="dark:text-white text-opacity-75">Game CRM</span>
           </div>
           <div className="flex items-center space-x-4">
-            <div
+            {/* <div
               className="text-gray-800 dark:text-white dark:bg-Dark px-5 py-2 rounded-md hover:bg-opacity-70 bg-gray-200  cursor-pointer"
               onClick={() => handleModalOpen("Add Platform")}
             >
               Add Platform
-            </div>
+            </div> */}
             <label
               htmlFor="dark-mode-toggle"
               className="flex items-center cursor-pointer"
@@ -107,18 +107,13 @@ const Header = () => {
                 </div>
               </div>
             </label>
-            <div className="text-xl justify-center text-black p-2 rounded-md flex items-center gap-3">
-              <div className="text-[3rem] text-[#7c8ffd]">
-                <PiUserCircleThin />
-              </div>
-              <div>
-                <p className="capitalize leading-7 dark:text-white">
-                  {userData?.username}
-                </p>
-                <p className="capitalize leading-4 dark:text-white text-[14px]  opacity-85">
-                  {userData?.role}
-                </p>
-              </div>
+            <div className="bg-[#dfdfdf24] py-1 px-4 rounded-md dark:text-white text-lg">
+              <p>
+                Credits :{" "}
+                <span className="text-[#dfdfdf9c]">
+                  {userData?.credits !== null ? userData?.credits : "\u221E"}
+                </span>
+              </p>
             </div>
           </div>
         </div>

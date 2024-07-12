@@ -10,29 +10,33 @@ const Dashboard = ({ data }) => {
     setUserData(data);
   }, [data]);
   return (
-    <div className=" w-full">
+    <div className="w-full">
       <div className="w-full lg:h-[25vh] m-auto  py-3 px-2  flex gap-5 flex-wrap items-center justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 h-full lg:grid-cols-4 w-full gap-5 md:gap-x-5 rounded-xl">
           <Card
             name="Recharge"
             icon={<FaHandHoldingDollar />}
-            amount={userData?.totalRecharged}
+            amount={userData?.recharge}
           ></Card>
           <Card
             name="Redeem"
             icon={<GiTwoCoins />}
-            amount={userData?.totalRedeemed}
+            amount={userData?.redeem}
           ></Card>
-          <Card
-            name="Clients"
-            icon={<FaUserTie />}
-            amount={userData?.users?.length}
-          ></Card>
-          <Card
-            name="Credits"
-            icon={<GiTwoCoins />}
-            amount={userData?.credits !== null ? userData?.credits : "\u221E"}
-          ></Card>
+          {userData?.role !== "player" && (
+            <Card
+              name="Clients"
+              icon={<FaUserTie />}
+              amount={userData?.users?.player}
+            ></Card>
+          )}
+          {userData?.role !== "player" && (
+            <Card
+              name="Players"
+              icon={<GiTwoCoins />}
+              amount={userData?.users?.player}
+            ></Card>
+          )}
         </div>
       </div>
     </div>
