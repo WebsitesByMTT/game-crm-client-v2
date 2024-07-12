@@ -1,12 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GiTwoCoins } from "react-icons/gi";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { FaUserTie } from "react-icons/fa6";
 
 const Dashboard = ({ data }) => {
   const [userData, setUserData] = useState(data);
-  console.log(data);
+  useEffect(() => {
+    setUserData(data);
+  }, [data]);
   return (
     <div className=" w-full">
       <div className="w-full lg:h-[25vh] m-auto  py-3 px-2  flex gap-5 flex-wrap items-center justify-center">
@@ -21,13 +23,11 @@ const Dashboard = ({ data }) => {
             icon={<GiTwoCoins />}
             amount={userData?.totalRedeemed}
           ></Card>
-          {userData?.role !== "player" && (
-            <Card
-              name="Clients"
-              icon={<FaUserTie />}
-              amount={userData?.subordinates?.length}
-            ></Card>
-          )}
+          <Card
+            name="Clients"
+            icon={<FaUserTie />}
+            amount={userData?.users?.length}
+          ></Card>
           <Card
             name="Credits"
             icon={<GiTwoCoins />}
