@@ -372,7 +372,6 @@ export async function getUserReport(id, type) {
     }
 
     const data = await response.json();
-    console.log("data : ", data);
 
     return data;
   } catch (error) {

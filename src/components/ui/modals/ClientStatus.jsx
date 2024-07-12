@@ -1,5 +1,5 @@
 "use client";
-import { editClient, editStatus } from "@/utils/action";
+import {editStatus } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import Loader from "../Loader";

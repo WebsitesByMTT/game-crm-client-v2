@@ -1,4 +1,3 @@
-import Clients from "@/components/Clients";
 import Subordinate from "@/components/Subordinate";
 import { config } from "@/utils/config";
 import { getCookie } from "@/utils/cookie";

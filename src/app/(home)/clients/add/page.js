@@ -1,7 +1,7 @@
 "use client";
 import Loader from "@/components/ui/Loader";
-import { addClient, getUserData } from "@/utils/action";
-import React, { useEffect, useState } from "react";
+import { addClient} from "@/utils/action";
+import React, {useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
