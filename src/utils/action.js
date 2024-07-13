@@ -64,18 +64,21 @@ export const getUserData = async () => {
   }
 };
 
-export const getAllClients = async () => {
+export const getAllClients = async (page) => {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/users/all`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-      next: { tags: ["client"] },
-    });
+    const response = await fetch(
+      `${config.server}/api/users/all?page=${page}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+        next: { tags: ["client"] },
+      }
+    );
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message);
@@ -182,6 +185,33 @@ export const editPassword = async (existingPassword, password, id) => {
     throw error;
   } finally {
     revalidateTag("client");
+  }
+};
+
+export const getSubordinateTransactions = async (id, page) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(
+      `${config.server}/api/transactions/${id}?page=${page}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+        next: { tags: ["client"] },
+      }
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const data = await response.json();
+    console.log(data);
+    return { data };
+  } catch (error) {
+    throw error;
   }
 };
 

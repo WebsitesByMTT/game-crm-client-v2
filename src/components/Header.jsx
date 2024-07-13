@@ -110,7 +110,7 @@ const Header = () => {
             <div className="bg-[#dfdfdf24] py-1 px-4 rounded-md dark:text-white text-lg">
               <p>
                 Credits :{" "}
-                <span className="text-[#dfdfdf9c]">
+                <span className="dark:text-[#dfdfdf9c]">
                   {userData?.credits !== null ? userData?.credits : "\u221E"}
                 </span>
               </p>

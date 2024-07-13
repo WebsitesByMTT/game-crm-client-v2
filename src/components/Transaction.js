@@ -1,10 +1,20 @@
 "use client";
-import React, {useState } from "react";
+import React, { useEffect, useState } from "react";
 import TableComponent from "@/components/TableComponent";
 import { handleFilter } from "@/utils/Filter";
-const Transactions = ({ transactions }) => {
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import { useRouter } from "next/navigation";
+const Transactions = ({ totalPages, transactions, currentPage }) => {
   const [data, setData] = useState(transactions);
   const [filteredData, setFilteredData] = useState(transactions);
+  const [count, setCount] = useState(currentPage);
+  const router = useRouter();
+
+  useEffect(() => {
+    setData(transactions);
+    setFilteredData(transactions);
+    setCount(parseInt(currentPage));
+  }, [transactions, count]);
 
   const handleFilterData = (key, value, Num) => {
     const dataFiltered = handleFilter(data, key, value, Num);
@@ -27,9 +37,34 @@ const Transactions = ({ transactions }) => {
             Filter={handleFilterData}
             loadingStatus={transactions}
           />
+          <div className="w-[98%] mt-4 flex items-center justify-end gap-3 dark:text-white text-xl absolute bottom-10 right-12 ">
+            <button
+              disabled={count === 1}
+              onClick={() => {
+                setCount(count - 1);
+                router.back();
+              }}
+              className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
+            >
+              <IoChevronBack />
+            </button>
+            <p>{count}</p>
+            <button
+              disabled={count === totalPages}
+              onClick={() => {
+                setCount(count + 1);
+                router.push(`?page=${count + 1}`);
+              }}
+              className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
+            >
+              <IoChevronForward />
+            </button>
+          </div>
         </div>
       ) : (
-        <p className="text-center text-black dark:text-white text-2xl mt-10">No Transactions Found! </p>
+        <p className="text-center text-black dark:text-white text-2xl mt-10">
+          No Transactions Found!{" "}
+        </p>
       )}
     </div>
   );

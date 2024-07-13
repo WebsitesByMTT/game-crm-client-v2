@@ -42,12 +42,12 @@ const LeftSideBar = () => {
         nested: [
           {
             LinkName: "My Clients",
-            Link: `/clients/${userdata?._id}`,
+            Link: `/clients/my?page=1`,
             icon: <FaUserTie />,
           },
           {
             LinkName: "All Clients",
-            Link: "/clients/all",
+            Link: "/clients/all?page=1",
             icon: <FaUsers />,
           },
           {
@@ -65,12 +65,12 @@ const LeftSideBar = () => {
         nested: [
           {
             LinkName: "My Transaction",
-            Link: "/transaction/my",
+            Link: "/transaction/my?page=1",
             icon: <AiOutlineTransaction />,
           },
           {
             LinkName: "All Transaction",
-            Link: "/transaction/all",
+            Link: "/transaction/all?page=1",
             icon: <RiMoneyRupeeCircleFill />,
           },
         ],
@@ -108,7 +108,7 @@ const LeftSideBar = () => {
         nested: [
           {
             LinkName: "My Clients",
-            Link: `/clients/${userdata?._id}`,
+            Link: `/clients/my?page=1`,
             icon: <FaUserTie />,
           },
           {
@@ -120,7 +120,7 @@ const LeftSideBar = () => {
       },
       {
         LinkName: "Transactions",
-        Link: "/transaction/my",
+        Link: "/transaction/my?page=1",
         icon: <RiMoneyRupeeCircleFill />,
         showDropDown: false,
       },
