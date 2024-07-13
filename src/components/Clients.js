@@ -12,10 +12,11 @@ import DeleteModal from "@/components/ui/modals/DeleteModal";
 import TableComponent from "./TableComponent";
 import { handleFilter } from "@/utils/Filter";
 import { TfiReload } from "react-icons/tfi";
-import Loader from "./ui/Loader";
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import LoadingSkeleton from "./ui/skeleton/LoadingSkeleton";
+import { useRouter } from "next/navigation";
 
-const Clients = ({ clientData }) => {
+const Clients = ({ currentPage, totalPages, clientData }) => {
   const [open, setOpen] = useState(false);
   const [rowData, setRowData] = useState();
   const [filter, setFilter] = useState([]);
@@ -23,11 +24,14 @@ const Clients = ({ clientData }) => {
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [count, setCount] = useState(currentPage);
+  const router = useRouter();
 
   useEffect(() => {
     setData(clientData);
     setFilteredData(clientData);
-  }, [clientData]);
+    setCount(parseInt(currentPage));
+  }, [clientData, currentPage]);
 
   const handleDelete = async (id) => {
     try {
@@ -132,7 +136,7 @@ const Clients = ({ clientData }) => {
     const dataFiltered = handleFilter(data, key, value, Num);
     setFilteredData(dataFiltered);
     setFilter(dataFiltered);
-    console.log(dataFiltered,"data filter here")
+    console.log(dataFiltered, "data filter here");
   };
 
   const tableData = {
@@ -160,65 +164,95 @@ const Clients = ({ clientData }) => {
 
   return (
     <>
-        <>
-          <div className="h-full w-[95%] mx-auto flex flex-col">
-
-            <div className={`md:w-[50%] ${data.length>0&&'flex'} items-center space-x-4 pt-5`}>
-              
-              {data.length>0?
+      <>
+        <div className="h-full w-[95%] mx-auto flex flex-col">
+          <div
+            className={`md:w-[50%] ${
+              data?.length > 0 && "flex"
+            } items-center space-x-4 pt-5`}
+          >
+            {data?.length > 0 ? (
               <>
-              <div className="w-full mb-3 flex bg-white shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light dark:border-none rounded-md  font-extralight py-4 md:py-2 px-4 ">
-                <div className="text-lg">
-                  <FiSearch />
+                <div className="w-full mb-3 flex bg-white shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light dark:border-none rounded-md  font-extralight py-4 md:py-2 px-4 ">
+                  <div className="text-lg">
+                    <FiSearch />
+                  </div>
+                  <input
+                    name="search"
+                    className="focus:outline-none  placeholder:text-black dark:placeholder:text-[#fffbfb7c] text-md bg-transparent w-full"
+                    placeholder="Search by Username"
+                    value={search}
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                      handleSearch(e.target.value);
+                    }}
+                  />
                 </div>
-                <input
-                  name="search"
-                  className="focus:outline-none  placeholder:text-black dark:placeholder:text-[#fffbfb7c] text-md bg-transparent w-full"
-                  placeholder="Search by Username"
-                  value={search}
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                    handleSearch(e.target.value);
-                  }}
-                />
-              </div>
-              <div
-                className="text-Dark_light dark:text-white pb-3"
-                onClick={() => setFilteredData(data)}
-              >
-                <TfiReload
-                  className="hover:text-gray-500 cursor-pointer"
-                  size={30}
-                />
-              </div>
-              </>:<LoadingSkeleton LoadingStyle={'w-full rounded-md  h-[45px]'} count={1}/>
-              }
-              
-            </div>
-            <TableComponent
-              tableData={tableData}
-              Filter={handleFilterData}
-              DashboardFetchedData={filteredData}
-              rowClick={handleRowClick}
-              openModal={handleModalOpen}
-              deleteTableData={handleDelete}
-              loadingStatus={data}
-            />
-            <Modal
-              open={open}
-              setOpen={setOpen}
-              modalType={modalType}
-              setModalType={setModalType}
-            >
-              {ModalContent}
-            </Modal>
+                <div
+                  className="text-Dark_light dark:text-white pb-3"
+                  onClick={() => setFilteredData(data)}
+                >
+                  <TfiReload
+                    className="hover:text-gray-500 cursor-pointer"
+                    size={30}
+                  />
+                </div>
+              </>
+            ) : (
+              <LoadingSkeleton
+                LoadingStyle={"w-full rounded-md  h-[45px]"}
+                count={1}
+              />
+            )}
           </div>
-        </>
-      
-        {filteredData.length<0&&<p className="text-center text-black dark:text-white text-2xl mt-14">
+          <TableComponent
+            tableData={tableData}
+            Filter={handleFilterData}
+            DashboardFetchedData={filteredData}
+            rowClick={handleRowClick}
+            openModal={handleModalOpen}
+            deleteTableData={handleDelete}
+            loadingStatus={data}
+          />
+          <div className="w-[98%] mt-4 flex items-center justify-end gap-3 dark:text-white text-xl absolute bottom-10 right-12 ">
+            <button
+              disabled={count === 1}
+              onClick={() => {
+                setCount(count - 1);
+                router.back();
+              }}
+              className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
+            >
+              <IoChevronBack />
+            </button>
+            <p>{count}</p>
+            <button
+              disabled={count === totalPages}
+              onClick={() => {
+                setCount(count + 1);
+                router.push(`?page=${count + 1}`);
+              }}
+              className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
+            >
+              <IoChevronForward />
+            </button>
+          </div>
+          <Modal
+            open={open}
+            setOpen={setOpen}
+            modalType={modalType}
+            setModalType={setModalType}
+          >
+            {ModalContent}
+          </Modal>
+        </div>
+      </>
+
+      {filteredData.length < 0 && (
+        <p className="text-center text-black dark:text-white text-2xl mt-14">
           No clients created yet!
-        </p>}
-    
+        </p>
+      )}
     </>
   );
 };

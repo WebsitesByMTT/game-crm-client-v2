@@ -16,6 +16,8 @@ import { SiGamedeveloper } from "react-icons/si";
 import { IoLogoGameControllerB } from "react-icons/io";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { RiUserAddFill } from "react-icons/ri";
+import { PiUserCircleThin } from "react-icons/pi";
+import { CiLogout } from "react-icons/ci";
 
 const LeftSideBar = () => {
   const router = useRouter();
@@ -40,12 +42,12 @@ const LeftSideBar = () => {
         nested: [
           {
             LinkName: "My Clients",
-            Link: `/clients/${userdata?._id}`,
+            Link: `/clients/my?page=1`,
             icon: <FaUserTie />,
           },
           {
             LinkName: "All Clients",
-            Link: "/clients/all",
+            Link: "/clients/all?page=1",
             icon: <FaUsers />,
           },
           {
@@ -63,12 +65,12 @@ const LeftSideBar = () => {
         nested: [
           {
             LinkName: "My Transaction",
-            Link: "/transaction/my",
+            Link: "/transaction/my?page=1",
             icon: <AiOutlineTransaction />,
           },
           {
             LinkName: "All Transaction",
-            Link: "/transaction/all",
+            Link: "/transaction/all?page=1",
             icon: <RiMoneyRupeeCircleFill />,
           },
         ],
@@ -106,7 +108,7 @@ const LeftSideBar = () => {
         nested: [
           {
             LinkName: "My Clients",
-            Link: `/clients/${userdata?._id}`,
+            Link: `/clients/my?page=1`,
             icon: <FaUserTie />,
           },
           {
@@ -118,7 +120,7 @@ const LeftSideBar = () => {
       },
       {
         LinkName: "Transactions",
-        Link: "/transaction/my",
+        Link: "/transaction/my?page=1",
         icon: <RiMoneyRupeeCircleFill />,
         showDropDown: false,
       },
@@ -193,7 +195,7 @@ const LeftSideBar = () => {
                       onClick={() => {
                         setOpenDropdown(openDropdown === ind ? null : ind);
                         setOption(item?.LinkName);
-                        setOpen(item.LinkName=="Dashboard"?false:true);
+                        setOpen(item.LinkName == "Dashboard" ? false : true);
                       }}
                       href={item.Link}
                     >
@@ -335,14 +337,27 @@ const LeftSideBar = () => {
                 ))}
           </ul>
         </div>
-        <div className="pt-5 lg:pt-0">
-          <button
-            onClick={() => logOutUser()}
-            className="text-center flex justify-center tracking-[0.1rem] items-center gap-2 bg-gradient-to-r from-[#8C7CFD] hover:from-[#BC89F1] hover:to-[#8C7CFD] to-[#BC89F1] mx-auto text-white text-xl rounded-md p-2 font-[600] hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out w-full"
-          >
-            <span>LOGOUT</span>
-          </button>
-        </div>
+        <button
+          onClick={() => logOutUser()}
+          className="flex justify-between w-full bg-[#dfdfdf1e] p-2 rounded-md "
+        >
+          <div className="text-lg text-black rounded-md flex gap-1">
+            <div className="text-[3rem] text-[#7c8ffd]">
+              <PiUserCircleThin />
+            </div>
+            <div className="text-left">
+              <p className="capitalize leading-7 dark:text-white">
+                {userdata?.username}
+              </p>
+              <p className="capitalize leading-4 dark:text-white text-[14px] opacity-85">
+                {userdata?.role}
+              </p>
+            </div>
+          </div>
+          <span className="text-[#7c8ffd] text-[2.5rem] rounded-md my-auto">
+            <CiLogout />
+          </span>
+        </button>
       </div>
     </>
   );

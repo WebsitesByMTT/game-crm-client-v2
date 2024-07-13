@@ -64,18 +64,21 @@ export const getUserData = async () => {
   }
 };
 
-export const getAllClients = async () => {
+export const getAllClients = async (page) => {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/users/all`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-      next: { tags: ["client"] },
-    });
+    const response = await fetch(
+      `${config.server}/api/users/all?page=${page}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+        next: { tags: ["client"] },
+      }
+    );
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message);
@@ -185,6 +188,62 @@ export const editPassword = async (existingPassword, password, id) => {
   }
 };
 
+export const getSubordinateTransactions = async (id, page) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(
+      `${config.server}/api/transactions/${id}?page=${page}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+        next: { tags: ["client"] },
+      }
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const data = await response.json();
+    console.log(data);
+    return { data };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getSubordinateClients = async (id, page) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(
+      `${config.server}/api/users/subordinates?id=${id}&page=${page}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+        next: { tags: ["client"] },
+      }
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const data = await response.json();
+    console.log(data);
+    return { data };
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
 export const editCredits = async (credits, id) => {
   const token = await getCookie();
   try {
@@ -235,18 +294,21 @@ export const editStatus = async (status, id) => {
   }
 };
 
-export const getGames = async (platform,category) => {
+export const getGames = async (platform, category) => {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/games?platform=${platform}&category=${category}`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
-console.log(response,"getGames")
+    const response = await fetch(
+      `${config.server}/api/games?platform=${platform}&category=${category}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
+    console.log(response, "getGames");
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message);
@@ -352,10 +414,11 @@ export const addGame = async (game) => {
 
 export async function getUserReport(id, type) {
   const token = await getCookie();
-
   try {
     const response = await fetch(
-      id?`${config.server}/api/users/report/${id}?type=${type.toLowerCase()}`:`${config.server}/api/users/report?type=${type.toLowerCase()}`,
+      `${
+        config.server
+      }/api/users/report?userId=${id}&type=${type.toLowerCase()}`,
       {
         method: "GET",
         credentials: "include",
@@ -378,7 +441,6 @@ export async function getUserReport(id, type) {
     throw error;
   }
 }
-
 
 export const addPlatform = async (platform) => {
   const token = await getCookie();
