@@ -4,43 +4,50 @@ import { IoChevronBackOutline } from "react-icons/io5";
 import Clients from "./Clients";
 import Transactions from "./Transaction";
 import Report from "./Report";
-import { useRouter, usePathname } from "next/navigation";
-import { getSubordinateTransactions } from "@/utils/action";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import {
+  getSubordinateClients,
+  getSubordinateTransactions,
+} from "@/utils/action";
 import toast from "react-hot-toast";
 
 const Subordinate = ({ subordinateData }) => {
   const router = useRouter();
   const [option, setOption] = useState("report");
   const [transactions, setTransactions] = useState();
-  const [count, setCount] = useState(1);
+  const [subordinates, setSubordinates] = useState();
+  const searchParams = useSearchParams();
+  const page = searchParams.get("page");
   const pathname = usePathname();
 
   useEffect(() => {
-    const fetchTransaction = async () => {
-      try {
-        const response = await getSubordinateTransactions(
-          subordinateData._id,
-          count
-        );
-        console.log("sub transactions", response);
-        setTransactions(response?.data);
-      } catch (error) {
-        toast.error(error.message);
+    const fetchdata = async () => {
+      if (option === "transactions") {
+        try {
+          const response = await getSubordinateTransactions(
+            subordinateData._id,
+            page
+          );
+          console.log("sub transactions", response);
+          setTransactions(response?.data);
+        } catch (error) {
+          toast.error(error.message);
+        }
+      } else if (option === "subordinates") {
+        try {
+          const response = await getSubordinateClients(
+            subordinateData?._id,
+            page
+          );
+          setSubordinates(response?.data);
+        } catch (error) {
+          toast.error(error.message);
+        }
       }
     };
-    fetchTransaction();
-  });
-  const handleClick = () => {
-    setOption("transactions");
-  };
-  useEffect(() => {
-    if (option === "transactions" || option === "subordinates")
-      router.push(`?page=1`);
-  }, [option]);
+    fetchdata();
+  }, [page, option]);
 
-  useEffect(() => {
-    console.log(pathname);
-  }, [pathname]);
   return (
     <div>
       <div className="w-[95%] m-auto py-5 flex justify-between">
@@ -79,6 +86,7 @@ const Subordinate = ({ subordinateData }) => {
             <button
               onClick={() => {
                 setOption("subordinates");
+                router.push(`${pathname}?page=1`);
               }}
               className={`px-4 bg-[#7969ed50] rounded-full ${
                 option === "subordinates"
@@ -90,7 +98,10 @@ const Subordinate = ({ subordinateData }) => {
             </button>
           )}
           <button
-            onClick={handleClick}
+            onClick={() => {
+              setOption("transactions");
+              router.push(`${pathname}?page=1`);
+            }}
             className={`px-4 bg-[#7969ed50] rounded-full ${
               option === "transactions"
                 ? "text-white bg-[#8D7CFD]"
@@ -102,17 +113,20 @@ const Subordinate = ({ subordinateData }) => {
         </div>
       </div>
       <div className="w-[95%] mx-auto gap-5 ">
-        {subordinateData && option === "subordinates" && (
-          <Clients clientData={subordinateData?.subordinates} />
+        {subordinates && option === "subordinates" && (
+          <Clients
+            totalPages={subordinates?.totalPages}
+            currentPage={page}
+            clientData={subordinates?.subordinates}
+          />
         )}
         {transactions && option === "transactions" && (
           <Transactions
             totalPages={transactions?.totalPages}
             transactions={transactions?.transactions}
-            currentPage={transactions?.currentPage}
+            currentPage={page}
           />
         )}
-
         {subordinateData && option === "report" && (
           <Report id={subordinateData?._id} />
         )}

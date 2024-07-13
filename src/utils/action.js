@@ -215,6 +215,35 @@ export const getSubordinateTransactions = async (id, page) => {
   }
 };
 
+export const getSubordinateClients = async (id, page) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(
+      `${config.server}/api/users/subordinates?id=${id}&page=${page}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+        next: { tags: ["client"] },
+      }
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const data = await response.json();
+    console.log(data);
+    return { data };
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
 export const editCredits = async (credits, id) => {
   const token = await getCookie();
   try {
