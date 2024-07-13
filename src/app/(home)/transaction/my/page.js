@@ -3,17 +3,20 @@ import { config } from "@/utils/config";
 import { getCookie } from "@/utils/cookie";
 import React from "react";
 
-const getTransactions = async () => {
+const getTransactions = async (page) => {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/transactions`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
+    const response = await fetch(
+      `${config.server}/api/transactions?page=${page}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       const error = await response.json();
@@ -26,11 +29,18 @@ const getTransactions = async () => {
   }
 };
 
-const page = async () => {
-  const transactions = await getTransactions();
+const page = async ({ searchParams }) => {
+  const params = searchParams;
+  const transactions = await getTransactions(params.page);
   return (
     <div>
-      {transactions && <Transactions transactions={transactions?.data} />}
+      {transactions && (
+        <Transactions
+          currentPage={params.page}
+          totalPages={transactions?.data?.totalPages}
+          transactions={transactions?.data?.transactions}
+        />
+      )}
     </div>
   );
 };

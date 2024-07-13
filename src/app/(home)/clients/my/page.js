@@ -2,10 +2,10 @@ import Clients from "@/components/Clients";
 import { config } from "@/utils/config";
 import { getCookie } from "@/utils/cookie";
 
-const getMyClients = async (id) => {
+const getMyClients = async (page) => {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/users/subordinates`, {
+    const response = await fetch(`${config.server}/api/users/subordinates?page=${page}`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -26,11 +26,18 @@ const getMyClients = async (id) => {
   }
 };
 
-const page = async ({ params }) => {
-  const clientData = await getMyClients(params.id);
+const page = async ({ searchParams }) => {
+    const params = searchParams;
+  const clientData = await getMyClients(params.page);
   return (
     <div>
-      {clientData && <Clients clientData={clientData?.data?.subordinates} />}
+      {clientData && (
+        <Clients
+          currentPage={params.page}
+          totalPages={clientData?.data?.totalPages}
+          clientData={clientData?.data?.subordinates}
+        />
+      )}
     </div>
   );
 };

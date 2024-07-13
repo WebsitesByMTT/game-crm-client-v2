@@ -28,9 +28,8 @@ const getUserData = async () => {
 export default async function Home() {
   const data = await getUserData();
   return (
-    <main className="space-y-3 w-[96%] overflow-y-scroll h-[90vh] mx-auto">
-      <Dashboard data={data?.data} />
-      <Report id={data?.role=='company'?'':data?._id}/>
+    <main className="w-[96%] overflow-y-scroll h-[90vh] mx-auto mt-4">
+      {data && <Report id={data?.data?._id} />}
     </main>
   );
 }

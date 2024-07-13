@@ -84,7 +84,7 @@ const TableComponent = ({
   };
 
   return (
-    <div className="rounded-md  h-[80vh] w-full mx-auto overflow-y-scroll">
+    <div className="rounded-md w-full mx-auto overflow-y-scroll">
       <Table className="bg-white dark:bg-Dark_light  rounded-2xl overflow-hidden">
         <TableHeader className="sticky text-black dark:text-white bg-white dark:bg-Dark_light text-opacity-70 top-0 ">
           <TableRow>
