@@ -17,17 +17,16 @@ const GameList = ({ platforms }) => {
   const [rowData, setRowData] = useState();
   const [modalType, setModalType] = useState("");
   const [search, setSearch] = useState("");
-
   const [load, setLoad] = useState(false)
-  const [selectplatform, setSelectplatform] = useState('all')
+
   const handelGamesData = async () => {
-    const games = await getGames("milkyway", selectplatform);
+    const games = await getGames("milkyway",platforms);
     setData(games?.data)
     setFilteredData(games?.data)
   }
   useEffect(() => {
     handelGamesData()
-  }, [selectplatform])
+  }, [platforms])
 
   useEffect(() => {
     setData(data);
@@ -95,10 +94,6 @@ const GameList = ({ platforms }) => {
     Status: ["active", "inactive"],
   };
 
-  //Platform Filter
-  const handelPlatformChange = (e) => {
-    setSelectplatform(e.target.value)
-  }
 
   return (
     <>
@@ -119,16 +114,6 @@ const GameList = ({ platforms }) => {
               }}
             />
           </div>
-          <div>
-            <select onChange={(e) => handelPlatformChange(e)} className="text-black w-full md:w-auto cursor-pointer dark:text-white bg-[#F3F4F6] dark:bg-Dark_light  px-20 py-2 rounded-md shadow-md  outline-none">
-              <option value={'all'}>All</option>
-              {
-                platforms?.map((item, ind) => (
-                  <option value={item.name} className="text-[1rem] cursor-pointer" key={ind}>{item.name}</option>
-                ))
-              }
-            </select>
-          </div>
         </div>
         <div className="overflow-y-auto">
           <TableComponent
@@ -139,6 +124,7 @@ const GameList = ({ platforms }) => {
             DashboardFetchedData={filteredData}
             deleteTableData={handleDelete}
             Filter={handleFilterData}
+            loadingStatus={data}
           />
         </div>
         <Modal

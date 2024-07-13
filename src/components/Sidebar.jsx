@@ -80,7 +80,7 @@ const LeftSideBar = () => {
         showDropDown: true,
         nested: [
           {
-            LinkName: "Hosted Game",
+            LinkName: "Platform",
             Link: "/game",
             icon: <IoLogoGameControllerB />,
           },

@@ -13,6 +13,7 @@ import TableComponent from "./TableComponent";
 import { handleFilter } from "@/utils/Filter";
 import { TfiReload } from "react-icons/tfi";
 import Loader from "./ui/Loader";
+import LoadingSkeleton from "./ui/skeleton/LoadingSkeleton";
 
 const Clients = ({ clientData }) => {
   const [open, setOpen] = useState(false);
@@ -131,6 +132,7 @@ const Clients = ({ clientData }) => {
     const dataFiltered = handleFilter(data, key, value, Num);
     setFilteredData(dataFiltered);
     setFilter(dataFiltered);
+    console.log(dataFiltered,"data filter here")
   };
 
   const tableData = {
@@ -158,10 +160,13 @@ const Clients = ({ clientData }) => {
 
   return (
     <>
-      {filteredData?.length > 0 ? (
         <>
           <div className="h-full w-[95%] mx-auto flex flex-col">
-            <div className="md:w-[50%] flex items-center space-x-4 pt-5">
+
+            <div className={`md:w-[50%] ${data.length>0&&'flex'} items-center space-x-4 pt-5`}>
+              
+              {data.length>0?
+              <>
               <div className="w-full mb-3 flex bg-white shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light dark:border-none rounded-md  font-extralight py-4 md:py-2 px-4 ">
                 <div className="text-lg">
                   <FiSearch />
@@ -186,6 +191,9 @@ const Clients = ({ clientData }) => {
                   size={30}
                 />
               </div>
+              </>:<LoadingSkeleton LoadingStyle={'w-full rounded-md  h-[45px]'} count={1}/>
+              }
+              
             </div>
             <TableComponent
               tableData={tableData}
@@ -194,6 +202,7 @@ const Clients = ({ clientData }) => {
               rowClick={handleRowClick}
               openModal={handleModalOpen}
               deleteTableData={handleDelete}
+              loadingStatus={data}
             />
             <Modal
               open={open}
@@ -204,13 +213,12 @@ const Clients = ({ clientData }) => {
               {ModalContent}
             </Modal>
           </div>
-          <Loader />
         </>
-      ) : (
-        <p className="text-center text-black dark:text-white text-2xl mt-14">
+      
+        {filteredData.length<0&&<p className="text-center text-black dark:text-white text-2xl mt-14">
           No clients created yet!
-        </p>
-      )}
+        </p>}
+    
     </>
   );
 };

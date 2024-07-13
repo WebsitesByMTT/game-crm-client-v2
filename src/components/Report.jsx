@@ -10,7 +10,6 @@ const Report = ({ id }) => {
     (async () => {
       const res = await getUserReport(id, reportType);
       setData(res);
-      console.log(res);
     })();
   }, [id, reportType]);
 
@@ -32,24 +31,24 @@ const Report = ({ id }) => {
   };
 
   return (
-    <div className="border dark:border-gray-600 p-4 flex flex-col gap-4">
+   <div className="border mx-2 dark:border-gray-600 rounded-2xl p-4 flex flex-col gap-4">
       <div className=" flex items-center justify-between">
         <h5 className="text-xl dark:text-white">{reportType} Report</h5>
         <select
           id="reportType"
           value={reportType}
           onChange={handleReportTypeChange}
-          className="border dark:border-gray-700 px-4 rounded-xl outline-none dark:bg-Dark_light dark:text-white p-2"
+          className=" px-4 rounded-xl cursor-pointer outline-none dark:bg-Dark_light dark:text-white p-2"
         >
-          <option value="Daily">Daily</option>
-          <option value="Weekly">Weekly</option>
-          <option value="Monthly">Monthly</option>
+          <option value="Daily" className="cursor-pointer">Daily</option>
+          <option value="Weekly" className="cursor-pointer">Weekly</option>
+          <option value="Monthly" className="cursor-pointer">Monthly</option>
         </select>
       </div>
 
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 border dark:border-gray-600 dark:bg-Dark_light dark:text-white bg-white flex gap-1 flex-col">
+          <div className="p-4 rounded-2xl dark:bg-Dark_light dark:text-white bg-white flex gap-1 flex-col">
             <h6 className="text-xl">Credits Given</h6>
             <p className="text-base flex items-center gap-2">
               <svg
@@ -71,7 +70,7 @@ const Report = ({ id }) => {
               <span>{data.creditsGiven}</span>
             </p>
           </div>
-          <div className="p-4 border dark:border-gray-600 dark:bg-Dark_light dark:text-white bg-white flex gap-1 flex-col">
+          <div className="p-4 rounded-2xl dark:bg-Dark_light dark:text-white bg-white flex gap-1 flex-col">
             <h6 className="text-xl">Credits Spent</h6>
             <p className="text-base flex items-center gap-2">
               <svg
@@ -95,81 +94,90 @@ const Report = ({ id }) => {
           </div>
         </div>
 
-        <div className="border bg-white p-4 dark:border-gray-600 dark:bg-Dark_light dark:text-white flex flex-col gap-4">
+        <div className="bg-white p-4 rounded-2xl dark:border-gray-600 dark:bg-Dark_light dark:text-white flex flex-col gap-4">
           <h5 className="text-base">Transactions</h5>
           <div className="grid gap-2">
             {data.transactions && data.transactions.length > 0 ? (
-              data.transactions.map((transaction) => (
-                <div
-                  key={transaction._id}
-                  className="border p-2 grid grid-cols-6 gap-2"
-                >
-                  <p className="col-span-1 hidden lg:block">
-                    {transaction._id}
-                  </p>
-                  <p className="col-span-1">{transaction.debtor}</p>
-                  <p className="col-span-1">{transaction.creditor}</p>
-                  <p className="col-span-1">
-                    <span
-                      className={
-                        transaction.type === "recharge"
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }
-                    >
-                      {transaction.type}
-                    </span>
-                  </p>
-                  <p className="col-span-1">{transaction.amount}</p>
-                  <p className="col-span-1">
-                    {formatDate(transaction.createdAt)}
-                  </p>
-                </div>
-              ))
+              Array.from({ length: Math.min(data.transactions.length, 5) }).map((_, index) => {
+                const transaction = data.transactions[index];
+                return (
+                  <div
+                    key={transaction._id}
+                    className="bg-gray-200 dark:bg-gray-800 capitalize rounded-md p-2 grid grid-cols-6 gap-2"
+                  >
+                    <p className="col-span-1 hidden lg:block">
+                      {transaction._id}
+                    </p>
+                    <p className="col-span-1">{transaction.debtor}</p>
+                    <p className="col-span-1">{transaction.creditor}</p>
+                    <p className="col-span-1">
+                      <span
+                        className={
+                          transaction.type === "recharge"
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }
+                      >
+                        {transaction.type}
+                      </span>
+                    </p>
+                    <p className="col-span-1">{transaction.amount}</p>
+                    <p className="col-span-1">
+                      {formatDate(transaction.createdAt)}
+                    </p>
+                  </div>
+                );
+              })
             ) : (
               <p>No transactions found for today.</p>
             )}
           </div>
         </div>
 
-        <div className="border bg-white dark:border-gray-600 dark:bg-Dark_light dark:text-white p-4 flex flex-col gap-4">
+        <div className="rounded-2xl bg-white dark:bg-Dark_light dark:text-white p-4 flex flex-col gap-4">
           <h5 className="text-base">Users Created</h5>
           <div className="grid gap-2">
             {data.users && data.users.length > 0 ? (
-              data.users.map((user) => (
-                <div
-                  key={user._id}
-                  className="border p-2 grid grid-cols-5 gap-2"
-                >
-                  <p className="col-span-1">{user.name}</p>
-                  <p className="col-span-1">{user.username}</p>
-                  <p className="col-span-1">{user.role}</p>
-                  <p className="col-span-1">{user.status}</p>
-                  <p className="col-span-1">{formatDate(user.createdAt)}</p>
-                </div>
-              ))
+              Array.from({ length: Math.min(data.users.length, 5) }).map((_, index) => {
+                const user = data.users[index];
+                return (
+                  <div
+                    key={user._id}
+                    className="bg-gray-200 dark:bg-gray-800 capitalize rounded-md p-2 grid grid-cols-5 gap-2"
+                  >
+                    <p className="col-span-1">{user.name}</p>
+                    <p className="col-span-1">{user.username}</p>
+                    <p className="col-span-1">{user.role}</p>
+                    <p className="col-span-1">{user.status}</p>
+                    <p className="col-span-1">{formatDate(user.createdAt)}</p>
+                  </div>
+                );
+              })
             ) : (
               <p>No users created today.</p>
             )}
           </div>
         </div>
 
-        <div className="border bg-white dark:border-gray-600 dark:bg-Dark_light dark:text-white p-4 flex flex-col gap-4">
+        <div className="bg-white rounded-2xl dark:bg-Dark_light dark:text-white p-4 flex flex-col gap-4">
           <h5 className="text-base">Players Created</h5>
           <div className="grid gap-2">
             {data.players && data.players.length > 0 ? (
-              data.players.map((player) => (
-                <div
-                  key={player._id}
-                  className="border p-2 grid grid-cols-5 gap-2"
-                >
-                  <p className="col-span-1">{player.name}</p>
-                  <p className="col-span-1">{player.username}</p>
-                  <p className="col-span-1">{player.role}</p>
-                  <p className="col-span-1">{player.status}</p>
-                  <p className="col-span-1">{formatDate(player.createdAt)}</p>
-                </div>
-              ))
+              Array.from({ length: Math.min(data.players.length, 5) }).map((_, index) => {
+                const player = data.players[index];
+                return (
+                  <div
+                    key={player._id}
+                    className="bg-gray-200 dark:bg-gray-800 capitalize rounded-md p-2 grid grid-cols-5 gap-2"
+                  >
+                    <p className="col-span-1">{player.name}</p>
+                    <p className="col-span-1">{player.username}</p>
+                    <p className="col-span-1">{player.role}</p>
+                    <p className="col-span-1">{player.status}</p>
+                    <p className="col-span-1">{formatDate(player.createdAt)}</p>
+                  </div>
+                );
+              })
             ) : (
               <p>No players created today.</p>
             )}
