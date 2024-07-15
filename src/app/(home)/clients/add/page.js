@@ -70,8 +70,8 @@ const AddClient = () => {
         username: "",
         name: "",
         password: "",
-        role: "",
-        credits: "",
+        role: user.role,
+        credits: "0",
       });
       setLoad(false);
     } catch (error) {

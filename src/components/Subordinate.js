@@ -4,21 +4,24 @@ import { IoChevronBackOutline } from "react-icons/io5";
 import Clients from "./Clients";
 import Transactions from "./Transaction";
 import Report from "./Report";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   getSubordinateClients,
   getSubordinateTransactions,
 } from "@/utils/action";
 import toast from "react-hot-toast";
 
-const Subordinate = ({ subordinateData }) => {
+const Subordinate = ({ page, subordinateData }) => {
   const router = useRouter();
   const [option, setOption] = useState("report");
   const [transactions, setTransactions] = useState();
   const [subordinates, setSubordinates] = useState();
-  const searchParams = useSearchParams();
-  const page = searchParams.get("page");
+  const [currentPage, setCurrentPage] = useState(page);
   const pathname = usePathname();
+
+  useEffect(() => {
+    setCurrentPage(page);
+  }, [page]);
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -26,7 +29,7 @@ const Subordinate = ({ subordinateData }) => {
         try {
           const response = await getSubordinateTransactions(
             subordinateData._id,
-            page
+            currentPage
           );
           console.log("sub transactions", response);
           setTransactions(response?.data);
@@ -37,20 +40,21 @@ const Subordinate = ({ subordinateData }) => {
         try {
           const response = await getSubordinateClients(
             subordinateData?._id,
-            page
+            currentPage
           );
           setSubordinates(response?.data);
+          console.log("subordinates", response.data);
         } catch (error) {
           toast.error(error.message);
         }
       }
     };
     fetchdata();
-  }, [page, option]);
+  }, [currentPage, option]);
 
   return (
     <div>
-      <div className="w-[95%] m-auto py-5 flex justify-between">
+      <div className="w-[90%] md:w-[95%] m-auto py-5 flex flex-col md:flex-row justify-between">
         <div className="flex gap-3">
           <div
             onClick={() => {
@@ -116,7 +120,7 @@ const Subordinate = ({ subordinateData }) => {
         {subordinates && option === "subordinates" && (
           <Clients
             totalPages={subordinates?.totalPages}
-            currentPage={page}
+            currentPage={currentPage}
             clientData={subordinates?.subordinates}
           />
         )}
@@ -124,7 +128,7 @@ const Subordinate = ({ subordinateData }) => {
           <Transactions
             totalPages={transactions?.totalPages}
             transactions={transactions?.transactions}
-            currentPage={page}
+            currentPage={currentPage}
           />
         )}
         {subordinateData && option === "report" && (
