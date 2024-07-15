@@ -1,6 +1,6 @@
 "use client";
 import Loader from "@/components/ui/Loader";
-import { addGame, getPlatform} from "@/utils/action";
+import { addGame, getPlatform } from "@/utils/action";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -31,7 +31,9 @@ const AddGame = () => {
   };
 
   useEffect(() => {
-    const allFieldsFilled = Object.values(game).every(field => field !== "" && field !== null);
+    const allFieldsFilled = Object.values(game).every(
+      (field) => field !== "" && field !== null
+    );
     setDisable(!allFieldsFilled);
   }, [game]);
 
@@ -55,44 +57,41 @@ const AddGame = () => {
     for (const key in game) {
       data.append(key, game[key]);
     }
-    try {
-      setLoad(true);
-      const response = await addGame(data);
+    setLoad(true);
+    const response = await addGame(data);
+    if (response?.error) {
+      toast.error(response.error);
+    } else {
       toast.success("Game Added successfully!");
-      setGame({
-        name: "",
-        type: "",
-        category: "",
-        platform: "",
-        status: "",
-        tagName: "",
-        slug: "",
-        url: "",
-        thumbnail: null,
-        payoutFile: null,
-      });
-      setDisable(true);
-      setLoad(false);
-    } catch (error) {
-      toast.error(error.message);
-      setLoad(false);
     }
+    setGame({
+      name: "",
+      type: "",
+      category: "",
+      platform: "",
+      status: "",
+      tagName: "",
+      slug: "",
+      url: "",
+      thumbnail: null,
+      payoutFile: null,
+    });
+    setDisable(true);
+    setLoad(false);
   };
 
   //Get Platforms
-  const handelPlatform=async()=>{
+  const handelPlatform = async () => {
     try {
-      const response = await getPlatform()
-      if(response?.length>0){
-        setPlatform(response)
+      const response = await getPlatform();
+      if (response?.length > 0) {
+        setPlatform(response);
       }
-    } catch (error) {
-      
-    }
-  }
-  useEffect(()=>{
-   handelPlatform()
-  },[])
+    } catch (error) {}
+  };
+  useEffect(() => {
+    handelPlatform();
+  }, []);
 
   return (
     <>
@@ -116,14 +115,19 @@ const AddGame = () => {
             value={game.category}
             className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]"
           />
-           <p className="text-left font-light">Platform :</p>
-          <select name="platform" className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]" onChange={handleChange} value={game.platform}>
-            <option value={''}>Select Platform</option>
-            {
-              platform?.map((item,ind)=>(
-                <option key={ind} value={item.name}>{item.name}</option>
-              ))
-            }
+          <p className="text-left font-light">Platform :</p>
+          <select
+            name="platform"
+            className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]"
+            onChange={handleChange}
+            value={game.platform}
+          >
+            <option value={""}>Select Platform</option>
+            {platform?.map((item, ind) => (
+              <option key={ind} value={item.name}>
+                {item.name}
+              </option>
+            ))}
           </select>
           <p className="text-left font-light">Type :</p>
           <input
@@ -199,17 +203,17 @@ const AddGame = () => {
             <button
               disabled={disable ? true : false}
               type="submit"
-              className={` ${disable ? "opacity-50 " : "opacity-100 "
-                }text-center flex justify-center px-4 items-center gap-2 bg-gradient-to-r from-[#8C7CFD] hover:from-[#BC89F1] hover:to-[#8C7CFD] to-[#BC89F1] mx-auto text-white text-xl rounded-md p-2 font-light hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out`}
+              className={` ${
+                disable ? "opacity-50 " : "opacity-100 "
+              }text-center flex justify-center px-4 items-center gap-2 bg-gradient-to-r from-[#8C7CFD] hover:from-[#BC89F1] hover:to-[#8C7CFD] to-[#BC89F1] mx-auto text-white text-xl rounded-md p-2 font-light hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out`}
             >
               Submit
             </button>
           </div>
         </form>
       </div>
-      <Loader show={load}/>
+      <Loader show={load} />
     </>
-
   );
 };
 
