@@ -115,12 +115,12 @@ const Report = ({ id }) => {
         </div>
         <div className="flex flex-col">
           <Dashboard data={data} loading={loading} />
-          <div className="flex justify-between gap-5 min-h-[55vh]">
-            <div className="w-full min-h-[55vh] h-fit bg-white rounded-xl dark:bg-Dark_light py-5 px-6 relative">
+          <div className="flex w-[98%] m-auto flex-col xl:flex-row xl:justify-between gap-5 xl:min-h-[55vh]">
+            <div className="w-full h-full bg-white rounded-xl dark:bg-Dark_light py-5 px-6 relative">
               <h3 className="dark:text-white font-medium text-2xl mb-4">
                 Recent Transactions
               </h3>
-              <div className="grid grid-cols-2 gap-x-3 gap-y-3 h-[90%] mt-2">
+              <div className="grid text-nowrap grid-cols-2 gap-x-3 gap-y-3 h-[90%] mt-2">
                 {!loading ? (
                   data?.transactions?.length > 0 ? (
                     <>
@@ -128,7 +128,13 @@ const Report = ({ id }) => {
                         <TransactionCards data={item} key={index} />
                       ))}
                       {pathname === "/" && (
-                        <div className="flex w-[95%] mx-auto items-end justify-end absolute bottom-5 right-6">
+                        <div
+                          className={`${
+                            data?.transactions?.length % 2 === 0
+                              ? "col-span-2"
+                              : "col-span-1"
+                          } flex w-[95%] mx-auto items-end justify-end `}
+                        >
                           <button
                             onClick={() => {
                               router.push("/transaction/my?page=1");
@@ -142,7 +148,7 @@ const Report = ({ id }) => {
                     </>
                   ) : (
                     <p className="h-full w-full dark:text-white text-center col-span-2 mt-5">
-                      No recent transactions yet
+                      No recent transactions
                     </p>
                   )
                 ) : (
@@ -154,7 +160,14 @@ const Report = ({ id }) => {
               </div>
             </div>
             {data?.role !== "player" && (
-              <div className="h-[56vh] w-[50%] bg-white dark:bg-Dark_light rounded-xl px-6 py-5">
+              <div
+                className={`${
+                  data?.users &&
+                  Object.values(data.users).every((value) => value === 0)
+                    ? "h-fit"
+                    : "h-[40vh] lg:h-[56vh]"
+                } w-full  lg:w-full xl:w-[50%] bg-white dark:bg-Dark_light rounded-xl px-6 py-5`}
+              >
                 <h3 className="dark:text-white font-medium text-2xl">
                   Client Distribution
                 </h3>
@@ -175,10 +188,11 @@ const Report = ({ id }) => {
                       <PieChart width="100%" height="100%">
                         <Pie
                           data={pie}
-                          innerRadius={140}
-                          outerRadius={180}
+                          innerRadius={"70%"}
+                          outerRadius={"85%"}
                           paddingAngle={0}
                           dataKey="value"
+                          className="w-full h-full"
                           label
                         >
                           {pie?.map((entry, index) => (
@@ -248,22 +262,22 @@ export default Report;
 const TransactionCards = ({ data }) => {
   return (
     <div className="w-[95%] mx-auto rounded-xl p-2 border-[1px] bg-[#dfdfdf2a] border-[#dfdfdf38] dark:bg-[#1515157a]">
-      <div className="w-full flex justify-between h-full">
-        <div className="flex flex-col text-md w-[60%] justify-evenly dark:text-white">
-          <div className="grid grid-cols-2">
+      <div className="w-full flex flex-col xl:flex-col xl:gap-1  2xl:flex-row justify-between h-full overflow-hidden">
+        <div className="flex flex-col text-md w-fit justify-evenly dark:text-white overflow-hidden">
+          <div className="grid grid-cols-2 gap-x-2">
             <p>Creditor :</p>
             <span className="opacity-90 dark:opacity-50 font-extralight">
               {data.creditor}
             </span>
           </div>
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-2 gap-x-2">
             <p>Debtor :</p>
             <span className="opacity-90 dark:opacity-50  font-extralight">
               {data.debtor}
             </span>
           </div>
         </div>
-        <div className="flex gap-2 text-3xl dark:text-white my-auto">
+        <div className="flex gap-2 text-2xl lg:text-3xl w-fit  justify-center text-right dark:text-white my-auto">
           <p>{data.amount}</p>
           {data.type === "redeem" ? (
             <span className="text-red-500">

@@ -1,11 +1,12 @@
-import Clients from "@/components/Clients";
+import Subordinate from "@/components/Subordinate";
 import { config } from "@/utils/config";
 import { getCookie } from "@/utils/cookie";
+import React from "react";
 
-const getMyClients = async (id) => {
+const getSubordinates = async (id) => {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/users/subordinates`, {
+    const response = await fetch(`${config.server}/api/users/${id}`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -18,19 +19,22 @@ const getMyClients = async (id) => {
       const error = await response.json();
       throw new Error(error.message);
     }
+
     const data = await response.json();
-    console.log("myclients", data);
     return { data };
   } catch (error) {
     throw error;
   }
 };
 
-const page = async ({ params }) => {
-  const clientData = await getMyClients(params.id);
+const page = async ({ params, searchParams }) => {
+  const page = searchParams.page;
+  const subordinateData = await getSubordinates(params?.subid);
   return (
-    <div>
-      {clientData && <Clients clientData={clientData?.data?.subordinates} />}
+    <div className="overflow-y-scroll h-[90%]">
+      {subordinateData && (
+        <Subordinate page={page} subordinateData={subordinateData?.data} />
+      )}
     </div>
   );
 };

@@ -143,7 +143,7 @@ const LeftSideBar = () => {
         <RxHamburgerMenu />
       </div>
       <div
-        className={`py-4 border-r-2 bg-clip-padding backdrop-filter backdrop-blur-[5px] bg-white dark:bg-Dark_light shadow-sm border-[#e4e4e42f] px-5  lg:flex flex-col justify-between h-full lg:static absolute w-[250px] md:w-[250px] group md:transition-all Transition ${
+        className={`py-4 border-r-2 bg-clip-padding backdrop-filter backdrop-blur-[5px] bg-white dark:bg-Dark_light shadow-sm border-[#e4e4e42f] px-5 flex flex-col justify-between h-full lg:static absolute w-[250px] md:w-[250px] group md:transition-all Transition ${
           open ? "top-0 left-[0%]" : "top-0 -left-[100%]"
         }  z-10`}
       >
@@ -200,7 +200,7 @@ const LeftSideBar = () => {
                       href={item.Link}
                     >
                       <li
-                        className={`w-full p-2 md:justify-between rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33]  ${
+                        className={`w-full p-2 justify-between rounded-md flex gap-2 items-center hover:bg-[#dfdfdf33]  ${
                           option === item.LinkName
                             ? "bg-[#dfdfdf1e]"
                             : "bg-transparent"

@@ -166,12 +166,8 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
     <>
       <>
         <div className="h-full w-[95%] mx-auto flex flex-col">
-          <div
-            className={`md:w-[50%] ${
-              data?.length > 0 && "flex"
-            } items-center space-x-4 pt-5`}
-          >
-            {data?.length > 0 ? (
+          {filteredData?.length > 0 && (
+            <div className={`md:w-[50%] flex items-center space-x-4 pt-5`}>
               <>
                 <div className="w-full mb-3 flex bg-white shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light dark:border-none rounded-md  font-extralight py-4 md:py-2 px-4 ">
                   <div className="text-lg">
@@ -198,13 +194,8 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
                   />
                 </div>
               </>
-            ) : (
-              <LoadingSkeleton
-                LoadingStyle={"w-full rounded-md  h-[45px]"}
-                count={1}
-              />
-            )}
-          </div>
+            </div>
+          )}
           <TableComponent
             tableData={tableData}
             Filter={handleFilterData}
@@ -214,29 +205,31 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
             deleteTableData={handleDelete}
             loadingStatus={data}
           />
-          <div className="w-[98%] mt-4 flex items-center justify-end gap-3 dark:text-white text-xl absolute bottom-10 right-12 ">
-            <button
-              disabled={count === 1}
-              onClick={() => {
-                setCount(count - 1);
-                router.back();
-              }}
-              className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
-            >
-              <IoChevronBack />
-            </button>
-            <p>{count}</p>
-            <button
-              disabled={count === totalPages}
-              onClick={() => {
-                setCount(count + 1);
-                router.push(`?page=${count + 1}`);
-              }}
-              className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
-            >
-              <IoChevronForward />
-            </button>
-          </div>
+          {totalPages > 1 && (
+            <div className=" mt-4 flex items-center justify-end gap-3 dark:text-white text-xl absolute bottom-10 right-12 ">
+              <button
+                disabled={count === 1}
+                onClick={() => {
+                  setCount(count - 1);
+                  router.back();
+                }}
+                className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
+              >
+                <IoChevronBack />
+              </button>
+              <p>{count}</p>
+              <button
+                disabled={count === totalPages}
+                onClick={() => {
+                  setCount(count + 1);
+                  router.push(`?page=${count + 1}`);
+                }}
+                className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
+              >
+                <IoChevronForward />
+              </button>
+            </div>
+          )}
           <Modal
             open={open}
             setOpen={setOpen}
@@ -247,12 +240,6 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
           </Modal>
         </div>
       </>
-
-      {filteredData.length < 0 && (
-        <p className="text-center text-black dark:text-white text-2xl mt-14">
-          No clients created yet!
-        </p>
-      )}
     </>
   );
 };

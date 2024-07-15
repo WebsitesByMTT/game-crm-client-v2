@@ -1,7 +1,7 @@
 "use client";
 import Loader from "@/components/ui/Loader";
-import { addClient} from "@/utils/action";
-import React, {useState } from "react";
+import { addClient } from "@/utils/action";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
@@ -62,22 +62,22 @@ const AddClient = () => {
     } else if (user.credits < 0) {
       return toast.error("Credit can't be negative");
     }
-    try {
-      setLoad(true);
-      const response = await addClient(user);
-      toast.success("Client Added successfully!");
-      setUser({
-        username: "",
-        name: "",
-        password: "",
-        role: "",
-        credits: "",
-      });
-      setLoad(false);
-    } catch (error) {
-      toast.error(error.message);
-      setLoad(false);
+    setLoad(true);
+    const response = await addClient(user);
+    if (response?.error) {
+      toast.error(response.error);
+    } else {
+      console.log("here");
+      toast.success("Client Added Successfully!");
     }
+    setUser({
+      username: "",
+      name: "",
+      password: "",
+      role: user.role,
+      credits: "0",
+    });
+    setLoad(false);
   };
 
   return (

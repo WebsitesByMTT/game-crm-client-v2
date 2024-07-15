@@ -32,7 +32,7 @@ const getUserData = async () => {
 
 export default async function RootLayout({ children }) {
   const data = await getUserData();
-  
+
   return (
     <div className="bg-cover h-screen bg-[#F3F4F6] dark:bg-Dark flex">
       <DataSetter data={data.data} />
@@ -45,7 +45,9 @@ export default async function RootLayout({ children }) {
         <div>
           <Header />
         </div>
-        <div className="h-full overflow-y-scroll w-[100%] m-auto">{children}</div>
+        <div className="h-full overflow-y-scroll w-[100%] m-auto">
+          {children}
+        </div>
       </div>
     </div>
   );

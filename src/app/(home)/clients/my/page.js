@@ -5,21 +5,23 @@ import { getCookie } from "@/utils/cookie";
 const getMyClients = async (page) => {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/users/subordinates?page=${page}`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
+    const response = await fetch(
+      `${config.server}/api/users/subordinates?page=${page}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message);
     }
     const data = await response.json();
-    console.log("myclients", data);
     return { data };
   } catch (error) {
     throw error;
@@ -27,7 +29,7 @@ const getMyClients = async (page) => {
 };
 
 const page = async ({ searchParams }) => {
-    const params = searchParams;
+  const params = searchParams;
   const clientData = await getMyClients(params.page);
   return (
     <div>
