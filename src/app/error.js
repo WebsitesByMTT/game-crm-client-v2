@@ -2,10 +2,10 @@
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
-export default function Error({ error }) {
+export default function Error({ error, reset }) {
   useEffect(() => {
-    console.log("ERRRRRORRRRRR.........");
-    toast.error(error.message.Error);
+    toast.error(error.message);
+    reset();
   }, [error]);
 
   return;

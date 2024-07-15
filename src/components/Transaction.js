@@ -28,16 +28,16 @@ const Transactions = ({ totalPages, transactions, currentPage }) => {
 
   return (
     <div className="h-full w-[95%] mx-auto flex flex-col">
-      {filteredData?.length > 0 ? (
-        <div className="pt-[3rem]">
-          <TableComponent
-            pageType="transaction"
-            tableData={tableData}
-            DashboardFetchedData={filteredData}
-            Filter={handleFilterData}
-            loadingStatus={transactions}
-          />
-          <div className="w-[98%] mt-4 flex items-center justify-end gap-3 dark:text-white text-xl absolute bottom-10 right-12 ">
+      <div className="pt-[3rem]">
+        <TableComponent
+          pageType="transaction"
+          tableData={tableData}
+          DashboardFetchedData={filteredData}
+          Filter={handleFilterData}
+          loadingStatus={transactions}
+        />
+        {totalPages > 1 && (
+          <div className="mt-4 flex items-center justify-end gap-3 dark:text-white text-xl absolute bottom-10 right-12 ">
             <button
               disabled={count === 1}
               onClick={() => {
@@ -60,12 +60,8 @@ const Transactions = ({ totalPages, transactions, currentPage }) => {
               <IoChevronForward />
             </button>
           </div>
-        </div>
-      ) : (
-        <p className="text-center text-black dark:text-white text-2xl mt-10">
-          No Transactions Found!{" "}
-        </p>
-      )}
+        )}
+      </div>
     </div>
   );
 };

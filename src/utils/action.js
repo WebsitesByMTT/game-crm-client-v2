@@ -104,7 +104,7 @@ export const getMyClients = async (id) => {
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return { error: error.message };
     }
     const data = await response.json();
     return { data };
@@ -125,15 +125,14 @@ export const addClient = async (user) => {
         Cookie: `userToken=${token}`,
       },
     });
-
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return { error: error.message };
     }
     const data = await response.json();
     return { data };
   } catch (error) {
-    throw error;
+    return error;
   } finally {
     revalidatePath("/clients/all");
   }
@@ -241,8 +240,6 @@ export const getSubordinateClients = async (id, page) => {
     throw error;
   }
 };
-
-
 
 export const editCredits = async (credits, id) => {
   const token = await getCookie();
@@ -403,7 +400,7 @@ export const addGame = async (game) => {
     });
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return {error: error.message}
     }
     const data = await response.json();
     return { data };
