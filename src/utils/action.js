@@ -294,8 +294,9 @@ export const deleteGame = async (platform, id) => {
     return { data };
   } catch (error) {
     console.log("error", error);
+  } finally {
+    revalidatePath("/game");
   }
-  revalidatePath(`/game/${platform}`);
 };
 
 export const addGame = async (game) => {
@@ -317,6 +318,8 @@ export const addGame = async (game) => {
     return { data };
   } catch (error) {
     throw error;
+  } finally {
+    revalidatePath("/game");
   }
 };
 

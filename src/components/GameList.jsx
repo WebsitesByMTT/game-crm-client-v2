@@ -19,17 +19,6 @@ const GameList = ({ platforms, games }) => {
   const [search, setSearch] = useState("");
   const [load, setLoad] = useState(false);
 
-  // const handelGamesData = async () => {
-  //   setLoad(true);
-  //   const games = await getGames("milkyway", platforms);
-  //   setLoad(false);
-  //   if (games?.error) {
-  //     return toast.error(games.error);
-  //   }
-  //   setData(games?.data);
-  //   setFilteredData(games?.data);
-  // };
-
   useEffect(() => {
     setData(games);
     setFilteredData(games);
