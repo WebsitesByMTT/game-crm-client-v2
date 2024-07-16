@@ -26,27 +26,23 @@ const Subordinate = ({ page, subordinateData }) => {
   useEffect(() => {
     const fetchdata = async () => {
       if (option === "transactions") {
-        try {
-          const response = await getSubordinateTransactions(
-            subordinateData._id,
-            currentPage
-          );
-          console.log("sub transactions", response);
-          setTransactions(response?.data);
-        } catch (error) {
-          toast.error(error.message);
+        const response = await getSubordinateTransactions(
+          subordinateData._id,
+          currentPage
+        );
+        if (response?.error) {
+          return toast.error(response.error);
         }
+        setTransactions(response?.data);
       } else if (option === "subordinates") {
-        try {
-          const response = await getSubordinateClients(
-            subordinateData?._id,
-            currentPage
-          );
-          setSubordinates(response?.data);
-          console.log("subordinates", response.data);
-        } catch (error) {
-          toast.error(error.message);
+        const response = await getSubordinateClients(
+          subordinateData?._id,
+          currentPage
+        );
+        if (response?.error) {
+          return toast.error(response.error);
         }
+        setSubordinates(response?.data);
       }
     };
     fetchdata();

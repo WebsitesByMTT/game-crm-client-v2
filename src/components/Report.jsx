@@ -7,6 +7,7 @@ import { FaArrowDown, FaArrowUp } from "react-icons/fa6";
 import Loader from "./ui/Loader";
 import LoadingSkeleton from "./ui/skeleton/LoadingSkeleton";
 import { useRouter, usePathname } from "next/navigation";
+import toast from "react-hot-toast";
 
 const Report = ({ id }) => {
   const [data, setData] = useState({});
@@ -24,10 +25,12 @@ const Report = ({ id }) => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const res = await getUserReport(id, reportType);
-      console.log("report ", res);
+      const response = await getUserReport(id, reportType);
       setLoading(false);
-      setData(res);
+      if (response?.error) {
+        return toast.error(response.error);
+      }
+      setData(response);
     })();
   }, [id, reportType]);
 

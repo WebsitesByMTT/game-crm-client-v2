@@ -43,10 +43,12 @@ const Login = () => {
       toast.remove();
       return toast.error("All fields are required");
     }
-
     setLoad(true);
-    try {
       const response = await loginUser({ username, password });
+      if(response?.error){
+        setLoad(false);
+        return toast.error(response.error);
+      }
       const { token, message, role } = response.responseData;
       if (token) {
         if (role !== "player") {
@@ -60,15 +62,8 @@ const Login = () => {
       } else {
         toast.error("Token not found");
       }
-    } catch (error) {
-      toast.remove();
-      // fetchCaptcha();
-      data.captcha = "";
-      toast.error(error.message);
-    } finally {
       setLoad(false);
     }
-  };
 
   return (
     <>

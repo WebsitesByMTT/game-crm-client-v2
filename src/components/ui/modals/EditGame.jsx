@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import Loader from "../Loader";
 
-const EditGame = ({ prevData, id, setOpen }) => {
-  const [load,setLoad]=useState(false)
+const EditGame = ({ prevData, id, setOpen, platform }) => {
+  const [load, setLoad] = useState(false);
   const [game, setGame] = useState({
     name: prevData.name,
     type: prevData.type,
@@ -48,16 +48,15 @@ const EditGame = ({ prevData, id, setOpen }) => {
         data.append(key, game[key]);
       }
     }
-    try {
-      setLoad(true)
-      const response = await editGames(data, id);
-      toast.success("Game updated succesfully!");
-      setOpen(false);
-      setLoad(false)
-    } catch (error) {
-      toast.error(error.message);
-      setLoad(false)
+    data.append("platformName", platform);
+    setLoad(true);
+    const response = await editGames(data, id);
+    setLoad(false);
+    if (response?.error) {
+      return toast.error(response.error);
     }
+    toast.success("Game updated succesfully!");
+    setOpen(false);
   };
 
   return (
@@ -142,7 +141,7 @@ const EditGame = ({ prevData, id, setOpen }) => {
         />
         <p className="text-left font-light">Payout file :</p>
         <input
-          name="file"
+          name="payoutFile"
           type="file"
           accept=".json"
           onChange={handleChange}
@@ -157,9 +156,8 @@ const EditGame = ({ prevData, id, setOpen }) => {
           </button>
         </div>
       </form>
-      <Loader show={load}/>
+      <Loader show={load} />
     </>
-
   );
 };
 

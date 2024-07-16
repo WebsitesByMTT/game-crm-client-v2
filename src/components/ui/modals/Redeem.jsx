@@ -1,12 +1,12 @@
 "use client";
-import { editClient, editCredits } from "@/utils/action";
+import { editCredits } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import Loader from "../Loader";
 
 const Redeem = ({ setOpen, id }) => {
   const [amount, setAmount] = useState();
-  const [load,setLoad]=useState(false)
+  const [load, setLoad] = useState(false);
   const credits = {
     type: "redeem",
     amount: amount,
@@ -17,16 +17,15 @@ const Redeem = ({ setOpen, id }) => {
     if (!amount || amount <= 0) {
       return toast.error("Enter a valid amount");
     }
-    try {
-      setLoad(true)
-      const response = await editCredits(credits, id);
-      setOpen(false);
-      toast.success(response.responseData.message);
-      setLoad(false)
-    } catch (error) {
-      toast.error(error.message);
-      setLoad(false)
+    setLoad(true);
+    const response = await editCredits(credits, id);
+    if (response?.error) {
+      setLoad(false);
+      toast.error(response.error);
     }
+    setOpen(false);
+    toast.success(response.responseData.message);
+    setLoad(false);
   };
 
   return (
@@ -52,9 +51,8 @@ const Redeem = ({ setOpen, id }) => {
           </button>
         </div>
       </form>
-      <Loader show={load}/>
+      <Loader show={load} />
     </>
-
   );
 };
 

@@ -2,11 +2,13 @@
 import Loader from "@/components/ui/Loader";
 import { addGame, getPlatform } from "@/utils/action";
 import React, { useEffect, useState } from "react";
+import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
 
 const AddGame = () => {
   const [load, setLoad] = useState(false);
   const [platform, setPlatform] = useState([]);
+  const [thumbnailPreview, setThumbnailPreview] = useState();
   const [game, setGame] = useState({
     name: "",
     type: "",
@@ -24,10 +26,38 @@ const AddGame = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+    if (name === "thumbnail") {
+      const selectedFile = files[0];
+      setGame({
+        ...game,
+        thumbnail: selectedFile,
+      });
+      const input = document.getElementById("fileUpload");
+      const file = input.files;
+      if (file) {
+        const fileReader = new FileReader();
+        fileReader.onload = (event) => {
+          console.log(event.target.value);
+          setThumbnailPreview(event.target.result);
+        };
+        fileReader.readAsDataURL(file[0]);
+      } else {
+        setThumbnailPreview(null);
+      }
+    } else {
+      setGame({
+        ...game,
+        [name]: files ? files[0] : value,
+      });
+    }
+  };
+
+  const handleClearFile = () => {
     setGame({
       ...game,
-      [name]: files ? files[0] : value,
+      thumbnail: null,
     });
+    setThumbnailPreview(null);
   };
 
   useEffect(() => {
@@ -60,34 +90,38 @@ const AddGame = () => {
     setLoad(true);
     const response = await addGame(data);
     if (response?.error) {
-      toast.error(response.error);
+      setLoad(false);
+      return toast.error(response.error);
     } else {
       toast.success("Game Added successfully!");
+      setGame({
+        name: "",
+        type: "",
+        category: "",
+        platform: "",
+        status: "",
+        tagName: "",
+        slug: "",
+        url: "",
+        thumbnail: null,
+        payoutFile: null,
+      });
+      document.getElementById('inactive').checked = false;
+      document.getElementById('active').checked = false;
+      setDisable(true);
+      setThumbnailPreview(null);
+      setLoad(false);
     }
-    setGame({
-      name: "",
-      type: "",
-      category: "",
-      platform: "",
-      status: "",
-      tagName: "",
-      slug: "",
-      url: "",
-      thumbnail: null,
-      payoutFile: null,
-    });
-    setDisable(true);
-    setLoad(false);
   };
 
   //Get Platforms
   const handelPlatform = async () => {
-    try {
-      const response = await getPlatform();
-      if (response?.length > 0) {
-        setPlatform(response);
-      }
-    } catch (error) {}
+    const response = await getPlatform();
+    if (response?.error) {
+      return toast.error(response.error);
+    } else if (response?.length > 0) {
+      setPlatform(response);
+    }
   };
   useEffect(() => {
     handelPlatform();
@@ -181,14 +215,31 @@ const AddGame = () => {
             className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
           />
           <p className="text-left font-light">Thumbnail :</p>
-          <input
-            onChange={handleChange}
-            type="file"
-            className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]"
-            id="fileUpload"
-            accept="image/*"
-            name="thumbnail"
-          />
+          {!thumbnailPreview ? (
+            <input
+              onChange={handleChange}
+              type="file"
+              className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e]"
+              id="fileUpload"
+              accept="image/*"
+              name="thumbnail"
+            />
+          ) : (
+            <div className="ml-3 relative w-fit flex items-start">
+              <img
+                src={thumbnailPreview}
+                alt="Thumbnail-Preview"
+                className="h-48 w-auto object-contain"
+              />
+              <button
+                type="button"
+                className="text-lg dark:text-white p-[5px] focus:outline-none absolute -right-4 -top-3 dark:bg-[#05040488] rounded-md"
+                onClick={handleClearFile}
+              >
+                <RxCross2 />
+              </button>
+            </div>
+          )}
           <p className="text-left font-light">Payout file :</p>
           <input
             name="payoutFile"
