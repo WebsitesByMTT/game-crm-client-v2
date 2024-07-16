@@ -1,5 +1,4 @@
 import { getCookie } from "@/utils/cookie";
-import Dashboard from "../../components/Dashboard";
 import { config } from "@/utils/config";
 import Report from "@/components/Report";
 
@@ -28,7 +27,7 @@ const getUserData = async () => {
 export default async function Home() {
   const data = await getUserData();
   return (
-    <main className="w-[96%] overflow-y-scroll h-[90vh] mx-auto mt-4">
+    <main className="w-[96%] overflow-y-scroll min-h-[90vh] mx-auto mt-4">
       {data && <Report id={data?.data?._id} />}
     </main>
   );

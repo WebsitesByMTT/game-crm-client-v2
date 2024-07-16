@@ -10,47 +10,52 @@ import TableComponent from "@/components/TableComponent";
 import { handleFilter } from "@/utils/Filter";
 import Loader from "./ui/Loader";
 
-const GameList = ({ platforms }) => {
-  const [data, setData] = useState();
+const GameList = ({ platforms, games }) => {
+  const [data, setData] = useState(games);
   const [filteredData, setFilteredData] = useState();
   const [open, setOpen] = useState(false);
   const [rowData, setRowData] = useState();
   const [modalType, setModalType] = useState("");
   const [search, setSearch] = useState("");
-  const [load, setLoad] = useState(false)
+  const [load, setLoad] = useState(false);
 
-  const handelGamesData = async () => {
-    const games = await getGames("milkyway",platforms);
-    setData(games?.data)
-    setFilteredData(games?.data)
-  }
-  useEffect(() => {
-    handelGamesData()
-  }, [platforms])
+  // const handelGamesData = async () => {
+  //   setLoad(true);
+  //   const games = await getGames("milkyway", platforms);
+  //   setLoad(false);
+  //   if (games?.error) {
+  //     return toast.error(games.error);
+  //   }
+  //   setData(games?.data);
+  //   setFilteredData(games?.data);
+  // };
 
   useEffect(() => {
-    setData(data);
-    setFilteredData(data);
-  }, [data]);
-  
+    setData(games);
+    setFilteredData(games);
+  }, [games, platforms]);
+
   const handleDelete = async (id) => {
-    try {
-      setLoad(true);
-      const response = await deleteGame(id);
-      toast.success(response.data.message);
-      setOpen(false);
-      setLoad(false);
-    } catch (error) {
-      toast.error(error.message);
-      setLoad(false);
+    setLoad(true);
+    const response = await deleteGame(platforms, id);
+    setLoad(false);
+    if (response?.error) {
+      return toast.error(response.error);
     }
+    toast.success(response.data.message);
+    setOpen(false);
   };
 
   let ModalContent;
   switch (modalType) {
     case "Edit Game":
       ModalContent = (
-        <EditGame prevData={rowData} id={rowData._id} setOpen={setOpen} />
+        <EditGame
+          prevData={rowData}
+          id={rowData._id}
+          setOpen={setOpen}
+          platform={platforms}
+        />
       );
       break;
 
@@ -93,7 +98,6 @@ const GameList = ({ platforms }) => {
     tableBody: ["name", "category", "type", "status", "slug", "action"],
     Status: ["active", "inactive"],
   };
-
 
   return (
     <>

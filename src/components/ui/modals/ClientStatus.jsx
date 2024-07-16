@@ -1,27 +1,26 @@
 "use client";
-import {editStatus } from "@/utils/action";
+import { editStatus } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import Loader from "../Loader";
 
 const ClientStatus = ({ setOpen, id, prevStatus }) => {
   const [status, setStatus] = useState(prevStatus);
-  const [load,setLoad]=useState(false)
+  const [load, setLoad] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (status === "") {
       return toast.error("Status is required");
     }
-    try {
-      setLoad(true)
-      const response = await editStatus(status, id);
-      setOpen(false);
-      toast.success(response.responseData.message);
-      setLoad(false)
-    } catch (error) {
-      toast.error(error.message);
-      setLoad(false)
+    setLoad(true);
+    const response = await editStatus(status, id);
+    if (response?.error) {
+      setLoad(false);
+      return toast.error(response.error);
     }
+    setOpen(false);
+    toast.success(response.responseData.message);
+    setLoad(false);
   };
 
   return (
@@ -64,9 +63,8 @@ const ClientStatus = ({ setOpen, id, prevStatus }) => {
           </button>
         </div>
       </form>
-      <Loader show={load}/>
+      <Loader show={load} />
     </>
-
   );
 };
 

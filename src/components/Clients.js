@@ -13,7 +13,6 @@ import TableComponent from "./TableComponent";
 import { handleFilter } from "@/utils/Filter";
 import { TfiReload } from "react-icons/tfi";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
-import LoadingSkeleton from "./ui/skeleton/LoadingSkeleton";
 import { useRouter } from "next/navigation";
 
 const Clients = ({ currentPage, totalPages, clientData }) => {
@@ -34,13 +33,12 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
   }, [clientData, currentPage]);
 
   const handleDelete = async (id) => {
-    try {
-      const response = await deleteClient(id);
-      setOpen(false);
-      toast.success(response.data.message);
-    } catch (error) {
-      toast.error(error.message);
+    const response = await deleteClient(id);
+    if(response?.error){
+      toast.error(response.error)
     }
+    setOpen(false);
+    toast.success(response.data.message);
   };
 
   let ModalContent;

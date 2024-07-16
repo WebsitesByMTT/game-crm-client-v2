@@ -48,19 +48,15 @@ const Header = () => {
     if (platform === "") {
       return toast.error("This is a required field");
     }
-    try {
-      setLoad(true);
-      const response = await addPlatform({ name: platform });
-      if (response?.data?.name) {
-        toast.success("Platform added successfuly!");
-        setOpen(false);
-        setPlatform("");
-      }
-      setLoad(false);
-    } catch (error) {
-      toast.error("Somthing Went Wrong!");
+    setLoad(true);
+    const response = await addPlatform({ name: platform });
+    setLoad(false);
+    if (response?.error) {
+      return toast.error(response.error);
+    } else if (response?.data?.name) {
+      toast.success("Platform added successfuly!");
       setOpen(false);
-      setLoad(false);
+      setPlatform("");
     }
   };
 
