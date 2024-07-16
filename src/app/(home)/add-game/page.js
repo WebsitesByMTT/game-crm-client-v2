@@ -106,6 +106,8 @@ const AddGame = () => {
         thumbnail: null,
         payoutFile: null,
       });
+      document.getElementById('inactive').checked = false;
+      document.getElementById('active').checked = false;
       setDisable(true);
       setThumbnailPreview(null);
       setLoad(false);

@@ -31,7 +31,7 @@ export const getGames = async (platform, category) => {
 
 const page = async ({ params }) => {
   const games = await getGames("milkyway", params.platform);
-  console.log("LIST:", games);
+  
   return <GameList platforms={params?.platform} games={games} />;
 };
 
