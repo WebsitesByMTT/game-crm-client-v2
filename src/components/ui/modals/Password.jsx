@@ -9,7 +9,7 @@ const Password = ({ id, setOpen }) => {
   const [existingPassword, setExistingPassword] = useState("");
   const [password, setPassword] = useState("");
   const [reEnterPassword, setReEnterPassword] = useState("");
-  const [load,setLoad]=useState(false)
+  const [load, setLoad] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,17 +18,15 @@ const Password = ({ id, setOpen }) => {
     } else if (password !== reEnterPassword) {
       return toast.error("Both the passwords do now match");
     }
-    try {
-      setLoad(true)
-      const response = await editPassword(existingPassword, password, id);
-      toast.success(response.responseData.message);
-      revalidatePath('/clients/[id]', 'page')
-      setOpen(false);
-      setLoad(false)
-    } catch (error) {
-      toast.error(error.message);
-      setLoad(false)
+    setLoad(true);
+    const response = await editPassword(existingPassword, password, id);
+    if (response?.error) {
+      return toast.error(response.error);
     }
+    toast.success(response.responseData.message);
+    revalidatePath("/clients/[id]", "page");
+    setOpen(false);
+    setLoad(false);
   };
   return (
     <>
@@ -70,7 +68,6 @@ const Password = ({ id, setOpen }) => {
       </form>
       <Loader show={load} />
     </>
-
   );
 };
 

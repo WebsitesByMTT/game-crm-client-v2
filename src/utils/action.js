@@ -30,86 +30,14 @@ export const loginUser = async (data) => {
     });
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return { error: error.message };
     }
     const responseData = await response.json();
     return { responseData };
   } catch (error) {
-    throw error;
+    console.log("error:", error);
   } finally {
     revalidatePath("/");
-  }
-};
-
-export const getUserData = async () => {
-  const token = await getCookie();
-  try {
-    const response = await fetch(`${config.server}/api/users`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message);
-    }
-    const data = await response.json();
-    return { data };
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const getAllClients = async (page) => {
-  const token = await getCookie();
-  try {
-    const response = await fetch(
-      `${config.server}/api/users/all?page=${page}`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `userToken=${token}`,
-        },
-        next: { tags: ["client"] },
-      }
-    );
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message);
-    }
-    const data = await response.json();
-    return { data };
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const getMyClients = async (id) => {
-  const token = await getCookie();
-  try {
-    const response = await fetch(`${config.server}/api/users/${id}`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      return { error: error.message };
-    }
-    const data = await response.json();
-    return { data };
-  } catch (error) {
-    throw error;
   }
 };
 
@@ -132,7 +60,7 @@ export const addClient = async (user) => {
     const data = await response.json();
     return { data };
   } catch (error) {
-    return error;
+    console.log("error:", error);
   } finally {
     revalidatePath("/clients/all");
   }
@@ -151,12 +79,12 @@ export const deleteClient = async (id) => {
     });
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return { error: error.message };
     }
     const data = await response.json();
     return { data };
   } catch (error) {
-    throw error;
+    console.log("error:", error);
   } finally {
     revalidatePath("/clients/all");
   }
@@ -176,12 +104,62 @@ export const editPassword = async (existingPassword, password, id) => {
     });
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return { error: error.message };
     }
     const responseData = await response.json();
     return { responseData };
   } catch (error) {
-    throw error;
+    console.log("error:", error);
+  } finally {
+    revalidateTag("client");
+  }
+};
+
+export const editCredits = async (credits, id) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/users/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({ credits: credits }),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const responseData = await response.json();
+    return { responseData };
+  } catch (error) {
+    console.log("error", error);
+  } finally {
+    revalidateTag("client");
+  }
+};
+
+export const editStatus = async (status, id) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/users/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({ status: status }),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const responseData = await response.json();
+    return { responseData };
+  } catch (error) {
+    console.log("error", error);
   } finally {
     revalidateTag("client");
   }
@@ -204,13 +182,13 @@ export const getSubordinateTransactions = async (id, page) => {
     );
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return { error: error.message };
     }
     const data = await response.json();
     console.log(data);
     return { data };
   } catch (error) {
-    throw error;
+    console.log("error", error);
   }
 };
 
@@ -231,63 +209,13 @@ export const getSubordinateClients = async (id, page) => {
     );
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return { error: error.message };
     }
     const data = await response.json();
     console.log(data);
     return { data };
   } catch (error) {
-    throw error;
-  }
-};
-
-export const editCredits = async (credits, id) => {
-  const token = await getCookie();
-  try {
-    const response = await fetch(`${config.server}/api/users/${id}`, {
-      method: "PUT",
-      body: JSON.stringify({ credits: credits }),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message);
-    }
-    const responseData = await response.json();
-    return { responseData };
-  } catch (error) {
-    throw error;
-  } finally {
-    revalidateTag("client");
-  }
-};
-
-export const editStatus = async (status, id) => {
-  const token = await getCookie();
-  try {
-    const response = await fetch(`${config.server}/api/users/${id}`, {
-      method: "PUT",
-      body: JSON.stringify({ status: status }),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message);
-    }
-    const responseData = await response.json();
-    return { responseData };
-  } catch (error) {
-    throw error;
-  } finally {
-    revalidateTag("client");
+    console.log("error", error);
   }
 };
 
@@ -305,20 +233,22 @@ export const getGames = async (platform, category) => {
         },
       }
     );
-    console.log(response, "getGames");
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return { error: error.message };
     }
     const data = await response.json();
     return { data };
   } catch (error) {
-    throw error;
+    console.log("error", error);
+  } finally {
+    revalidatePath(`/game/${platform}`);
   }
 };
 
 export const editGames = async (game, id) => {
   const token = await getCookie();
+  console.log("GAME", game);
   try {
     const response = await fetch(`${config.server}/api/games/${id}`, {
       method: "PUT",
@@ -331,60 +261,41 @@ export const editGames = async (game, id) => {
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return { error: error.message };
     }
     const data = await response.json();
     return { data };
   } catch (error) {
-    throw error;
+    console.log("error", error);
   } finally {
     revalidatePath("/game");
   }
 };
 
-export const deleteGame = async (id) => {
+export const deleteGame = async (platform, id) => {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/games/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
+    const response = await fetch(
+      `${config.server}/api/games/${id}?platformName=${platform}`,
+      {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return { error: error.message };
     }
     const data = await response.json();
     return { data };
   } catch (error) {
-    throw error;
+    console.log("error", error);
   }
-};
-
-export const uploadImage = async (image) => {
-  const token = await getCookie();
-  try {
-    const response = await fetch(`${config.server}/api/games/thumbnail`, {
-      method: "POST",
-      body: JSON.stringify(image),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message);
-    }
-    const data = await response.json();
-    return { data };
-  } catch (error) {
-    throw error;
-  }
+  revalidatePath(`/game/${platform}`);
 };
 
 export const addGame = async (game) => {
@@ -400,7 +311,7 @@ export const addGame = async (game) => {
     });
     if (!response.ok) {
       const error = await response.json();
-      return {error: error.message}
+      return { error: error.message };
     }
     const data = await response.json();
     return { data };
@@ -428,14 +339,14 @@ export async function getUserReport(id, type) {
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return { error: error.message };
     }
 
     const data = await response.json();
 
     return data;
   } catch (error) {
-    throw error;
+    console.log("error:", error);
   }
 }
 
@@ -456,7 +367,7 @@ export const addPlatform = async (platform) => {
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return { error: error.message };
     }
     const data = await response.json();
 
@@ -478,16 +389,13 @@ export async function getPlatform() {
         Cookie: `userToken=${token}`,
       },
     });
-
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message);
+      return { error: error.message };
     }
-
     const data = await response.json();
-
     return data;
   } catch (error) {
-    throw error;
+    console.log("error", error);
   }
 }
