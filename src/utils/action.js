@@ -402,3 +402,25 @@ export async function getPlatform() {
     console.log("error", error);
   }
 }
+
+export async function generatePassword(){
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/users/generatePassword`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error", error);
+  }
+}

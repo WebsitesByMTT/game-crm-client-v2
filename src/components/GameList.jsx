@@ -90,7 +90,7 @@ const GameList = ({ platforms, games }) => {
 
   return (
     <>
-      <div className="h-full w-[95%] mx-auto flex flex-col">
+      <div className="h-[90%] w-[95%] mx-auto flex flex-col">
         <div className="lg:w-[100%] lg:flex items-center justify-between pt-4">
           <div className="w-full lg:w-[50%]  mb-3 flex shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light border dark:border-none rounded-md  font-extralight py-4 lg:py-2 px-4">
             <div className="text-lg">

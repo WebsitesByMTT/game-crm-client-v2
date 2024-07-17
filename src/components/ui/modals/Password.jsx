@@ -1,9 +1,9 @@
 "use client";
-import { editPassword } from "@/utils/action";
-import { revalidatePath } from "next/cache";
+import { editPassword, generatePassword } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import Loader from "../Loader";
+import { passwordRegex } from "@/utils/util";
 
 const Password = ({ id, setOpen }) => {
   const [existingPassword, setExistingPassword] = useState("");
@@ -15,19 +15,38 @@ const Password = ({ id, setOpen }) => {
     e.preventDefault();
     if (existingPassword === "" || password === "" || reEnterPassword === "") {
       return toast.error("All fileds are required!");
-    } else if (password !== reEnterPassword) {
-      return toast.error("Both the passwords do now match");
     }
+
+    if (password !== reEnterPassword) {
+      return toast.error("Both the passwords do not match");
+    }
+
+    if (!passwordRegex.test(password) || !passwordRegex.test(reEnterPassword)) {
+      return toast.error(
+        "Password must have at least 8 characters including at least one uppercase letter, 2 digits, and 1 special character!"
+      );
+    }
+
     setLoad(true);
     const response = await editPassword(existingPassword, password, id);
+    setLoad(false);
     if (response?.error) {
       return toast.error(response.error);
     }
     toast.success(response.responseData.message);
-    revalidatePath("/clients/[id]", "page");
     setOpen(false);
-    setLoad(false);
   };
+
+  const handleGeneratePassword = async (e) => {
+    e.preventDefault();
+    const generatedPassword = await generatePassword();
+    if (generatePassword?.error) {
+      return toast.error("Error Generating Password!");
+    }
+    setPassword(generatedPassword.password);
+    setReEnterPassword(generatedPassword.password);
+  };
+
   return (
     <>
       <form
@@ -42,12 +61,20 @@ const Password = ({ id, setOpen }) => {
           className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-500 dark:border-[#dfdfdf2e] "
         />
         <p className="text-left font-light">New Password :</p>
-        <input
-          name="newPassword"
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-500 dark:border-[#dfdfdf2e]"
-        />
+        <div className="flex justify-between w-full gap-2">
+          <input
+            name="newPassword"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-500 dark:border-[#dfdfdf2e]"
+          />
+          <button
+            onClick={handleGeneratePassword}
+            className="px-2 py-1 !rounded-[5px] border-[1px] border-[#70ef44] text-[#70ef44] text-sm"
+          >
+            Generate
+          </button>
+        </div>
         <p className="text-left font-light">Re-Enter Password :</p>
         <input
           name="reEnterPassword"

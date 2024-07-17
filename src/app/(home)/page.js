@@ -27,7 +27,7 @@ const getUserData = async () => {
 export default async function Home() {
   const data = await getUserData();
   return (
-    <main className="w-[96%] overflow-y-scroll min-h-[90vh] mx-auto mt-4">
+    <main className="w-[98%] !overflow-y-scroll mx-auto px-3 h-auto">
       {data && <Report id={data?.data?._id} />}
     </main>
   );
