@@ -35,7 +35,7 @@ const page = async ({ searchParams }) => {
   const params = searchParams;
   const clientData = await getAllClients(params.page);
   return (
-    <div>
+    <div className="h-full">
       {clientData && (
         <Clients
           currentPage={params.page}

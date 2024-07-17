@@ -1,8 +1,6 @@
 import GameList from "@/components/GameList";
 import { config } from "@/utils/config";
 import { getCookie } from "@/utils/cookie";
-import { revalidatePath } from "next/cache";
-import React from "react";
 
 export const getGames = async (platform, category) => {
   const token = await getCookie();
@@ -31,8 +29,12 @@ export const getGames = async (platform, category) => {
 
 const page = async ({ params }) => {
   const games = await getGames("milkyway", params.platform);
-  
-  return <GameList platforms={params?.platform} games={games} />;
+
+  return (
+    <div className="h-full flex items-center justify-center">
+      <GameList platforms={params?.platform} games={games} />
+    </div>
+  );
 };
 
 export default page;

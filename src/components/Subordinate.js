@@ -10,6 +10,7 @@ import {
   getSubordinateTransactions,
 } from "@/utils/action";
 import toast from "react-hot-toast";
+import Loader from "./ui/Loader";
 
 const Subordinate = ({ page, subordinateData }) => {
   const router = useRouter();
@@ -17,6 +18,7 @@ const Subordinate = ({ page, subordinateData }) => {
   const [transactions, setTransactions] = useState();
   const [subordinates, setSubordinates] = useState();
   const [currentPage, setCurrentPage] = useState(page);
+  const [loading, setLoading] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -26,19 +28,23 @@ const Subordinate = ({ page, subordinateData }) => {
   useEffect(() => {
     const fetchdata = async () => {
       if (option === "transactions") {
+        setLoading(true);
         const response = await getSubordinateTransactions(
           subordinateData._id,
           currentPage
         );
+        setLoading(false);
         if (response?.error) {
           return toast.error(response.error);
         }
         setTransactions(response?.data);
       } else if (option === "subordinates") {
+        setLoading(true);
         const response = await getSubordinateClients(
           subordinateData?._id,
           currentPage
         );
+         setLoading(false);
         if (response?.error) {
           return toast.error(response.error);
         }
@@ -49,8 +55,8 @@ const Subordinate = ({ page, subordinateData }) => {
   }, [currentPage, option]);
 
   return (
-    <div>
-      <div className="w-[90%] md:w-[95%] m-auto py-5 flex flex-col md:flex-row justify-between">
+    <div className="min-h-full h-auto ">
+      <div className="w-[90%] md:w-[95%] m-auto py-2 flex flex-col md:flex-row justify-between">
         <div className="flex gap-3">
           <div
             onClick={() => {
@@ -131,6 +137,7 @@ const Subordinate = ({ page, subordinateData }) => {
           <Report id={subordinateData?._id} />
         )}
       </div>
+      <Loader show={loading} />
     </div>
   );
 };

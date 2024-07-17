@@ -31,7 +31,7 @@ const page = async ({ params, searchParams }) => {
   const page = searchParams.page;
   const subordinateData = await getSubordinates(params?.subid);
   return (
-    <div className="overflow-y-scroll h-[90%]">
+    <div className="h-full">
       {subordinateData && (
         <Subordinate page={page} subordinateData={subordinateData?.data} />
       )}

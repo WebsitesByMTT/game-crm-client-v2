@@ -1,9 +1,10 @@
 "use client";
 import Loader from "@/components/ui/Loader";
-import { addClient } from "@/utils/action";
+import { addClient, generatePassword } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { passwordRegex } from "@/utils/util";
 
 const AddClient = () => {
   const data = useSelector((state) => state.user.userData);
@@ -49,6 +50,18 @@ const AddClient = () => {
     });
   };
 
+  const handleGeneratePassword = async (e) => {
+    e.preventDefault();
+    const generatedPassword = await generatePassword();
+    if (generatePassword?.error) {
+      return toast.error("Error Generating Password!");
+    }
+    setUser({
+      ...user,
+      password: generatedPassword.password,
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -59,9 +72,16 @@ const AddClient = () => {
       user.credits === ""
     ) {
       return toast.error("All fileds are required!");
-    } else if (user.credits < 0) {
+    }
+    if (user.credits < 0) {
       return toast.error("Credit can't be negative");
     }
+    if (!passwordRegex.test(user.password)) {
+      return toast.error(
+        "Password must have at least 8 characters including at least one uppercase letter, 2 digits, and 1 special character!"
+      );
+    }
+
     setLoad(true);
     const response = await addClient(user);
     if (response?.error) {
@@ -102,12 +122,20 @@ const AddClient = () => {
             className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
           />
           <p className="text-left font-light">Password :</p>
-          <input
-            name="password"
-            onChange={handleChange}
-            value={user.password}
-            className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
-          />
+          <div className="flex justify-between w-full gap-2">
+            <input
+              name="password"
+              onChange={handleChange}
+              value={user.password}
+              className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
+            />
+            <button
+              onClick={handleGeneratePassword}
+              className="px-2 py-1 !rounded-[5px] border-[1px] border-[#70ef44] text-[#70ef44] text-sm"
+            >
+              Generate
+            </button>
+          </div>
           <p className="text-left font-light">Role :</p>
           {myRole === "company" ? (
             <select
