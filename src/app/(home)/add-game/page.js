@@ -233,7 +233,7 @@ const AddGame = () => {
               />
               <button
                 type="button"
-                className="text-lg dark:text-white p-[5px] focus:outline-none absolute -right-4 -top-3 dark:bg-[#05040488] rounded-md"
+                className="text-lg dark:text-white p-[5px] focus:outline-none absolute -right-4 -top-3 bg-[#dfdfdfec] dark:bg-[#05040488] rounded-md"
                 onClick={handleClearFile}
               >
                 <RxCross2 />

@@ -28,7 +28,7 @@ const Dashboard = ({ data, loading }) => {
   }, [data]);
   return (
     <div className="w-full">
-      <div className="w-full lg:h-[25vh] m-auto  py-3 px-2  flex gap-5 flex-wrap items-center justify-center">
+      <div className="w-full m-auto  py-3 px-2  flex gap-5 flex-wrap items-center justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 h-full lg:grid-cols-4 w-full gap-5 md:gap-x-5 rounded-xl">
           <Card
             name="Recharge"

@@ -34,8 +34,8 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
 
   const handleDelete = async (id) => {
     const response = await deleteClient(id);
-    if(response?.error){
-      toast.error(response.error)
+    if (response?.error) {
+      toast.error(response.error);
     }
     setOpen(false);
     toast.success(response.data.message);
@@ -163,9 +163,11 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
   return (
     <>
       <>
-        <div className="h-full w-[95%] mx-auto flex flex-col">
+        <div className="h-full relative w-[95%] mx-auto flex flex-col">
           {filteredData?.length > 0 && (
-            <div className={`md:w-[50%] flex items-center space-x-4 pt-5`}>
+            <div
+              className={`md:w-[50%] flex items-center space-x-4 pt-5 h-fit`}
+            >
               <>
                 <div className="w-full mb-3 flex bg-white shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light dark:border-none rounded-md  font-extralight py-4 md:py-2 px-4 ">
                   <div className="text-lg">
@@ -194,17 +196,19 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
               </>
             </div>
           )}
-          <TableComponent
-            tableData={tableData}
-            Filter={handleFilterData}
-            DashboardFetchedData={filteredData}
-            rowClick={handleRowClick}
-            openModal={handleModalOpen}
-            deleteTableData={handleDelete}
-            loadingStatus={data}
-          />
+          <div className="h-[80%]">
+            <TableComponent
+              tableData={tableData}
+              Filter={handleFilterData}
+              DashboardFetchedData={filteredData}
+              rowClick={handleRowClick}
+              openModal={handleModalOpen}
+              deleteTableData={handleDelete}
+              loadingStatus={data}
+            />
+          </div>
           {totalPages > 1 && (
-            <div className=" mt-4 flex items-center justify-end gap-3 dark:text-white text-xl absolute bottom-10 right-12 ">
+            <div className="h-fit mt-4 flex items-center justify-end gap-3 dark:text-white text-xl">
               <button
                 disabled={count === 1}
                 onClick={() => {

@@ -81,8 +81,8 @@ const TableComponent = ({
   };
 
   return (
-    <div className="rounded-md w-full mx-auto overflow-y-scroll">
-      <Table className="bg-white dark:bg-Dark_light  rounded-2xl overflow-hidden">
+    <div className="w-full h-full mx-auto overflow-y-scroll flex items-center justify-center">
+      <Table className="bg-white dark:bg-Dark_light rounded-md overflow-hidden">
         <TableHeader className="sticky text-black dark:text-white bg-white dark:bg-Dark_light text-opacity-70 top-0 ">
           <TableRow>
             {tableData?.tableHead?.map((item) => (

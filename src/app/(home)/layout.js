@@ -34,18 +34,18 @@ export default async function RootLayout({ children }) {
   const data = await getUserData();
 
   return (
-    <div className="bg-cover h-screen bg-[#F3F4F6] dark:bg-Dark flex">
+    <div className="bg-cover h-screen overflow-hidden bg-[#F3F4F6] dark:bg-Dark flex">
       <DataSetter data={data.data} />
       <div>
         <div className="w-full h-full">
           <Sidebar />
         </div>
       </div>
-      <div className="w-full mx-auto">
-        <div>
+      <div className="w-full h-full mx-auto ">
+        <div className="w-full h-[10%] flex items-center justify-center dark:bg-Dark_light bg-white">
           <Header />
         </div>
-        <div className="h-full overflow-y-scroll w-[100%] m-auto">
+        <div className="h-[90%] w-[100%] mx-auto overflow-auto">
           {children}
         </div>
       </div>

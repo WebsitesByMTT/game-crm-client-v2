@@ -32,7 +32,7 @@ const page = async ({ searchParams }) => {
   const params = searchParams;
   const clientData = await getMyClients(params.page);
   return (
-    <div>
+    <div className="h-full relative">
       {clientData && (
         <Clients
           currentPage={params.page}

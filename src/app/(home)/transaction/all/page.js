@@ -7,7 +7,7 @@ const getTransactions = async (page) => {
   const token = await getCookie();
   try {
     const response = await fetch(
-      `${config.server}/api/transactions/all?page=${page}`,
+      `${config.server}/api/transactions/all?page=${page}&limit=11`,
       {
         method: "GET",
         credentials: "include",
@@ -33,7 +33,7 @@ const page = async ({ searchParams }) => {
   const params = searchParams;
   const transactions = await getTransactions(params.page);
   return (
-    <div>
+    <div className="h-full w-full">
       {transactions && (
         <Transactions
           currentPage={params.page}

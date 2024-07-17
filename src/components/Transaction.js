@@ -27,8 +27,8 @@ const Transactions = ({ totalPages, transactions, currentPage }) => {
   };
 
   return (
-    <div className="h-full w-[95%] mx-auto flex flex-col">
-      <div className="pt-[3rem]">
+    <div className="h-full w-[95%] mx-auto flex flex-col justify-between py-8">
+      <div className="h-[90%]">
         <TableComponent
           pageType="transaction"
           tableData={tableData}
@@ -36,32 +36,32 @@ const Transactions = ({ totalPages, transactions, currentPage }) => {
           Filter={handleFilterData}
           loadingStatus={transactions}
         />
-        {totalPages > 1 && (
-          <div className="mt-4 flex items-center justify-end gap-3 dark:text-white text-xl absolute bottom-10 right-12 ">
-            <button
-              disabled={count === 1}
-              onClick={() => {
-                setCount(count - 1);
-                router.back();
-              }}
-              className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
-            >
-              <IoChevronBack />
-            </button>
-            <p>{count}</p>
-            <button
-              disabled={count === totalPages}
-              onClick={() => {
-                setCount(count + 1);
-                router.push(`?page=${count + 1}`);
-              }}
-              className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
-            >
-              <IoChevronForward />
-            </button>
-          </div>
-        )}
       </div>
+      {totalPages > 1 && (
+        <div className="h-fit mt-4 flex items-center justify-end gap-3 dark:text-white text-xl">
+          <button
+            disabled={count === 1}
+            onClick={() => {
+              setCount(count - 1);
+              router.back();
+            }}
+            className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
+          >
+            <IoChevronBack />
+          </button>
+          <p>{count}</p>
+          <button
+            disabled={count === totalPages}
+            onClick={() => {
+              setCount(count + 1);
+              router.push(`?page=${count + 1}`);
+            }}
+            className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
+          >
+            <IoChevronForward />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

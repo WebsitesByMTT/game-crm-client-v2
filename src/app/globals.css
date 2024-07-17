@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 body {
-  overflow: hidden;
   background: #000;
 }
 
@@ -128,4 +127,3 @@ input[type="radio"] {
     stroke-dashoffset: -125px;
   }
 }
-
