@@ -29,6 +29,8 @@ const TableComponent = ({
   pageType,
   Filter,
   loadingStatus,
+  query,
+  setQuery,
 }) => {
   const router = useRouter();
   const [filterCountData, setFilterCountData] = useState({ From: "", To: "" });
@@ -72,16 +74,18 @@ const TableComponent = ({
   const handleSearchClick = (item, filterType) => {
     Filter(item, filterCountData, filterType);
     closeDropdown(item);
-    setFilterCountData({ From: "", To: "" });
   };
 
   const PassFilterData = (item, subitem) => {
-    Filter(item, subitem);
+    setQuery({
+      ...query,
+      [item]: subitem,
+    });
     toggleDropdown(item);
   };
 
   return (
-    <div className="w-full h-full mx-auto overflow-y-scroll flex items-center justify-center">
+    <div className="w-full h-full mx-auto overflow-y-scroll">
       <Table className="bg-white dark:bg-Dark_light rounded-md overflow-hidden">
         <TableHeader className="sticky text-black dark:text-white bg-white dark:bg-Dark_light text-opacity-70 top-0 ">
           <TableRow>

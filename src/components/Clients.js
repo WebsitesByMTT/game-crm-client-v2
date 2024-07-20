@@ -2,7 +2,11 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Modal from "@/components/ui/Modal";
-import { deleteClient } from "@/utils/action";
+import {
+  deleteClient,
+  searchAllByUsername,
+  searchByUsername,
+} from "@/utils/action";
 import Password from "@/components/ui/modals/Password";
 import Recharge from "@/components/ui/modals/Recharge";
 import { FiSearch } from "react-icons/fi";
@@ -13,7 +17,7 @@ import TableComponent from "./TableComponent";
 import { handleFilter } from "@/utils/Filter";
 import { TfiReload } from "react-icons/tfi";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Clients = ({ currentPage, totalPages, clientData }) => {
   const [open, setOpen] = useState(false);
@@ -24,11 +28,18 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [count, setCount] = useState(currentPage);
+  const [total, setTotal] = useState(totalPages);
   const router = useRouter();
+  const pathname = usePathname();
+  // const [query, setQuery] = useState({});
 
   useEffect(() => {
-    setData(clientData);
-    setFilteredData(clientData);
+    if (!search) {
+      setData(clientData);
+      setFilteredData(clientData);
+    } else {
+      debouncedFetchData(search);
+    }
     setCount(parseInt(currentPage));
   }, [clientData, currentPage]);
 
@@ -89,45 +100,32 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
     setRowData(data);
   };
 
-  const handleSearch = (searchTerm) => {
-    const sourceData =
-      filteredData?.length > 0 && searchTerm
-        ? filteredData
-        : filter?.length > 0
-        ? filter
-        : data;
-
-    const substrings = [];
-    for (let i = 1; i <= searchTerm.length; i++) {
-      substrings.push(searchTerm.substring(0, i).toLowerCase());
+  const fetchSearchData = async (username) => {
+    try {
+      let response;
+      if (pathname === `/clients/my`) {
+        response = await searchByUsername(username, count);
+      } else if (pathname == `/clients/all`) {
+        response = await searchAllByUsername(username, count);
+      }
+      if (response?.error) {
+        toast.error(response.error);
+      }
+      console.log(response);
+      setFilteredData(response?.subordinates);
+      setTotal(response?.totalPages);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
+  };
 
-    const filtered = sourceData.filter((item) => {
-      const username = item.username.toLowerCase();
-      return substrings.some((substring) => username.includes(substring));
-    });
+  let timeoutId = null;
+  const debouncedFetchData = (username) => {
+    clearTimeout(timeoutId);
 
-    // Sort the filtered data to have usernames starting with the search term at the top
-    const sorted = filtered.sort((a, b) => {
-      const usernameA = a.username.toLowerCase();
-      const usernameB = b.username.toLowerCase();
-      const startsWithSearchTermA = usernameA.startsWith(
-        searchTerm.toLowerCase()
-      );
-      const startsWithSearchTermB = usernameB.startsWith(
-        searchTerm.toLowerCase()
-      );
-
-      if (startsWithSearchTermA && !startsWithSearchTermB) return -1;
-      if (!startsWithSearchTermA && startsWithSearchTermB) return 1;
-      return 0;
-    });
-
-    if (!searchTerm) {
-      setFilteredData(sourceData);
-    } else {
-      setFilteredData(sorted);
-    }
+    timeoutId = setTimeout(async () => {
+      fetchSearchData(username);
+    }, 1000);
   };
 
   const handleFilterData = (key, value, Num) => {
@@ -161,88 +159,87 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
   };
 
   return (
-    <>
-      <>
-        <div className="h-full relative w-[95%] mx-auto flex flex-col">
-          {filteredData?.length > 0 && (
-            <div
-              className={`md:w-[50%] flex items-center space-x-4 pt-5 h-fit`}
-            >
-              <>
-                <div className="w-full mb-3 flex bg-white shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light dark:border-none rounded-md  font-extralight py-4 md:py-2 px-4 ">
-                  <div className="text-lg">
-                    <FiSearch />
-                  </div>
-                  <input
-                    name="search"
-                    className="focus:outline-none  placeholder:text-black dark:placeholder:text-[#fffbfb7c] text-md bg-transparent w-full"
-                    placeholder="Search by Username"
-                    value={search}
-                    onChange={(e) => {
-                      setSearch(e.target.value);
-                      handleSearch(e.target.value);
-                    }}
-                  />
-                </div>
-                <div
-                  className="text-Dark_light dark:text-white pb-3"
-                  onClick={() => setFilteredData(data)}
-                >
-                  <TfiReload
-                    className="hover:text-gray-500 cursor-pointer"
-                    size={30}
-                  />
-                </div>
-              </>
+    <div className="h-full relative w-[95%] mx-auto flex flex-col">
+      <div className={`md:w-[50%] flex items-center space-x-4 pt-5 h-fit`}>
+        <>
+          <div className="w-full mb-3 flex bg-white shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light dark:border-none rounded-md  font-extralight py-4 md:py-2 px-4 ">
+            <div className="text-lg">
+              <FiSearch />
             </div>
-          )}
-          <div className="h-[80%]">
-            <TableComponent
-              tableData={tableData}
-              Filter={handleFilterData}
-              DashboardFetchedData={filteredData}
-              rowClick={handleRowClick}
-              openModal={handleModalOpen}
-              deleteTableData={handleDelete}
-              loadingStatus={data}
+            <input
+              name="search"
+              className="focus:outline-none  placeholder:text-black dark:placeholder:text-[#fffbfb7c] text-md bg-transparent w-full"
+              placeholder="Search by Username"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                debouncedFetchData(e.target.value);
+              }}
             />
           </div>
-          {totalPages > 1 && (
-            <div className="h-fit mt-4 flex items-center justify-end gap-3 dark:text-white text-xl">
-              <button
-                disabled={count === 1}
-                onClick={() => {
-                  setCount(count - 1);
-                  router.back();
-                }}
-                className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
-              >
-                <IoChevronBack />
-              </button>
-              <p>{count}</p>
-              <button
-                disabled={count === totalPages}
-                onClick={() => {
-                  setCount(count + 1);
-                  router.push(`?page=${count + 1}`);
-                }}
-                className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
-              >
-                <IoChevronForward />
-              </button>
-            </div>
-          )}
-          <Modal
-            open={open}
-            setOpen={setOpen}
-            modalType={modalType}
-            setModalType={setModalType}
+          <div
+            className="text-Dark_light dark:text-white pb-3"
+            onClick={() => {
+              setFilteredData(data);
+              setSearch("");
+              // setQuery({});
+              setTotal(totalPages);
+            }}
           >
-            {ModalContent}
-          </Modal>
+            <TfiReload
+              className="hover:text-gray-500 cursor-pointer"
+              size={30}
+            />
+          </div>
+        </>
+      </div>
+      <div className="h-[80%]">
+        <TableComponent
+          tableData={tableData}
+          Filter={handleFilterData}
+          DashboardFetchedData={filteredData}
+          rowClick={handleRowClick}
+          openModal={handleModalOpen}
+          deleteTableData={handleDelete}
+          loadingStatus={data}
+          query={query}
+          setQuery={setQuery}
+        />
+      </div>
+      {total > 1 && (
+        <div className="h-fit mt-4 flex items-center justify-end gap-3 dark:text-white text-xl">
+          <button
+            disabled={count === 1}
+            onClick={() => {
+              setCount(count - 1);
+              router.back();
+            }}
+            className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
+          >
+            <IoChevronBack />
+          </button>
+          <p>{count}</p>
+          <button
+            disabled={count === total}
+            onClick={() => {
+              setCount(count + 1);
+              router.push(`?page=${count + 1}`);
+            }}
+            className="bg-[#9b95951d] p-2 rounded-md disabled:opacity-30"
+          >
+            <IoChevronForward />
+          </button>
         </div>
-      </>
-    </>
+      )}
+      <Modal
+        open={open}
+        setOpen={setOpen}
+        modalType={modalType}
+        setModalType={setModalType}
+      >
+        {ModalContent}
+      </Modal>
+    </div>
   );
 };
 

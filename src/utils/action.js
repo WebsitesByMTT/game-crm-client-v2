@@ -403,17 +403,20 @@ export async function getPlatform() {
   }
 }
 
-export async function generatePassword(){
+export async function generatePassword() {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/users/generatePassword`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
+    const response = await fetch(
+      `${config.server}/api/users/generatePassword`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
     if (!response.ok) {
       const error = await response.json();
       return { error: error.message };
@@ -424,3 +427,57 @@ export async function generatePassword(){
     console.log("error", error);
   }
 }
+
+export const searchByUsername = async (search, page, query) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(
+      `${config.server}/api/users/subordinates?filter=${search}&page=${page}&query=${query}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const searchAllByUsername = async (search, page, query) => {
+  const token = await getCookie();
+  try {
+    // let filterQuery = {};
+    // if (query) {
+    //   filterQuery = JSON.stringify(query);
+    // }
+    const response = await fetch(
+      `${config.server}/api/users/all?filter=${search}&page=${page}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
