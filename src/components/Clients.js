@@ -24,6 +24,7 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
   const [rowData, setRowData] = useState();
   const [filter, setFilter] = useState([]);
   const [modalType, setModalType] = useState("");
+  const [loadingStatus, setLoadingStatus] = useState(false);
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -31,17 +32,17 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
   const [total, setTotal] = useState(totalPages);
   const router = useRouter();
   const pathname = usePathname();
-  // const [query, setQuery] = useState({});
+  const [query, setQuery] = useState({});
 
   useEffect(() => {
-    if (!search) {
+    if (!search && !query) {
       setData(clientData);
       setFilteredData(clientData);
     } else {
       debouncedFetchData(search);
     }
     setCount(parseInt(currentPage));
-  }, [clientData, currentPage]);
+  }, [clientData, currentPage, query]);
 
   const handleDelete = async (id) => {
     const response = await deleteClient(id);
@@ -104,14 +105,17 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
     try {
       let response;
       if (pathname === `/clients/my`) {
-        response = await searchByUsername(username, count);
+        setLoadingStatus(true);
+        response = await searchByUsername(username, count, query);
+        setLoadingStatus(false);
       } else if (pathname == `/clients/all`) {
-        response = await searchAllByUsername(username, count);
+        setLoadingStatus(true);
+        response = await searchAllByUsername(username, count, query);
+        setLoadingStatus(false);
       }
       if (response?.error) {
         toast.error(response.error);
       }
-      console.log(response);
       setFilteredData(response?.subordinates);
       setTotal(response?.totalPages);
     } catch (error) {
@@ -126,13 +130,6 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
     timeoutId = setTimeout(async () => {
       fetchSearchData(username);
     }, 1000);
-  };
-
-  const handleFilterData = (key, value, Num) => {
-    const dataFiltered = handleFilter(data, key, value, Num);
-    setFilteredData(dataFiltered);
-    setFilter(dataFiltered);
-    console.log(dataFiltered, "data filter here");
   };
 
   const tableData = {
@@ -180,9 +177,9 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
           <div
             className="text-Dark_light dark:text-white pb-3"
             onClick={() => {
-              setFilteredData(data);
+              setFilteredData(clientData);
               setSearch("");
-              // setQuery({});
+              setQuery({});
               setTotal(totalPages);
             }}
           >
@@ -196,12 +193,11 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
       <div className="h-[80%]">
         <TableComponent
           tableData={tableData}
-          Filter={handleFilterData}
           DashboardFetchedData={filteredData}
           rowClick={handleRowClick}
           openModal={handleModalOpen}
           deleteTableData={handleDelete}
-          loadingStatus={data}
+          loadingStatus={loadingStatus}
           query={query}
           setQuery={setQuery}
         />

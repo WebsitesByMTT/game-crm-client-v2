@@ -27,7 +27,6 @@ const TableComponent = ({
   rowClick,
   openModal,
   pageType,
-  Filter,
   loadingStatus,
   query,
   setQuery,
@@ -71,8 +70,18 @@ const TableComponent = ({
     }));
   };
 
-  const handleSearchClick = (item, filterType) => {
-    Filter(item, filterCountData, filterType);
+  const handleSearchClick = (item) => {
+    if (item === "Updated At") {
+      setQuery({
+        ...query,
+        ["updatedAt"]: filterCountData,
+      });
+    } else {
+      setQuery({
+        ...query,
+        [item]: filterCountData,
+      });
+    }
     closeDropdown(item);
   };
 
@@ -377,7 +386,7 @@ const TableComponent = ({
                 colSpan={tableData?.tableHead?.length}
                 className="space-y-3"
               >
-                {!loadingStatus ? (
+                {loadingStatus ? (
                   <LoadingSkeleton
                     LoadingStyle={"w-full h-[50px] rounded-md"}
                     count={5}

@@ -3,23 +3,61 @@ import React, { useEffect, useState } from "react";
 import TableComponent from "@/components/TableComponent";
 import { handleFilter } from "@/utils/Filter";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { filterAllTransactions, filterMyTransactions } from "@/utils/action";
+import toast from "react-hot-toast";
 const Transactions = ({ totalPages, transactions, currentPage }) => {
   const [data, setData] = useState(transactions);
   const [filteredData, setFilteredData] = useState(transactions);
   const [count, setCount] = useState(currentPage);
+  const [total, setTotal] = useState(totalPages);
+  const [loadingStatus, setLoadingStatus] = useState(false);
+  const [query, setQuery] = useState();
   const router = useRouter();
+  const pathame = usePathname();
 
   useEffect(() => {
-    setData(transactions);
-    setFilteredData(transactions);
+    if (!query) {
+      setData(transactions);
+      setFilteredData(transactions);
+    } else {
+      debouncedFetchData();
+    }
     setCount(parseInt(currentPage));
-  }, [transactions, count]);
+  }, [transactions, currentPage, query, pathame]);
 
-  const handleFilterData = (key, value, Num) => {
-    const dataFiltered = handleFilter(data, key, value, Num);
-    setFilteredData(dataFiltered);
+  const fetchSearchData = async () => {
+    try {
+      let response;
+      if (pathame === `/transaction/my`) {
+        setLoadingStatus(true);
+        response = await filterMyTransactions(count, query);
+        setLoadingStatus(false);
+      } else if (pathame == `/transaction/all`) {
+        setLoadingStatus(true);
+        response = await filterAllTransactions(count, query);
+        setLoadingStatus(false);
+      }
+      if (response?.error) {
+        toast.error(response.error);
+      }
+      console.log(response);
+      setFilteredData(response?.transactions);
+      setTotal(response?.totalPages);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
+
+  let timeoutId = null;
+  const debouncedFetchData = () => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(async () => {
+      fetchSearchData();
+    }, 1000);
+  };
+
   const tableData = {
     tableHead: ["type", "amount", "creditor", "debtor", "Updated At"],
     tableBody: ["type", "amount", "creditor", "debtor", "updatedAt"],
@@ -33,11 +71,12 @@ const Transactions = ({ totalPages, transactions, currentPage }) => {
           pageType="transaction"
           tableData={tableData}
           DashboardFetchedData={filteredData}
-          Filter={handleFilterData}
-          loadingStatus={transactions}
+          loadingStatus={loadingStatus}
+          query={query}
+          setQuery={setQuery}
         />
       </div>
-      {totalPages > 1 && (
+      {total > 1 && (
         <div className="h-fit mt-4 flex items-center justify-end gap-3 dark:text-white text-xl">
           <button
             disabled={count === 1}
@@ -51,7 +90,7 @@ const Transactions = ({ totalPages, transactions, currentPage }) => {
           </button>
           <p>{count}</p>
           <button
-            disabled={count === totalPages}
+            disabled={count === total}
             onClick={() => {
               setCount(count + 1);
               router.push(`?page=${count + 1}`);
