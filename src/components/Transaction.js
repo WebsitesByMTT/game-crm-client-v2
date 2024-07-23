@@ -33,7 +33,7 @@ const Transactions = ({ totalPages, transactions, currentPage }) => {
         setLoadingStatus(true);
         response = await filterMyTransactions(count, query);
         setLoadingStatus(false);
-      } else if (pathame == `/transaction/all`) {
+      } else if (pathame === `/transaction/all`) {
         setLoadingStatus(true);
         response = await filterAllTransactions(count, query);
         setLoadingStatus(false);

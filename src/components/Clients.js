@@ -14,7 +14,6 @@ import Redeem from "@/components/ui/modals/Redeem";
 import ClientStatus from "@/components/ui/modals/ClientStatus";
 import DeleteModal from "@/components/ui/modals/DeleteModal";
 import TableComponent from "./TableComponent";
-import { handleFilter } from "@/utils/Filter";
 import { TfiReload } from "react-icons/tfi";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import { usePathname, useRouter } from "next/navigation";
@@ -22,27 +21,60 @@ import { usePathname, useRouter } from "next/navigation";
 const Clients = ({ currentPage, totalPages, clientData }) => {
   const [open, setOpen] = useState(false);
   const [rowData, setRowData] = useState();
-  const [filter, setFilter] = useState([]);
   const [modalType, setModalType] = useState("");
   const [loadingStatus, setLoadingStatus] = useState(false);
-  const [search, setSearch] = useState("");
-  const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
+  const [search, setSearch] = useState();
+  const [data, setData] = useState(clientData);
+  const [filteredData, setFilteredData] = useState(clientData);
   const [count, setCount] = useState(currentPage);
   const [total, setTotal] = useState(totalPages);
   const router = useRouter();
   const pathname = usePathname();
-  const [query, setQuery] = useState({});
+  const [query, setQuery] = useState();
 
   useEffect(() => {
     if (!search && !query) {
+      console.log("HERE");
       setData(clientData);
       setFilteredData(clientData);
     } else {
       debouncedFetchData(search);
     }
     setCount(parseInt(currentPage));
-  }, [clientData, currentPage, query]);
+  }, [clientData, currentPage, query, pathname]);
+
+  const fetchSearchData = async (username) => {
+    try {
+      let response;
+      if (pathname === `/clients/my`) {
+        setLoadingStatus(true);
+        response = await searchByUsername(username, count, query);
+        console.log(response);
+        setLoadingStatus(false);
+      } else if (pathname === `/clients/all`) {
+        setLoadingStatus(true);
+        response = await searchAllByUsername(username, count, query);
+        console.log(response);
+        setLoadingStatus(false);
+      }
+      if (response?.error) {
+        toast.error(response.error);
+      }
+      setFilteredData(response?.subordinates);
+      setTotal(response?.totalPages);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  let timeoutId = null;
+  const debouncedFetchData = (username) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(async () => {
+      fetchSearchData(username);
+    }, 1000);
+  };
 
   const handleDelete = async (id) => {
     const response = await deleteClient(id);
@@ -99,37 +131,6 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
 
   const handleRowClick = (data) => {
     setRowData(data);
-  };
-
-  const fetchSearchData = async (username) => {
-    try {
-      let response;
-      if (pathname === `/clients/my`) {
-        setLoadingStatus(true);
-        response = await searchByUsername(username, count, query);
-        setLoadingStatus(false);
-      } else if (pathname == `/clients/all`) {
-        setLoadingStatus(true);
-        response = await searchAllByUsername(username, count, query);
-        setLoadingStatus(false);
-      }
-      if (response?.error) {
-        toast.error(response.error);
-      }
-      setFilteredData(response?.subordinates);
-      setTotal(response?.totalPages);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  let timeoutId = null;
-  const debouncedFetchData = (username) => {
-    clearTimeout(timeoutId);
-
-    timeoutId = setTimeout(async () => {
-      fetchSearchData(username);
-    }, 1000);
   };
 
   const tableData = {

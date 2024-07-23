@@ -429,13 +429,16 @@ export async function generatePassword() {
 export const searchByUsername = async (search, page, query) => {
   const token = await getCookie();
   let filterQuery = "{}";
+  let username = "";
   if (query) {
     filterQuery = JSON.stringify(query);
   }
-  console.log(filterQuery);
+  if (search) {
+    username = search;
+  }
   try {
     const response = await fetch(
-      `${config.server}/api/users/subordinates?filter=${search}&page=${page}&search=${filterQuery}`,
+      `${config.server}/api/users/subordinates?filter=${username}&page=${page}&search=${filterQuery}`,
       {
         method: "GET",
         credentials: "include",
@@ -459,13 +462,16 @@ export const searchByUsername = async (search, page, query) => {
 export const searchAllByUsername = async (search, page, query) => {
   const token = await getCookie();
   try {
+    let username = "";
     let filterQuery = "{}";
     if (query) {
       filterQuery = JSON.stringify(query);
     }
-    console.log(filterQuery);
+    if (search) {
+      username = search;
+    }
     const response = await fetch(
-      `${config.server}/api/users/all?filter=${search}&page=${page}&search=${filterQuery}`,
+      `${config.server}/api/users/all?filter=${username}&page=${page}&search=${filterQuery}`,
       {
         method: "GET",
         credentials: "include",
@@ -492,7 +498,6 @@ export const filterMyTransactions = async (page, query) => {
   if (query) {
     filterQuery = JSON.stringify(query);
   }
-  console.log(filterQuery);
   try {
     const response = await fetch(
       `${config.server}/api/transactions?page=${page}&search=${filterQuery}&limit=11`,
@@ -522,7 +527,6 @@ export const filterAllTransactions = async (page, query) => {
   if (query) {
     filterQuery = JSON.stringify(query);
   }
-  console.log(filterQuery);
   try {
     const response = await fetch(
       `${config.server}/api/transactions/all?page=${page}&search=${filterQuery}&limit=11`,
