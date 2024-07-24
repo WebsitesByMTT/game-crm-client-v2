@@ -1,7 +1,6 @@
 import Clients from "@/components/Clients";
 import { config } from "@/utils/config";
 import { getCookie } from "@/utils/cookie";
-import { revalidatePath } from "next/cache";
 
 const getAllClients = async (page) => {
   const token = await getCookie();
@@ -15,7 +14,6 @@ const getAllClients = async (page) => {
           "Content-Type": "application/json",
           Cookie: `userToken=${token}`,
         },
-        next: { tags: ["client"] },
       }
     );
     if (!response.ok) {
@@ -25,9 +23,8 @@ const getAllClients = async (page) => {
     const data = await response.json();
     return { data };
   } catch (error) {
+    console.log(error);
     throw error;
-  } finally {
-    revalidatePath(`/clients/all?page=${page}`);
   }
 };
 

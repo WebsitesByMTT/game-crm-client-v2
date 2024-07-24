@@ -7,8 +7,8 @@ import toast from "react-hot-toast";
 import EditGame from "@/components/ui/modals/EditGame";
 import DeleteModal from "@/components/ui/modals/DeleteModal";
 import TableComponent from "@/components/TableComponent";
-import { handleFilter } from "@/utils/Filter";
 import Loader from "./ui/Loader";
+import { handleFilter } from "@/utils/Filter";
 
 const GameList = ({ platforms, games }) => {
   const [data, setData] = useState(games);
@@ -18,11 +18,15 @@ const GameList = ({ platforms, games }) => {
   const [modalType, setModalType] = useState("");
   const [search, setSearch] = useState("");
   const [load, setLoad] = useState(false);
+  const [query, setQuery] = useState();
 
   useEffect(() => {
     setData(games);
     setFilteredData(games);
-  }, [games, platforms]);
+    if (query) {
+      handleFilterData(query?.status);
+    }
+  }, [games, platforms, query]);
 
   const handleDelete = async (id) => {
     setLoad(true);
@@ -70,16 +74,16 @@ const GameList = ({ platforms, games }) => {
     setRowData(data);
   };
 
+  const handleFilterData = (value) => {
+    const dataFiltered = handleFilter(data, "status", value);
+    setFilteredData(dataFiltered);
+  };
+
   const handleSearch = (searchTerm) => {
     const filtered = data.filter((item) =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(filtered);
-  };
-
-  const handleFilterData = (key, value, Num) => {
-    const dataFiltered = handleFilter(data, key, value, Num);
-    setFilteredData(dataFiltered);
   };
 
   const tableData = {
@@ -116,8 +120,9 @@ const GameList = ({ platforms, games }) => {
             openModal={handleModalOpen}
             DashboardFetchedData={filteredData}
             deleteTableData={handleDelete}
-            Filter={handleFilterData}
-            loadingStatus={data}
+            loadingStatus={data.length ? false : true}
+            query={query}
+            setQuery={setQuery}
           />
         </div>
         <Modal
