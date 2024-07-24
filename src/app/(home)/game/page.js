@@ -41,6 +41,7 @@ const page = async () => {
               width={300}
               quality={100}
               className="w-[30%] mx-auto mb-5"
+              alt="icon"
             />
             {item.name}
           </Link>

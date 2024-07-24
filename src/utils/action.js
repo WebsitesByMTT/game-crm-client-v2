@@ -219,7 +219,7 @@ export const getSubordinateClients = async (id, page) => {
   }
 };
 
-export const getGames = async (platform, category) => {
+export const getGames = async (platform, category, gameName, query) => {
   const token = await getCookie();
   try {
     const response = await fetch(
@@ -241,8 +241,6 @@ export const getGames = async (platform, category) => {
     return { data };
   } catch (error) {
     console.log("error", error);
-  } finally {
-    revalidatePath(`/game/${platform}`);
   }
 };
 
@@ -403,17 +401,20 @@ export async function getPlatform() {
   }
 }
 
-export async function generatePassword(){
+export async function generatePassword() {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/users/generatePassword`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
+    const response = await fetch(
+      `${config.server}/api/users/generatePassword`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
     if (!response.ok) {
       const error = await response.json();
       return { error: error.message };
@@ -424,3 +425,127 @@ export async function generatePassword(){
     console.log("error", error);
   }
 }
+
+export const searchByUsername = async (search, page, query) => {
+  const token = await getCookie();
+  let filterQuery = "{}";
+  let username = "";
+  if (query) {
+    filterQuery = JSON.stringify(query);
+  }
+  if (search) {
+    username = search;
+  }
+  try {
+    const response = await fetch(
+      `${config.server}/api/users/subordinates?filter=${username}&page=${page}&search=${filterQuery}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const searchAllByUsername = async (search, page, query) => {
+  const token = await getCookie();
+  try {
+    let username = "";
+    let filterQuery = "{}";
+    if (query) {
+      filterQuery = JSON.stringify(query);
+    }
+    if (search) {
+      username = search;
+    }
+    const response = await fetch(
+      `${config.server}/api/users/all?filter=${username}&page=${page}&search=${filterQuery}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const filterMyTransactions = async (page, query) => {
+  const token = await getCookie();
+  let filterQuery = "{}";
+  if (query) {
+    filterQuery = JSON.stringify(query);
+  }
+  try {
+    const response = await fetch(
+      `${config.server}/api/transactions?page=${page}&search=${filterQuery}&limit=11`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const filterAllTransactions = async (page, query) => {
+  const token = await getCookie();
+  let filterQuery = "{}";
+  if (query) {
+    filterQuery = JSON.stringify(query);
+  }
+  try {
+    const response = await fetch(
+      `${config.server}/api/transactions/all?page=${page}&search=${filterQuery}&limit=11`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
