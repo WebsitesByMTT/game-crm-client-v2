@@ -110,7 +110,7 @@ const GamePayout = ({ tagname, platform, setOpen }) => {
       >
         <label
           for="file-upload"
-          className={`border-[1px] border-[#dfdfdf4a] text-[#dfdfdf4a] hover:text-white transition-all duration-150 hover:border-white rounded-xl w-full text-center py-8 cursor-pointer font-extralight flex justify-center ${
+          className={`border-[2px] border-[#2826265f] text-[#2826265f] hover:border-black hover:text-black  dark:border-[#dfdfdf4a] dark:text-[#dfdfdf4a] dark:hover:text-white transition-all duration-150 dark:hover:border-white rounded-xl w-full text-center py-8 cursor-pointer font-light flex justify-center ${
             payout && "!text-white border-white"
           }`}
         >
@@ -146,14 +146,14 @@ const GamePayout = ({ tagname, platform, setOpen }) => {
         )}
       </form>
       <div className="flex flex-col gap-2">
-        <h4 className="text-xl font-extralight py-2">Payouts Versions: </h4>
+        <h4 className="text-xl font-md py-2">Payouts Versions: </h4>
         <div className="max-h-[200px] min-h-[200px] overflow-auto flex flex-col gap-2">
           {payoutData ? (
             payoutData?.length > 0 &&
             payoutData?.map((item, index) => (
               <div
                 key={index}
-                className="flex w-full justify-between px-4 py-1 text-md bg-[#5d535324] rounded-md"
+                className="flex w-full justify-between px-4 py-1 text-md bg-gray-300 dark:bg-[#5d535324] rounded-md"
               >
                 <div className="flex flex-col">
                   <div className="flex items-center gap-3">
@@ -168,7 +168,7 @@ const GamePayout = ({ tagname, platform, setOpen }) => {
                     </span>
                     <div>
                       <p>{item.name}</p>
-                      <p className="text-[#cfc6c686] text-[12px]">
+                      <p className="text-[#1914148e] dark:text-[#cfc6c686] text-[12px]">
                         {formatDate(item.createdAt)}
                       </p>
                     </div>
@@ -176,7 +176,7 @@ const GamePayout = ({ tagname, platform, setOpen }) => {
                 </div>
                 {item.isActive === false && (
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="text-[#fff] p-1 rounded-md">
+                    <DropdownMenuTrigger className="dark:text-[#fff] p-1 rounded-md">
                       <BsThreeDotsVertical />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="bg-[#F3F4F6] z-[100] dark:bg-Dark dark:border-gray-700 border-gray-200">
