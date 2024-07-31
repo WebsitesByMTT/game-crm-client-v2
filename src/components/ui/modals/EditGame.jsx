@@ -15,7 +15,6 @@ const EditGame = ({ prevData, id, setOpen, platform }) => {
     slug: prevData.slug,
     url: prevData.url,
     thumbnail: prevData.thumbnail,
-    payoutFile: prevData.payout,
   });
 
   const handleChange = (e) => {
@@ -36,8 +35,7 @@ const EditGame = ({ prevData, id, setOpen, platform }) => {
       game.category === "" ||
       game.slug === "" ||
       game.type === "" ||
-      game.thumbnail === null ||
-      game.payoutFile === null
+      game.thumbnail === null
     ) {
       return toast.error("All fileds are required!");
     }
@@ -138,14 +136,6 @@ const EditGame = ({ prevData, id, setOpen, platform }) => {
           className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
           id="fileUpload"
           accept="image/*"
-        />
-        <p className="text-left font-light">Payout file :</p>
-        <input
-          name="payoutFile"
-          type="file"
-          accept=".json"
-          onChange={handleChange}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-[#dfdfdf2e] "
         />
         <div className="col-span-2 flex justify-center mt-2">
           <button

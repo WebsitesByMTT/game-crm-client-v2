@@ -246,7 +246,6 @@ export const getGames = async (platform, category, gameName, query) => {
 
 export const editGames = async (game, id) => {
   const token = await getCookie();
-  console.log("GAME", game);
   try {
     const response = await fetch(`${config.server}/api/games/${id}`, {
       method: "PUT",
@@ -539,6 +538,105 @@ export const filterAllTransactions = async (page, query) => {
         },
       }
     );
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const fetchPayoutversion = async (tagname, platform) => {
+  const token = await getCookie();
+  console.log(platform, tagname);
+  try {
+    const response = await fetch(
+      `${config.server}/api/payouts/${tagname}?platformName=${platform}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const addPayout = async (payout) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/payouts`, {
+      method: "POST",
+      credentials: "include",
+      body: payout,
+      headers: {
+        Cookie: `userToken=${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deletePayout = async (tagname, version) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(
+      `${config.server}/api/payouts/${tagname}/${version}`,
+      {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error", error);
+  } finally {
+    revalidatePath("/game");
+  }
+};
+
+export const setPayoutActive = async (tagname, version, platform) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/payouts/${tagname}`, {
+      method: "PATCH",
+      credentials: "include",
+      body: JSON.stringify({ version, platform }),
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+
     if (!response.ok) {
       const error = await response.json();
       return { error: error.message };
