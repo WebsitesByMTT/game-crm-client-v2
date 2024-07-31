@@ -324,8 +324,7 @@ export async function getUserReport(id, type) {
   const token = await getCookie();
   try {
     const response = await fetch(
-      `${
-        config.server
+      `${config.server
       }/api/users/report?userId=${id}&type=${type.toLowerCase()}`,
       {
         method: "GET",
