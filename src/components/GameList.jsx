@@ -9,6 +9,7 @@ import DeleteModal from "@/components/ui/modals/DeleteModal";
 import TableComponent from "@/components/TableComponent";
 import Loader from "./ui/Loader";
 import { handleFilter } from "@/utils/Filter";
+import GamePayout from "./ui/modals/GamePayout";
 
 const GameList = ({ platforms, games }) => {
   const [data, setData] = useState(games);
@@ -51,7 +52,15 @@ const GameList = ({ platforms, games }) => {
         />
       );
       break;
-
+    case "Manage Payouts":
+      ModalContent = (
+        <GamePayout
+          tagname={rowData?.tagName}
+          platform={platforms}
+          setOpen={setOpen}
+        />
+      );
+      break;
     case "Delete":
       ModalContent = (
         <DeleteModal
@@ -120,7 +129,7 @@ const GameList = ({ platforms, games }) => {
             openModal={handleModalOpen}
             DashboardFetchedData={filteredData}
             deleteTableData={handleDelete}
-            loadingStatus={data.length ? false : true}
+            loadingStatus={data ? false : true}
             query={query}
             setQuery={setQuery}
           />

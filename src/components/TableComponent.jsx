@@ -268,19 +268,48 @@ const TableComponent = ({
                         <TableCell key={subitem}>
                           <div className="flex gap-5 text-2xl justify-center relative">
                             {pageType === "game" ? (
-                              <div
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  rowClick(item);
-                                  openModal("Edit Game");
-                                }}
-                                className="flex gap-5 text-2xl justify-center relative"
-                              >
-                                <div className="text-[#1b1b1e] editgradient p-1 rounded-md">
-                                  <MdEdit />
-                                </div>
-                              </div>
+                              <>
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger className="text-[#1b1b1e]  editgradient p-1 rounded-md">
+                                    <BsThreeDotsVertical />
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent className="bg-[#F3F4F6] dark:bg-Dark dark:border-gray-700 border-gray-200">
+                                    <DropdownMenuItem
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        openModal("Edit Game");
+                                        rowClick(item);
+                                      }}
+                                      className="text-black dark:text-white dark:border-b-gray-700 border-b-gray-200 cursor-pointer"
+                                    >
+                                      Edit Game
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        rowClick(item);
+                                        openModal("Manage Payouts");
+                                      }}
+                                      className="text-black dark:text-white dark:border-b-gray-700 border-b-gray-200  cursor-pointer"
+                                    >
+                                      Manage Payouts
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </>
                             ) : (
+                              // <div
+                              //   onClick={(e) => {
+                              //     e.stopPropagation();
+                              //     rowClick(item);
+                              //     openModal("Edit Game");
+                              //   }}
+                              //   className="flex gap-5 text-2xl justify-center relative"
+                              // >
+                              //   <div className="text-[#1b1b1e] editgradient p-1 rounded-md">
+                              //     <MdEdit />
+                              //   </div>
+                              // </div>
                               <>
                                 <DropdownMenu>
                                   <DropdownMenuTrigger className="text-[#1b1b1e]  editgradient p-1 rounded-md">
