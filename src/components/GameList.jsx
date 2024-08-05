@@ -1,6 +1,6 @@
 "use client";
 import Modal from "@/components/ui/Modal";
-import { deleteGame, getGames } from "@/utils/action";
+import { deleteGame, demo, getGames } from "@/utils/action";
 import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import toast from "react-hot-toast";
