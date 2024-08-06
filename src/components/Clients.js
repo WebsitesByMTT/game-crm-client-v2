@@ -34,7 +34,6 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
 
   useEffect(() => {
     if (!search && !query) {
-      console.log("HERE");
       setData(clientData);
       setFilteredData(clientData);
     } else {

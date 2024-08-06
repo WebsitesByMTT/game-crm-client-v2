@@ -6,6 +6,8 @@ import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import { usePathname, useRouter } from "next/navigation";
 import { filterAllTransactions, filterMyTransactions } from "@/utils/action";
 import toast from "react-hot-toast";
+import { TfiReload } from "react-icons/tfi";
+import { FiSearch } from "react-icons/fi";
 const Transactions = ({ totalPages, transactions, currentPage }) => {
   const [data, setData] = useState(transactions);
   const [filteredData, setFilteredData] = useState(transactions);
@@ -15,27 +17,28 @@ const Transactions = ({ totalPages, transactions, currentPage }) => {
   const [query, setQuery] = useState();
   const router = useRouter();
   const pathame = usePathname();
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (!query) {
+    if (!search && !query) {
       setData(transactions);
       setFilteredData(transactions);
     } else {
-      debouncedFetchData();
+      debouncedFetchData(search);
     }
     setCount(parseInt(currentPage));
   }, [transactions, currentPage, query, pathame]);
 
-  const fetchSearchData = async () => {
+  const fetchSearchData = async (username) => {
     try {
       let response;
       if (pathame === `/transaction/my`) {
         setLoadingStatus(true);
-        response = await filterMyTransactions(count, query);
+        response = await filterMyTransactions(username, count, query);
         setLoadingStatus(false);
       } else if (pathame === `/transaction/all`) {
         setLoadingStatus(true);
-        response = await filterAllTransactions(count, query);
+        response = await filterAllTransactions(username, count, query);
         setLoadingStatus(false);
       }
       if (response?.error) {
@@ -50,11 +53,11 @@ const Transactions = ({ totalPages, transactions, currentPage }) => {
   };
 
   let timeoutId = null;
-  const debouncedFetchData = () => {
+  const debouncedFetchData = (username) => {
     clearTimeout(timeoutId);
 
     timeoutId = setTimeout(async () => {
-      fetchSearchData();
+      fetchSearchData(username);
     }, 1000);
   };
 
@@ -66,6 +69,39 @@ const Transactions = ({ totalPages, transactions, currentPage }) => {
 
   return (
     <div className="h-full w-[95%] mx-auto flex flex-col justify-between py-8">
+      <div className={`md:w-[50%] flex items-center space-x-4 pt-5 h-fit`}>
+        <>
+          <div className="w-full mb-3 flex bg-white shadow-lg items-center gap-2 text-black dark:text-white dark:bg-Dark_light dark:border-none rounded-md  font-extralight py-4 md:py-2 px-4 ">
+            <div className="text-lg">
+              <FiSearch />
+            </div>
+            <input
+              name="search"
+              className="focus:outline-none  placeholder:text-black dark:placeholder:text-[#fffbfb7c] text-md bg-transparent w-full"
+              placeholder="Search by Username"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                debouncedFetchData(e.target.value);
+              }}
+            />
+          </div>
+          <div
+            className="text-Dark_light dark:text-white pb-3"
+            onClick={() => {
+              setFilteredData(transactions);
+              setSearch("");
+              setQuery({});
+              setTotal(totalPages);
+            }}
+          >
+            <TfiReload
+              className="hover:text-gray-500 cursor-pointer"
+              size={30}
+            />
+          </div>
+        </>
+      </div>
       <div className="h-[90%]">
         <TableComponent
           pageType="transaction"

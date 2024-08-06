@@ -324,8 +324,7 @@ export async function getUserReport(id, type) {
   const token = await getCookie();
   try {
     const response = await fetch(
-      `${
-        config.server
+      `${config.server
       }/api/users/report?userId=${id}&type=${type.toLowerCase()}`,
       {
         method: "GET",
@@ -491,15 +490,19 @@ export const searchAllByUsername = async (search, page, query) => {
   }
 };
 
-export const filterMyTransactions = async (page, query) => {
+export const filterMyTransactions = async (search, page, query) => {
   const token = await getCookie();
   let filterQuery = "{}";
+  let username = "";
   if (query) {
     filterQuery = JSON.stringify(query);
   }
+  if (search) {
+    username = search;
+  }
   try {
     const response = await fetch(
-      `${config.server}/api/transactions?page=${page}&search=${filterQuery}&limit=11`,
+      `${config.server}/api/transactions?filter=${username}&page=${page}&search=${filterQuery}&limit=11`,
       {
         method: "GET",
         credentials: "include",
@@ -520,15 +523,19 @@ export const filterMyTransactions = async (page, query) => {
   }
 };
 
-export const filterAllTransactions = async (page, query) => {
+export const filterAllTransactions = async (search, page, query) => {
   const token = await getCookie();
   let filterQuery = "{}";
+  let username = "";
   if (query) {
     filterQuery = JSON.stringify(query);
   }
+  if (search) {
+    username = search;
+  }
   try {
     const response = await fetch(
-      `${config.server}/api/transactions/all?page=${page}&search=${filterQuery}&limit=11`,
+      `${config.server}/api/transactions/all?filter=${username}&page=${page}&search=${filterQuery}&limit=11`,
       {
         method: "GET",
         credentials: "include",
@@ -647,3 +654,27 @@ export const setPayoutActive = async (tagname, version, platform) => {
     console.log("error", error);
   }
 };
+
+// export const demo = async () => {
+//   const token = await getCookie();
+//   console.log("HERE");
+//   try {
+//     const response = await fetch(`${config.server}/api/games/report?platform=${pla}`, {
+//       method: "GET",
+//       credentials: "include",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Cookie: `userToken=${token}`,
+//       },
+//     });
+
+//     if (!response.ok) {
+//       const error = await response.json();
+//       return { error: error.message };
+//     }
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.log("error", error);
+//   }
+// };

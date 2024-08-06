@@ -15,7 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MdDeleteOutline, MdEdit } from "react-icons/md";
+import { MdDeleteOutline } from "react-icons/md";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoIosArrowDown } from "react-icons/io";
 import { useRouter } from "next/navigation";
