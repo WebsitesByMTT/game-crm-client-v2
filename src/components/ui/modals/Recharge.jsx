@@ -24,7 +24,7 @@ const Recharge = ({ setOpen, id }) => {
       toast.error(response.error);
     }
     setOpen(false);
-    toast.success(response.responseData.message);
+    toast.success(response.responseData?.message);
     setLoad(false);
   };
 

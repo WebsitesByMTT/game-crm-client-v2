@@ -4,6 +4,9 @@ import { addGame, getPlatform } from "@/utils/action";
 import React, { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
+import { getCookie } from "@/utils/cookie";
+import { config } from "@/utils/config";
+
 
 const AddGame = () => {
   const [load, setLoad] = useState(false);
@@ -88,30 +91,42 @@ const AddGame = () => {
       data.append(key, game[key]);
     }
     setLoad(true);
-    const response = await addGame(data);
-    if (response?.error) {
+    const token = await getCookie();
+
+    const response = await fetch(`${config.server}/api/games`, {
+      method: "POST",
+      credentials: "include",
+      body: data,
+      headers: {
+        Cookie: `userToken=${token}`,
+      }
+    })
+
+    if (!response.ok) {
       setLoad(false);
-      return toast.error(response.error);
-    } else {
-      toast.success("Game Added successfully!");
-      setGame({
-        name: "",
-        type: "",
-        category: "",
-        platform: "",
-        status: "",
-        tagName: "",
-        slug: "",
-        url: "",
-        thumbnail: null,
-        payoutFile: null,
-      });
-      document.getElementById('inactive').checked = false;
-      document.getElementById('active').checked = false;
-      setDisable(true);
-      setThumbnailPreview(null);
-      setLoad(false);
+      return toast.error("Failed to add game");
     }
+
+    toast.success("Game Added successfully!");
+    setGame({
+      name: "",
+      type: "",
+      category: "",
+      platform: "",
+      status: "",
+      tagName: "",
+      slug: "",
+      url: "",
+      thumbnail: null,
+      payoutFile: null,
+    });
+
+    document.getElementById('inactive').checked = false;
+    document.getElementById('active').checked = false;
+    setDisable(true);
+    setThumbnailPreview(null);
+    setLoad(false);
+
   };
 
   //Get Platforms
@@ -123,6 +138,7 @@ const AddGame = () => {
       setPlatform(response);
     }
   };
+
   useEffect(() => {
     handelPlatform();
   }, []);
@@ -254,9 +270,8 @@ const AddGame = () => {
             <button
               disabled={disable ? true : false}
               type="submit"
-              className={` ${
-                disable ? "opacity-50 " : "opacity-100 "
-              }text-center flex justify-center px-4 items-center gap-2 bg-gradient-to-r from-[#8C7CFD] hover:from-[#BC89F1] hover:to-[#8C7CFD] to-[#BC89F1] mx-auto text-white text-xl rounded-md p-2 font-light hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out`}
+              className={` ${disable ? "opacity-50 " : "opacity-100 "
+                }text-center flex justify-center px-4 items-center gap-2 bg-gradient-to-r from-[#8C7CFD] hover:from-[#BC89F1] hover:to-[#8C7CFD] to-[#BC89F1] mx-auto text-white text-xl rounded-md p-2 font-light hover:shadow-[0_30px_10px_-15px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out`}
             >
               Submit
             </button>
