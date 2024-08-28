@@ -21,7 +21,7 @@ const Redeem = ({ setOpen, id }) => {
     const response = await editCredits(credits, id);
     if (response?.error) {
       setLoad(false);
-      toast.error(response.error);
+      return toast.error(response.error);
     }
     setOpen(false);
     toast.success(response.responseData?.message);
