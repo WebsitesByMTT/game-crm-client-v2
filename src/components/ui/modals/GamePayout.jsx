@@ -52,6 +52,7 @@ const GamePayout = ({ tagname, platform, setOpen }) => {
     fileInputRef.current.value = null;
     setPayout(null);
     toast.success(response.message);
+    fetchPayoutData(tagname, platform);
   };
 
   const handleDelete = async () => {
@@ -73,6 +74,7 @@ const GamePayout = ({ tagname, platform, setOpen }) => {
       return toast.error(response.error);
     }
     toast.success(response.message);
+    fetchPayoutData(tagname, platform);
   };
 
   const fetchPayoutData = async (tagname, platform) => {
@@ -100,7 +102,7 @@ const GamePayout = ({ tagname, platform, setOpen }) => {
 
   useEffect(() => {
     fetchPayoutData(tagname, platform);
-  }, [tagname, payoutData]);
+  }, [tagname]);
 
   return (
     <div className="flex flex-col gap-4">
