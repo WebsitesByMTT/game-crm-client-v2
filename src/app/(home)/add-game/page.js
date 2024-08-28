@@ -101,7 +101,6 @@ const AddGame = () => {
     //   }
     // })
     const response = await addGame(data);
-    console.log("GAME ADDED : ", response);
 
     if (response.error) {
       setLoad(false);
