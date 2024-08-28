@@ -91,20 +91,21 @@ const AddGame = () => {
       data.append(key, game[key]);
     }
     setLoad(true);
-    const token = await getCookie();
 
-    const response = await fetch(`${config.server}/api/games`, {
-      method: "POST",
-      credentials: "include",
-      body: data,
-      headers: {
-        Cookie: `userToken=${token}`,
-      }
-    })
+    // const response = await fetch(`${config.server}/api/games`, {
+    //   method: "POST",
+    //   credentials: "include",
+    //   body: data,
+    //   headers: {
+    //     Cookie: `userToken=${token}`,
+    //   }
+    // })
+    const response = await addGame(data);
+    console.log("GAME ADDED : ", response);
 
-    if (!response.ok) {
+    if (response.error) {
       setLoad(false);
-      return toast.error("Failed to add game");
+      return toast.error(response.error);
     }
 
     toast.success("Game Added successfully!");
