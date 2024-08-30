@@ -18,6 +18,7 @@ import { AiOutlineTransaction } from "react-icons/ai";
 import { RiUserAddFill } from "react-icons/ri";
 import { PiUserCircleThin } from "react-icons/pi";
 import { CiLogout } from "react-icons/ci";
+import { GiAmericanFootballPlayer } from "react-icons/gi";
 
 const LeftSideBar = () => {
   const router = useRouter();
@@ -49,6 +50,11 @@ const LeftSideBar = () => {
             LinkName: "All Clients",
             Link: "/clients/all?page=1",
             icon: <FaUsers />,
+          },
+          {
+            LinkName: "Active Players",
+            Link: "/clients/activePlayers?page=1",
+            icon: <GiAmericanFootballPlayer />,
           },
           {
             LinkName: "Add Client",
