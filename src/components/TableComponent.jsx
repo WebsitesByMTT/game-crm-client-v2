@@ -220,6 +220,16 @@ const TableComponent = ({
                         </TableCell>
                       );
 
+                    case "currentGame":
+                      return (
+                        <TableCell
+                          key={subitem}
+                          className="cursor-pointer hover:scale-[1.2] transition-all"
+                        >
+                          {item.currentGame}
+                        </TableCell>
+                      );
+
                     case "status":
                       return (
                         <TableCell
