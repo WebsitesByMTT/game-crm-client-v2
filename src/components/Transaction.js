@@ -44,7 +44,6 @@ const Transactions = ({ totalPages, transactions, currentPage }) => {
       if (response?.error) {
         toast.error(response.error);
       }
-      console.log(response);
       setFilteredData(response?.transactions);
       setTotal(response?.totalPages);
     } catch (error) {

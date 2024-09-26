@@ -6,7 +6,7 @@ export default function Error({ error, reset }) {
   useEffect(() => {
     toast.error(error.message);
     reset();
-  }, [error]);
+  }, []);
 
   return;
 }

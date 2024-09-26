@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 export default function Error({ error }) {
   useEffect(() => {
     toast.error(error.message);
-  }, [error]);
+  }, []);
 
   return error;
 }
