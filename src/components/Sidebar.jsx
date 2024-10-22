@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoMdClose } from "react-icons/io";
-import { RiArrowDropDownLine } from "react-icons/ri";
+import { RiArrowDropDownLine, RiMoneyDollarCircleFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUserData } from "../store/userSlice";
 import { FaUserTie, FaUsers } from "react-icons/fa";
@@ -66,7 +66,7 @@ const LeftSideBar = () => {
       {
         LinkName: "Transaction",
         Link: "",
-        icon: <RiMoneyRupeeCircleFill />,
+        icon: <RiMoneyDollarCircleFill />,
         showDropDown: true,
         nested: [
           {
@@ -77,7 +77,7 @@ const LeftSideBar = () => {
           {
             LinkName: "All Transaction",
             Link: "/transaction/all?page=1",
-            icon: <RiMoneyRupeeCircleFill />,
+            icon: <RiMoneyDollarCircleFill />,
           },
         ],
       },
@@ -127,7 +127,7 @@ const LeftSideBar = () => {
       {
         LinkName: "Transactions",
         Link: "/transaction/my?page=1",
-        icon: <RiMoneyRupeeCircleFill />,
+        icon: <RiMoneyDollarCircleFill />,
         showDropDown: false,
       },
     ],

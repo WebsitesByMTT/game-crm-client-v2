@@ -42,7 +42,7 @@ export default async function RootLayout({ children }) {
         </div>
       </div>
       <div className="w-full h-full mx-auto ">
-        <div className="w-full h-[10%] flex items-center justify-center dark:bg-Dark_light bg-white">
+        <div className="w-full py-4 flex items-center justify-center dark:bg-Dark_light bg-white">
           <Header />
         </div>
         <div className="h-[90%] w-[100%] mx-auto overflow-auto">

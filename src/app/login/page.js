@@ -3,7 +3,7 @@ import { loginUser } from "@/utils/action";
 import Loader from "@/components/ui/Loader";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import React, {useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 const Login = () => {
@@ -44,32 +44,34 @@ const Login = () => {
       return toast.error("All fields are required");
     }
     setLoad(true);
-      const response = await loginUser({ username, password });
-      if(response?.error){
-        setLoad(false);
-        return toast.error(response.error);
-      }
-      const { token, message, role } = response.responseData;
-      if (token) {
-        if (role !== "player") {
-          toast.success(message);
-          Cookies.set("userToken", token);
-          router.push("/");
-        } else {
-          toast.remove();
-          toast.error("Access denied");
-        }
-      } else {
-        toast.error("Token not found");
-      }
+    const response = await loginUser({ username, password });
+    if (response?.error) {
       setLoad(false);
+      return toast.error(response.error);
     }
+    const { token, message, role } = response.responseData;
+    if (response?.responseData?.isUnderMaintenance) {
+      setLoad(false);
+      return toast.error(message);
+    }
+    if (token) {
+      if (role !== "player") {
+        toast.success(message);
+        Cookies.set("userToken", token);
+        router.push("/");
+      } else {
+        toast.remove();
+        toast.error("Access denied");
+      }
+    } else {
+      toast.error("Token not found");
+    }
+    setLoad(false);
+  };
 
   return (
     <>
-      <div
-        className="bg-[#1a1a1d] bg-cover w-full h-screen flex items-center justify-center relative"
-      >
+      <div className="bg-[#1a1a1d] bg-cover w-full h-screen flex items-center justify-center relative">
         <div className="relative border-2 border-[#e4e4e42f] bg-[#fff] bg-clip-padding backdrop-filter backdrop-blur-[5px] bg-opacity-10 flex z-[1] items-center justify-center w-[70%] h-[45vh] sm:h-[60vh] lg:w-[25%] sm:min-w-[400px] min-w-[300px] rounded-[1.8vw] p-5">
           <div className="w-full h-full">
             <form
