@@ -3,17 +3,15 @@ import { editPassword, generatePassword } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import Loader from "../Loader";
-import { passwordRegex } from "@/utils/util";
 
 const Password = ({ id, setOpen }) => {
-  const [existingPassword, setExistingPassword] = useState("");
   const [password, setPassword] = useState("");
   const [reEnterPassword, setReEnterPassword] = useState("");
   const [load, setLoad] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (existingPassword === "" || password === "" || reEnterPassword === "") {
+    if (password === "" || reEnterPassword === "") {
       return toast.error("All fileds are required!");
     }
 
@@ -21,14 +19,8 @@ const Password = ({ id, setOpen }) => {
       return toast.error("Both the passwords do not match");
     }
 
-    if (!passwordRegex.test(password) || !passwordRegex.test(reEnterPassword)) {
-      return toast.error(
-        "Password must have at least 8 characters including at least one uppercase letter, 2 digits, and 1 special character!"
-      );
-    }
-
     setLoad(true);
-    const response = await editPassword(existingPassword, password, id);
+    const response = await editPassword(password, id);
     setLoad(false);
     if (response?.error) {
       return toast.error(response.error);
@@ -53,13 +45,6 @@ const Password = ({ id, setOpen }) => {
         onSubmit={handleSubmit}
         className="grid grid-cols-2 md:gap-4 overflow-hidden px-5"
       >
-        <p className="text-left font-light">Existing Password :</p>
-        <input
-          name="existingPassword"
-          onChange={(e) => setExistingPassword(e.target.value)}
-          value={existingPassword}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-500 dark:border-[#dfdfdf2e] "
-        />
         <p className="text-left font-light">New Password :</p>
         <div className="flex justify-between w-full gap-2">
           <input
