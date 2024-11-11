@@ -90,12 +90,12 @@ export const deleteClient = async (id) => {
   }
 };
 
-export const editPassword = async (existingPassword, password, id) => {
+export const editPassword = async (password, id) => {
   const token = await getCookie();
   try {
     const response = await fetch(`${config.server}/api/users/${id}`, {
       method: "PUT",
-      body: JSON.stringify({ password, existingPassword }),
+      body: JSON.stringify({ password }),
       credentials: "include",
       headers: {
         "Content-Type": "application/json",

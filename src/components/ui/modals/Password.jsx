@@ -6,14 +6,13 @@ import Loader from "../Loader";
 import { passwordRegex } from "@/utils/util";
 
 const Password = ({ id, setOpen }) => {
-  const [existingPassword, setExistingPassword] = useState("");
   const [password, setPassword] = useState("");
   const [reEnterPassword, setReEnterPassword] = useState("");
   const [load, setLoad] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (existingPassword === "" || password === "" || reEnterPassword === "") {
+    if (password === "" || reEnterPassword === "") {
       return toast.error("All fileds are required!");
     }
 
@@ -28,7 +27,7 @@ const Password = ({ id, setOpen }) => {
     }
 
     setLoad(true);
-    const response = await editPassword(existingPassword, password, id);
+    const response = await editPassword(password, id);
     setLoad(false);
     if (response?.error) {
       return toast.error(response.error);
@@ -53,13 +52,6 @@ const Password = ({ id, setOpen }) => {
         onSubmit={handleSubmit}
         className="grid grid-cols-2 md:gap-4 overflow-hidden px-5"
       >
-        <p className="text-left font-light">Existing Password :</p>
-        <input
-          name="existingPassword"
-          onChange={(e) => setExistingPassword(e.target.value)}
-          value={existingPassword}
-          className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-500 dark:border-[#dfdfdf2e] "
-        />
         <p className="text-left font-light">New Password :</p>
         <div className="flex justify-between w-full gap-2">
           <input
