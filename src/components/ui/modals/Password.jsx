@@ -3,7 +3,6 @@ import { editPassword, generatePassword } from "@/utils/action";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import Loader from "../Loader";
-import { passwordRegex } from "@/utils/util";
 
 const Password = ({ id, setOpen }) => {
   const [password, setPassword] = useState("");
@@ -18,12 +17,6 @@ const Password = ({ id, setOpen }) => {
 
     if (password !== reEnterPassword) {
       return toast.error("Both the passwords do not match");
-    }
-
-    if (!passwordRegex.test(password) || !passwordRegex.test(reEnterPassword)) {
-      return toast.error(
-        "Password must have at least 8 characters including at least one uppercase letter, 2 digits, and 1 special character!"
-      );
     }
 
     setLoad(true);
