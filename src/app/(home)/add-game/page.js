@@ -40,7 +40,6 @@ const AddGame = () => {
       if (file) {
         const fileReader = new FileReader();
         fileReader.onload = (event) => {
-          console.log(event.target.value);
           setThumbnailPreview(event.target.result);
         };
         fileReader.readAsDataURL(file[0]);
@@ -101,7 +100,6 @@ const AddGame = () => {
     //   }
     // })
     const response = await addGame(data);
-    console.log("GAME ADDED : ", response);
 
     if (response.error) {
       setLoad(false);

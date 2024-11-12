@@ -324,7 +324,8 @@ export async function getUserReport(id, type) {
   const token = await getCookie();
   try {
     const response = await fetch(
-      `${config.server
+      `${
+        config.server
       }/api/users/report?userId=${id}&type=${type.toLowerCase()}`,
       {
         method: "GET",
@@ -655,6 +656,52 @@ export const setPayoutActive = async (tagname, version, platform) => {
   }
 };
 
+export const getToggle = async () => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/toggle`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const updateToggle = async (availableAt) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/toggle`, {
+      method: "PUT",
+      credentials: "include",
+      body: JSON.stringify({ availableAt }),
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
 // export const demo = async () => {
 //   const token = await getCookie();
 //   console.log("HERE");

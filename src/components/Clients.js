@@ -55,6 +55,9 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
         setLoadingStatus(true);
         response = await searchAllByUsername(username, count, query);
         setLoadingStatus(false);
+      } else if (pathname === "clients/activePlayers") {
+        setLoadingStatus(true);
+        response = await searchByUsername(username, count, query);
       }
       if (response?.error) {
         toast.error(response.error);
@@ -187,6 +190,8 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
     setRowData(data);
   };
 
+  const hasCurrentGame = data.some((item) => item.currentGame);
+
   const tableData = {
     tableHead: [
       "username",
@@ -195,6 +200,7 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
       "totalRedeemed",
       "totalRecharged",
       "credits",
+      ...(hasCurrentGame ? ["currentGame"] : []),
       "action",
     ],
     tableBody: [
@@ -204,6 +210,7 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
       "totalRedeemed",
       "totalRecharged",
       "credits",
+      ...(hasCurrentGame ? ["currentGame"] : ""),
       "action",
     ],
     Filter: ["master", "distributor", "subdistributor", "store", "player"],

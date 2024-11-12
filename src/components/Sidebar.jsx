@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoMdClose } from "react-icons/io";
-import { RiArrowDropDownLine } from "react-icons/ri";
+import { RiArrowDropDownLine, RiMoneyDollarCircleFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUserData } from "../store/userSlice";
 import { FaUserTie, FaUsers } from "react-icons/fa";
@@ -18,6 +18,7 @@ import { AiOutlineTransaction } from "react-icons/ai";
 import { RiUserAddFill } from "react-icons/ri";
 import { PiUserCircleThin } from "react-icons/pi";
 import { CiLogout } from "react-icons/ci";
+import { GiAmericanFootballPlayer } from "react-icons/gi";
 
 const LeftSideBar = () => {
   const router = useRouter();
@@ -51,6 +52,11 @@ const LeftSideBar = () => {
             icon: <FaUsers />,
           },
           {
+            LinkName: "Active Players",
+            Link: "/clients/activePlayers?page=1",
+            icon: <GiAmericanFootballPlayer />,
+          },
+          {
             LinkName: "Add Client",
             Link: "/clients/add",
             icon: <RiUserAddFill />,
@@ -60,7 +66,7 @@ const LeftSideBar = () => {
       {
         LinkName: "Transaction",
         Link: "",
-        icon: <RiMoneyRupeeCircleFill />,
+        icon: <RiMoneyDollarCircleFill />,
         showDropDown: true,
         nested: [
           {
@@ -71,7 +77,7 @@ const LeftSideBar = () => {
           {
             LinkName: "All Transaction",
             Link: "/transaction/all?page=1",
-            icon: <RiMoneyRupeeCircleFill />,
+            icon: <RiMoneyDollarCircleFill />,
           },
         ],
       },
@@ -121,7 +127,7 @@ const LeftSideBar = () => {
       {
         LinkName: "Transactions",
         Link: "/transaction/my?page=1",
-        icon: <RiMoneyRupeeCircleFill />,
+        icon: <RiMoneyDollarCircleFill />,
         showDropDown: false,
       },
     ],
