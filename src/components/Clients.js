@@ -36,11 +36,13 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
     if (!search && !query) {
       setData(clientData);
       setFilteredData(clientData);
+      setTotal(totalPages);
+
     } else {
       debouncedFetchData(search);
     }
     setCount(parseInt(currentPage));
-  }, [clientData, currentPage, query, pathname]);
+  }, [clientData, currentPage, query, pathname, search]);
 
   const fetchSearchData = async (username) => {
     try {
@@ -48,12 +50,10 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
       if (pathname === `/clients/my`) {
         setLoadingStatus(true);
         response = await searchByUsername(username, count, query);
-
         setLoadingStatus(false);
       } else if (pathname === `/clients/all`) {
         setLoadingStatus(true);
         response = await searchAllByUsername(username, count, query);
-
         setLoadingStatus(false);
       } else if (pathname === "clients/activePlayers") {
         setLoadingStatus(true);
@@ -62,20 +62,75 @@ const Clients = ({ currentPage, totalPages, clientData }) => {
       if (response?.error) {
         toast.error(response.error);
       }
-      setFilteredData(response?.subordinates);
+
+      // Sort data based on relevance to search term
+      const sortedData = response?.subordinates.sort((a, b) => {
+        const usernameLower = username.toLowerCase();
+        const aUsername = a.username.toLowerCase();
+        const bUsername = b.username.toLowerCase();
+
+        // Prioritize usernames starting with the search term
+        if (aUsername.startsWith(usernameLower) && !bUsername.startsWith(usernameLower)) {
+          return -1;
+        } else if (!aUsername.startsWith(usernameLower) && bUsername.startsWith(usernameLower)) {
+          return 1;
+        }
+
+        // Then prioritize usernames containing the search term
+        if (aUsername.includes(usernameLower) && !bUsername.includes(usernameLower)) {
+          return -1;
+        } else if (!aUsername.includes(usernameLower) && bUsername.includes(usernameLower)) {
+          return 1;
+        }
+
+        // Fallback to alphabetical order
+        return aUsername.localeCompare(bUsername);
+      });
+
+      setFilteredData(sortedData);
       setTotal(response?.totalPages);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      if (error.name !== "AbortError") {
+        console.error("Error fetching data:", error);
+      }
     }
   };
 
-  let timeoutId = null;
-  const debouncedFetchData = (username) => {
-    clearTimeout(timeoutId);
+  let debounceTimeoutId = null;
+  let abortController = null; // Declare abortController outside to reuse
 
-    timeoutId = setTimeout(async () => {
-      fetchSearchData(username);
-    }, 1000);
+  const debouncedFetchData = (username) => {
+    // Clear previous timeout
+    clearTimeout(debounceTimeoutId);
+
+    if (!username) {
+      setFilteredData(clientData);
+      setTotal(totalPages);
+      return;
+    }
+
+    // If there’s an ongoing fetch request, abort it
+    if (abortController) {
+      abortController.abort();
+    }
+
+    // Set up a new abort controller for the new request
+    abortController = new AbortController();
+    const { signal } = abortController;
+
+    // Set timeout to delay the API call
+    debounceTimeoutId = setTimeout(async () => {
+      // Only make the API call if there's an input
+      if (username) {
+        try {
+          await fetchSearchData(username, signal); // Pass the signal to the fetch function
+        } catch (error) {
+          if (error.name !== "AbortError") {
+            console.error("Error fetching data:", error);
+          }
+        }
+      }
+    }, 300); // Adjust the delay as needed (e.g., 300ms)
   };
 
   const handleDelete = async (id) => {
