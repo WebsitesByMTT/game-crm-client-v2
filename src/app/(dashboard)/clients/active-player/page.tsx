@@ -117,8 +117,8 @@ export default function ActiveUsers() {
                     </span>
                     <div className="space-x-4 flex items-center">
                       <button className="text-red-600 hover:scale-105 transition-all" onClick={() => setShowModal(playerId)}><Delete /></button>
-                      <button className="text-yellow-600 hover:scale-105 transition-all" onClick={() => getPlayerSession(playerId)}><History /></button>
-                      <button onClick={() => setSelectedUserId(playerId)} className="bg-[#FFD117] px-4 py-1 text-sm hover:scale-105 transition-all rounded-full text-gray-700 font-semibold dark:text-white bg-opacity-35 border-[2px] border-[#F08D36]">View</button>
+                      <button className="text-[#BC89F1] hover:scale-105 transition-all" onClick={() => getPlayerSession(playerId)}><History /></button>
+                      <button onClick={() => setSelectedUserId(playerId)} className="bg-[#BC89F1] px-4 py-1 text-sm hover:scale-105 transition-all rounded-full text-gray-700 font-semibold dark:text-white bg-opacity-35 border-[2px] border-[#BC89F1]">View</button>
                       <span
                         className={`px-4 py-1 rounded-full text-sm ${playerData.currentGame?.gameId
                           ? "bg-green-500 bg-opacity-35 border-[2px] border-green-500 font-semibold text-green-600 dark:text-white"
@@ -135,7 +135,7 @@ export default function ActiveUsers() {
                   </div>
                   <div className="mt-1 text-sm text-gray-500 tracking-wide dark:text-gray-300">
                     Entry Time :{" "}
-                    <span className="text-gray-400 dark:text-[#FFD117]"> {formatDate(playerData.entryTime?.toISOString() || null)}</span>
+                    <span className="text-gray-400 dark:text-[#cbb0e8]"> {formatDate(playerData.entryTime?.toISOString() || null)}</span>
                   </div>
                 </li>
               ))}

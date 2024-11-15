@@ -132,10 +132,10 @@ const page = () => {
 
     return (
         <>
-            <div className="h-screen w-full relative">
+            <div className="h-screen w-full  relative">
                 <form
                     onSubmit={(e) => handleSubmit(e)}
-                    className="grid grid-cols-2 gap-x-2 lg:gap-x-4 gap-y-6 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] overflow-hidden w-[98%] md:w-[70%] lg:w-[50%] m-auto px-2 lg:px-8 py-6 rounded-xl bg-white dark:bg-gray-700 text-black dark:text-white border-[#FFD117] border-[3px]"
+                    className="grid grid-cols-2  gap-x-2 lg:gap-x-4 gap-y-6 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] overflow-hidden w-[98%] md:w-[70%] lg:w-[50%] m-auto px-2 lg:px-8 py-6 rounded-xl bg-white dark:bg-gray-700 text-black dark:text-white border-[#a89fed] border-[3px]"
                 >
                     <p className="text-left font-light">Name :</p>
                     <input
@@ -259,7 +259,7 @@ const page = () => {
                             disabled={disable ? true : false}
                             type="submit"
                             className={` ${disable ? "opacity-50 " : "opacity-100 "
-                                }text-center flex justify-center px-8 items-center gap-2  mx-auto text-white text-xl rounded-md p-2 font-light bg-[#F08D36]  transition-all duration-200 ease-in-out`}
+                                }text-center flex justify-center px-8 items-center gap-2  mx-auto text-white text-xl rounded-md p-2 font-light bg-gradient-to-r from-[#8C7CFD] to-[#BC89F1]   transition-all duration-200 ease-in-out`}
                         >
                             Submit
                         </button>

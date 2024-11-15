@@ -133,7 +133,7 @@ const Maintenance = ({ closeModal, fetchDate }: any) => {
                         />
                     )}
                     <button
-                        className="text-center flex justify-center px-6 hover:bg-opacity-65 items-center gap-2  mx-auto text-white text-xl rounded-md p-2 font-light bg-[#F08D36] transition-all duration-200 ease-in-out"
+                        className="text-center flex justify-center px-6 hover:bg-opacity-65 items-center gap-2  mx-auto text-white text-xl rounded-md p-2 font-light bg-gradient-to-r from-[#8C7CFD] to-[#BC89F1]  transition-all duration-200 ease-in-out"
                         type="submit"
                     >
                         {"Submit"}
@@ -147,18 +147,18 @@ const Maintenance = ({ closeModal, fetchDate }: any) => {
                         </p>
                     </div>
                     <div className="flex items-center justify-center space-x-3 text-2xl">
-                        <span className="bg-[#FFD117] px-4 rounded-xl text-white bg-opacity-50 border-[3px] border-[#F08D36] py-2">{countdown?.day} </span>
+                        <span className="bg-[#BC89F1] px-4 rounded-xl text-white bg-opacity-50 border-[3px] border-[#8C7CFD] py-2">{countdown?.day} </span>
                         <span className="text-white">:</span>
-                        <span className="bg-[#FFD117] px-4 rounded-xl text-white bg-opacity-50 border-[3px] border-[#F08D36] py-2">{countdown?.hour} </span>
+                        <span className="bg-[#BC89F1] px-4 rounded-xl text-white bg-opacity-50 border-[3px] border-[#8C7CFD] py-2">{countdown?.hour} </span>
                         <span className="text-white">:</span>
-                        <span className="bg-[#FFD117] px-4 rounded-xl text-white bg-opacity-50 border-[3px] border-[#F08D36] py-2">{countdown?.minute} </span>
+                        <span className="bg-[#BC89F1] px-4 rounded-xl text-white bg-opacity-50 border-[3px] border-[#8C7CFD] py-2">{countdown?.minute} </span>
                         <span className="text-white">:</span>
-                        <span className="bg-[#FFD117] px-4 rounded-xl text-white bg-opacity-50 border-[3px] border-[#F08D36] py-2">{countdown?.second}</span>
+                        <span className="bg-[#BC89F1] px-4 rounded-xl text-white bg-opacity-50 border-[3px] border-[#8C7CFD] py-2">{countdown?.second}</span>
                     </div>
                     <div className="pt-8">
                         <button
                             onClick={() => setOpenModal(true)}
-                            className="text-center flex justify-center px-4 items-center gap-2  mx-auto text-white text-xl rounded-md p-2 font-light bg-[#F08D36] hover:bg-opacity-65 transition-all duration-200 ease-in-out"
+                            className="text-center flex justify-center px-4 items-center gap-2  mx-auto text-white text-xl rounded-md p-2 font-light bg-gradient-to-r from-[#8C7CFD] to-[#BC89F1]  hover:bg-opacity-65 transition-all duration-200 ease-in-out"
                         >
                             Stop Countdown
                         </button>

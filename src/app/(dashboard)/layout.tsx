@@ -12,8 +12,8 @@ const inter = Poppins({
 });
 
 export const metadata = {
-    title: "Ding-Ding-Crm",
-    description: "Ding-Ding-Crm",
+    title: "Game Crm",
+    description: "Game Crm",
 };
 
 export default async function RootLayout({

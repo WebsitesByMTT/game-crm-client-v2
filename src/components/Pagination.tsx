@@ -37,18 +37,18 @@ const Pagination = ({ paginationData }: any) => {
                 <button
                     onClick={handlePrev}
                     disabled={currentPage === (1 || 0)}
-                    className={`dark:hover:text-[#FFD117] hover:text-[#FFD117] text-black dark:text-white ${currentPage === 1 ? 'opacity-50' : ''}`}
+                    className={`dark:hover:text-[#8C7CFD] hover:text-[#8C7CFD] text-black dark:text-white ${currentPage === 1 ? 'opacity-50' : ''}`}
                 >
                     <Arrow_Left />
                 </button>
                 <span className='text-sm'>Page</span>
-                <span className='text-[#FFD117]'>{paginationData?.currentPage || currentPage}</span>
+                <span className='text-[#8C7CFD]'>{paginationData?.currentPage || currentPage}</span>
                 <span className='text-sm'>Of</span>
-                <span className='text-[#FFD117]'>{paginationData?.totalPage}</span>
+                <span className='text-[#8C7CFD]'>{paginationData?.totalPage}</span>
                 <button
                     onClick={handleNext}
                     disabled={currentPage === paginationData?.totalPage}
-                    className={`dark:hover:text-[#FFD117] hover:text-[#FFD117] text-black dark:text-white ${currentPage === paginationData?.totalPage ? 'opacity-50' : ''}`}
+                    className={`dark:hover:text-[#8C7CFD] hover:text-[#8C7CFD] text-black dark:text-white ${currentPage === paginationData?.totalPage ? 'opacity-50' : ''}`}
                 >
                     <Arrow_Right />
                 </button>

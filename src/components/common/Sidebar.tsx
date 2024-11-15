@@ -43,7 +43,7 @@ const Sidebar = () => {
           Link: "/",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
+              className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -58,7 +58,7 @@ const Sidebar = () => {
           LinkName: "Clients",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
+            className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -80,11 +80,11 @@ const Sidebar = () => {
               Link: "/clients/all",
               icon: "",
             },
-            {
-              LinkName: "Active Players",
-              Link: "/clients/active-player",
-              icon: "",
-            },
+            // {
+            //   LinkName: "Active Players",
+            //   Link: "/clients/active-player",
+            //   icon: "",
+            // },
             {
               LinkName: "Add Client",
               Link: "/clients/add",
@@ -98,7 +98,7 @@ const Sidebar = () => {
           Link: "",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
+            className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -128,7 +128,7 @@ const Sidebar = () => {
           Link: "",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
+            className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -159,7 +159,7 @@ const Sidebar = () => {
           Link: "/",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
+            className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -174,7 +174,7 @@ const Sidebar = () => {
           LinkName: "Clients",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
+            className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -203,7 +203,7 @@ const Sidebar = () => {
           Link: "",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
+            className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -251,8 +251,7 @@ const Sidebar = () => {
         <div className="h-full flex flex-col justify-between px-3  overflow-y-auto bg-gray-100 dark:bg-gray-800">
           <div>
             <div className="flex p-2 gap-x-2 items-center">
-              <div><Logo/></div>
-              <div className="font-semibold font-mono text-black   dark:text-white tracking-wide">Ding Ding</div>
+              <div><Logo /></div>
             </div>
 
             <ul className="space-y-2 pt-3 font-medium">
@@ -262,10 +261,10 @@ const Sidebar = () => {
                     <button
                       onClick={() => toggleDropdown(ind == 0 ? -1 : ind)}
                       type="button"
-                      className={`flex items-center w-full p-2 text-base ${pathname===item?.Link&&'bg-gray-200 dark:bg-gray-700'} text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700`}
+                      className={`flex items-center w-full p-2 text-base ${pathname === item?.Link && 'bg-gray-200 dark:bg-gray-700'} text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700`}
                     >
                       {item?.icon}
-                      <span className={`flex-1 ${pathname===item?.Link&&'text-[#FFD117]'} ms-3 text-left group-hover:text-[#FFD117] rtl:text-right whitespace-nowrap`}>
+                      <span className={`flex-1 ${pathname === item?.Link && 'text-[#a099d4]'} ms-3 text-left group-hover:text-[#8C7CFD] rtl:text-right whitespace-nowrap`}>
                         {item?.LinkName}
                       </span>
                       <svg
@@ -293,10 +292,10 @@ const Sidebar = () => {
                       }`}
                   >
                     {item?.nested?.map((subitem, subind) => (
-                      <li key={subind} onClick={()=>dispatch(setSidebarshow(false))}>
+                      <li key={subind} onClick={() => dispatch(setSidebarshow(false))}>
                         <Link
                           href={subitem?.Link}
-                          className={`flex items-center w-full p-2  ${pathname===subitem?.Link?'text-[#FFD117] dark:bg-gray-700 bg-gray-200':'text-gray-600 dark:text-white'} dark:hover:text-[#FFD117] hover:text-[#FFD117] transition duration-75 rounded-lg pl-11  hover:bg-gray-200 dark:hover:bg-gray-700`}
+                          className={`flex items-center w-full p-2  ${pathname === subitem?.Link ? 'text-[#a099d4] dark:bg-gray-700 bg-gray-200' : 'text-gray-600 dark:text-white'} dark:hover:text-[#8C7CFD] hover:text-[#8C7CFD] transition duration-75 rounded-lg pl-11  hover:bg-gray-200 dark:hover:bg-gray-700`}
                         >
                           {subitem?.LinkName}
                         </Link>
@@ -318,7 +317,7 @@ const Sidebar = () => {
             </div>}
             <button
               onClick={handelLogout}
-              className="flex mb-2 items-center w-full justify-center p-2  border-[#F08D36] border-[3px] hover:bg-opacity-45 transition-all  rounded-lg text-gray-800 dark:text-white bg-[#FFD117] bg-opacity-25 group"
+              className="flex mb-2 items-center w-full justify-center p-2  border-[#8C7CFD] border-[3px] hover:bg-opacity-45 transition-all  rounded-lg text-gray-800 dark:text-white bg-[#8C7CFD] bg-opacity-25 group"
             >
               <span className=" ms-3 pr-3 whitespace-nowrap">Logout</span>
               <svg
