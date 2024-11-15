@@ -146,6 +146,7 @@ const EditGames = ({ id, closeModal, platform, prevData }: any) => {
                     >
                         Submit
                     </button>
+                    
                 </div>
             </form>
             {load && <Loader />}
