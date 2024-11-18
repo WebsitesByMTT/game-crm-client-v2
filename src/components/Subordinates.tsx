@@ -53,7 +53,7 @@ const Subordinates = ({ subordinateData, id, page }: any) => {
                                 setOption("report");
                             }}
                             className={`px-4  rounded-full ${option === "report"
-                                ? "text-white bg-opacity-80 border-[#F08D36] bg-[#FFD117]"
+                                ? "text-white bg-opacity-80 border-[#8C7CFD] bg-[#8C7CFD]"
                                 : "dark:text-[#f4f2f2ac] border-gray-700"
                                 } border-[3px] `}
                         >
@@ -66,7 +66,7 @@ const Subordinates = ({ subordinateData, id, page }: any) => {
                                     router.push(`${pathname}?page=1`);
                                 }}
                                 className={`px-4  rounded-full ${option === "subordinates"
-                                    ? "text-white bg-opacity-80 border-[3px] border-[#F08D36] bg-[#FFD117]"
+                                    ? "text-white bg-opacity-80 border-[3px] border-[#8C7CFD] bg-[#8C7CFD]"
                                     : "dark:text-[#f4f2f2ac] border-gray-700"
                                     } border-[3px]  transition-all`}
                             >
@@ -79,7 +79,7 @@ const Subordinates = ({ subordinateData, id, page }: any) => {
                                 router.push(`${pathname}?page=1`);
                             }}
                             className={`px-4  rounded-full ${option === "transactions"
-                                ? "text-white bg-opacity-80 border-[3px] border-[#F08D36] bg-[#FFD117]"
+                                ? "text-white bg-opacity-80 border-[3px] border-[#8C7CFD] bg-[#8C7CFD]"
                                 : "dark:text-[#f4f2f2ac] border-gray-700"
                                 } border-[3px] transition-all`}
                         >

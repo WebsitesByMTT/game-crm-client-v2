@@ -49,6 +49,7 @@ export const SocketProvider: React.FC<{
       });
 
       socketInstance.on("activePlayers", (activePlayersData) => {
+        console.log(activePlayersData,"active players data")
         activePlayersData.forEach((player:any) => {
           dispatch(
             addPlayer({
