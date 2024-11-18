@@ -23,22 +23,22 @@ const Dashboard = ({ subordinates_id, userDetail }: any) => {
     const card = data?.role === 'player' ? [
         {
             title: 'Recharge',
-            amount: formatAmount(data?.recharge || 0),
+            amount: `$${formatAmount(data?.recharge || 0)}`,
             icon: <Recharge />
         },
         {
             title: 'Redeem',
-            amount: formatAmount(data?.redeem || 0),
+            amount: `$${formatAmount(data?.redeem || 0)}`,
             icon: <Redeem />
         },
     ] : subordinates_id && data?.role !== 'player' ? [{
         title: 'Recharge',
-        amount: formatAmount(data?.recharge || 0),
+        amount: `$${formatAmount(data?.recharge || 0)}`,
         icon: <Recharge />
     },
     {
         title: 'Redeem',
-        amount: formatAmount(data?.redeem || 0),
+        amount: `$${formatAmount(data?.redeem || 0)}`,
         icon: <Redeem />
     }, {
         title: 'Clients',
@@ -53,12 +53,12 @@ const Dashboard = ({ subordinates_id, userDetail }: any) => {
     ] : data?.role === "company" ? [
         {
             title: 'Recharge',
-            amount: formatAmount(data?.recharge || 0),
+            amount: `$${formatAmount(data?.recharge || 0)}`,
             icon: <Recharge />
         },
         {
             title: 'Redeem',
-            amount: formatAmount(data?.redeem || 0),
+            amount: `$${formatAmount(data?.redeem || 0)}`,
             icon: <Redeem />
         },
         {
@@ -74,12 +74,12 @@ const Dashboard = ({ subordinates_id, userDetail }: any) => {
     ] : [
         {
             title: 'Recharge',
-            amount: formatAmount(data?.recharge || 0),
+            amount: `$${formatAmount(data?.recharge || 0)}`,
             icon: <Recharge />
         },
         {
             title: 'Redeem',
-            amount: formatAmount(data?.redeem || 0),
+            amount: `$${formatAmount(data?.redeem || 0)}`,
             icon: <Redeem />
         },
         {

@@ -23,7 +23,7 @@ const RecentTransaction = ({ recentTransactions }: any) => {
                                             </div>
                                             <div className="text-sm text-black text-opacity-60  dark:text-[#A0AEC0]">
                                                 <span>{item?.type === "redeem" ? "-" : "+"}</span>
-                                                {item?.amount}
+                                                ${item?.amount}
                                             </div>
                                         </div>
                                         <div className="flex items-center pt-3 space-x-1 md:space-x-2">
