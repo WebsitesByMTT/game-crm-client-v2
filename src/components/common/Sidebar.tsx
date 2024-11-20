@@ -157,9 +157,9 @@ const Sidebar = () => {
         {
           LinkName: "Dashboard",
           Link: "/",
-          icon: (
+          icon:  (
             <svg
-            className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
+              className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -172,9 +172,9 @@ const Sidebar = () => {
         },
         {
           LinkName: "Clients",
-          icon: (
+          icon:(
             <svg
-            className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
+            className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -203,7 +203,7 @@ const Sidebar = () => {
           Link: "",
           icon: (
             <svg
-            className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
+            className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
