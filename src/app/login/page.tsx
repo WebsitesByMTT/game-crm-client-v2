@@ -59,7 +59,7 @@ const Login = () => {
                 <div className="relative border-2 border-[#BC89F1] bg-[#8C7CFD] pb-10 bg-clip-padding backdrop-filter backdrop-blur-[5px] bg-opacity-10   w-[90%] md:w-[55%] lg:w-[45%] xl:w-[35%] 2xl:w-[25%]  rounded-[1.8vw] p-2">
                     <div className="w-full h-full">
                         <div className="pt-5">
-                            <div className="mx-auto pb-3 flex justify-center"><Logo/></div>
+                            <div className="mx-auto pb-3 flex justify-center"><Image src={'/assets/images/logo.png'} width={400} height={400} quality={100} className="w-[80px] h-[80px]" alt="logo"/></div>
                             <h1 className="text-center font-semibold leading-none text-3xl lg:text-4xl text-[#fff] drop-shadow-xl">
                                 Milkyway CRM
                             </h1>

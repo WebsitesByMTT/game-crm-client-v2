@@ -251,7 +251,8 @@ const Sidebar = () => {
         <div className="h-full flex flex-col justify-between px-3  overflow-y-auto bg-gray-100 dark:bg-gray-800">
           <div>
             <div className="flex p-2 gap-x-2 items-center">
-              <div><Logo /></div>
+            <Image src={'/assets/images/logo.png'} width={400} height={400} quality={100} className="w-[60px] h-[60px]" alt="logo"/>
+            <div className="dark:text-white tracking-wider font-semibold text-gray-800">Milkyway</div>
             </div>
 
             <ul className="space-y-2 pt-3 font-medium">
