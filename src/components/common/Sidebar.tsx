@@ -252,7 +252,7 @@ const Sidebar = () => {
           <div>
             <div className="flex p-2 gap-x-2 items-center">
             <Image src={'/assets/images/logo.png'} width={400} height={400} quality={100} className="w-[60px] h-[60px]" alt="logo"/>
-            <div className="dark:text-white tracking-wider font-semibold text-gray-800">Milkyway</div>
+            <div className="dark:text-white tracking-wider font-semibold text-gray-800">El Dorado Spin</div>
             </div>
 
             <ul className="space-y-2 pt-3 font-medium">
