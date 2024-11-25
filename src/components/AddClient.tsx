@@ -61,7 +61,6 @@ const AddClient = () => {
         role: "",
         credits: 0,
     });
-    console.log(user, "userdata")
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -101,7 +100,6 @@ const AddClient = () => {
         if (response?.error) {
             toast.error(response.error);
         } else {
-            console.log("here");
             toast.success("Client Added Successfully!");
         }
         setUser({
