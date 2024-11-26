@@ -6,9 +6,9 @@ import { usePathname, useRouter } from 'next/navigation'
 const Search = () => {
     const [search, setSearch] = useState('')
     const pathname = usePathname()
-    const router=useRouter()
+    const router = useRouter()
     const handelSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.KeyboardEvent<HTMLInputElement>) => {
-       router.push(`${pathname}?page=1&search=${search}`)
+        router.push(`${pathname}?page=1&search=${search}`)
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -17,27 +17,41 @@ const Search = () => {
         }
     }
 
+    const handelSort=(sort:string)=>{
+        router.push(`${pathname}?page=1&sort=${sort}`)
+    }
+
     return (
-        <div className="flex items-center w-[96%] mx-auto lg:mx-0 lg:w-[50%]">
-            <label className="sr-only">Search</label>
-            <div className="relative w-full">
-                <input 
-                    onChange={(e) => setSearch(e.target.value)} 
-                    onKeyDown={handleKeyDown} 
-                    type="text" 
-                    className="bg-gray-50 outline-none border-[2px] text-gray-900 text-sm rounded-lg focus:ring-[#8C7CFD] focus:border-[#8C7CFD] block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#FFD117] dark:focus:border-[#8C7CFD]" 
-                    placeholder="Search..." 
-                    required 
-                />
-                <button 
-                    type="button" 
-                    onClick={(e) => handelSearch(e)} 
-                    className="absolute inset-y-0 end-0 flex items-center pr-3"
-                >
-                    <SearchIcon />
-                </button>
+        <div className='flex items-center space-x-2'>
+            <div className="flex items-center w-[96%] mx-auto lg:mx-0 lg:w-[50%]">
+                <label className="sr-only">Search</label>
+                <div className="relative w-full">
+                    <input
+                        onChange={(e) => setSearch(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        type="text"
+                        className="bg-gray-50 outline-none border-[2px] text-gray-900 text-sm rounded-lg focus:ring-[#8C7CFD] focus:border-[#8C7CFD] block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#FFD117] dark:focus:border-[#8C7CFD]"
+                        placeholder="Search..."
+                        required
+                    />
+                    <button
+                        type="button"
+                        onClick={(e) => handelSearch(e)}
+                        className="absolute inset-y-0 end-0 flex items-center pr-3"
+                    >
+                        <SearchIcon />
+                    </button>
+                </div>
             </div>
+             <div className='text-white'>
+                <button>sort</button>
+                <div>
+                    <button onClick={()=>handelSort('desc')}>Desanding</button>
+                    <button onClick={()=>handelSort('asc')}>Acending</button>
+                </div>
+             </div>
         </div>
+
     )
 }
 
