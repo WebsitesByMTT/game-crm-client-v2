@@ -106,7 +106,7 @@ const Header = () => {
           <div className="text-black dark:text-white text-[1.5rem] leading-tight font-semibold">
             Dashboard
           </div>
-          <span className="dark:text-white text-black text-opacity-75 text-[.9rem] dark:text-opacity-60">Milkyway CRM</span>
+          <span className="dark:text-white text-black text-opacity-75 text-[.9rem] dark:text-opacity-60">El Dorado Spin</span>
         </div>
         <div className="flex items-center space-x-4">
           <div className="relative pt-2">
