@@ -61,7 +61,7 @@ const Login = () => {
                         <div className="pt-5">
                             <div className="mx-auto pb-3 flex justify-center"><Image src={'/assets/images/logo.png'} width={400} height={400} quality={100} className="w-[80px] h-[80px]" alt="logo"/></div>
                             <h1 className="text-center font-semibold leading-none text-3xl lg:text-4xl text-[#fff] drop-shadow-xl">
-                                Milkyway CRM
+                            El Dorado Spin
                             </h1>
                         </div>
                         <form
