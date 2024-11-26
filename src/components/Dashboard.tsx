@@ -135,9 +135,9 @@ const Dashboard = ({ subordinates_id, userDetail }: any) => {
                                 <div key={ind} className='p-4 rounded-lg bg-white dark:bg-gray-700 col-span-6 lg:col-span-4 xl:col-span-3'>
                                     <div className='flex justify-start space-x-2 items-center'>
                                         {item?.icon}
-                                        <div className='dark:text-white text-xl text-black'>{item?.title}</div>
+                                        <div className='dark:text-white text-md lg:text-xl text-black'>{item?.title}</div>
                                     </div>
-                                    <div className={`text-5xl text-transparent bg-clip-text bg-gradient-to-tr from-[#8C7CFD] to-[#BC89F1] pt-4 ${item?.title === 'Date' && 'text-[1.4rem] lg:text-[2rem]'}`}>{item?.amount}</div>
+                                    <div className={`text-transparent bg-clip-text bg-gradient-to-tr from-[#8C7CFD] to-[#BC89F1] text-3xl lg:text-5xl pt-4 ${item?.title === 'Date' && 'text-[1.4rem] lg:text-[2rem]'}`}>{item?.amount}</div>
                                 </div>
                             ))
                     }
