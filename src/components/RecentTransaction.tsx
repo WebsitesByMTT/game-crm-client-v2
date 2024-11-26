@@ -9,7 +9,7 @@ const RecentTransaction = ({ recentTransactions }: any) => {
                 Recent Transactions
             </div>
             {/* Transaction Table */}
-            <div className='w-full'>
+            <div className='w-[95%] mx-auto lg:w-full'>
                 <div className="h-full relative  rounded-3xl">
                     {recentTransactions?.map((item: any, index: any) => (
                         <div key={index}>
