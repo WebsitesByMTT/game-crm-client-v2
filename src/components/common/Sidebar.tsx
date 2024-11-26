@@ -11,10 +11,11 @@ import { setSidebarshow } from "@/redux/ReduxSlice";
 import Profile from "../svg/Profile";
 import Hamburger from "../svg/Hamburger";
 import Close from "../svg/Close";
+import Left from "../svg/Left";
 
 const Sidebar = () => {
   const isSidebar = useAppSelector((state) => state.globlestate?.showSideBar)
-  const [opensidebar,setOpenSidebar]=useState(false)
+  const [opensidebar, setOpenSidebar] = useState(false)
   const dispatch = useAppDispatch()
   const pathname = usePathname();
   const [user, setUser] = useState<{
@@ -238,8 +239,8 @@ const Sidebar = () => {
     }
   };
 
-  const handelOpenSideBar=()=>{
-     setOpenSidebar(!opensidebar)
+  const handelOpenSideBar = () => {
+    setOpenSidebar(!opensidebar)
   }
 
   //Logout Dispatch
@@ -250,21 +251,26 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className={`${opensidebar?' lg:flex-.2 lg:w-full':'lg:flex-[.01] lg:w-full'} transition-all`}>
+      <div className={`${opensidebar ? ' lg:flex-.2 lg:w-full' : 'lg:flex-[.01] lg:w-full'} transition-all`}>
         <aside
           className={`fixed lg:sticky top-0  ${isSidebar ? 'left-0' : 'left-[-100%]'} w-[60%] lg:w-full z-40 h-screen transition-all  sm:translate-x-0`}
           aria-label="Sidebar"
         >
           <div className="h-full flex flex-col justify-between px-3  overflow-y-auto bg-gray-100 dark:bg-gray-800">
             <div>
-              <div className={`flex justify-between p-2  ${opensidebar?'block':'lg:hidden'} items-center`}>
-                <Image src={'/assets/images/logo.png'} width={400} height={400} quality={100} className="w-[60px] h-[60px]" alt="logo" />
-                <div onClick={handelOpenSideBar} className={`pt-2  ${!opensidebar?'hidden':'lg:block hidden'} cursor-pointer items-center`}>
-                 <Close/>
+              <div className={`flex justify-around lg:justify-between p-2  ${opensidebar ? 'block' : 'lg:hidden'} items-center`}>
+                <Image src={'/assets/images/logo.png'} width={400} height={400} quality={100} className="w-[40px] h-[40px]" alt="logo" />
+                <h1 className="text-center font-semibold leading-none text-[1.1rem] lg:text-[1.1rem] text-[#fff] drop-shadow-xl">
+                  El Dorado Spin
+                </h1>
+               
+               
               </div>
-              </div>
-              <div onClick={handelOpenSideBar} className={`pt-4 px-3 ${opensidebar?'hidden':'lg:block hidden'} cursor-pointer items-center`}>
-                 <Hamburger/>
+              <div onClick={handelOpenSideBar} className={`pl-4 pt-2  ${!opensidebar ? 'hidden' : 'lg:flex justify-end hidden'} text-white  cursor-pointer`}>
+                  <Left />
+                </div>
+              <div onClick={handelOpenSideBar} className={`pb-4 px-3 ${opensidebar ? 'hidden' : 'lg:block hidden'} text-white rotate-180 cursor-pointer items-center`}>
+                <Left />
               </div>
 
               <ul className="space-y-2 pt-6 font-medium">
@@ -277,11 +283,11 @@ const Sidebar = () => {
                         className={`flex items-center w-full p-2 text-base ${pathname === item?.Link && 'bg-gray-200 dark:bg-gray-700'} text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700`}
                       >
                         {item?.icon}
-                        <span className={`flex-1 ${pathname === item?.Link && 'text-[#a099d4]'} ${opensidebar?'inline-block':'lg:hidden'} ms-3 text-left group-hover:text-[#8C7CFD] rtl:text-right whitespace-nowrap`}>
+                        <span className={`flex-1 ${pathname === item?.Link && 'text-[#a099d4]'} ${opensidebar ? 'inline-block' : 'lg:hidden'} ms-3 text-left group-hover:text-[#8C7CFD] rtl:text-right whitespace-nowrap`}>
                           {item?.LinkName}
                         </span>
                         <svg
-                          className={`w-3 h-3 ${opensidebar?'inline-block':'lg:hidden'} ${ind == 0 && "hidden"}`}
+                          className={`w-3 h-3 ${opensidebar ? 'inline-block' : 'lg:hidden'} ${ind == 0 && "hidden"}`}
                           aria-hidden="true"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -289,7 +295,7 @@ const Sidebar = () => {
                         >
                           <path
                             stroke="currentColor"
-                            stroke-linecap="round"  
+                            stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width="2"
                             d="m1 1 4 4 4-4"
@@ -298,7 +304,7 @@ const Sidebar = () => {
                       </button>
                     </Link>
                     <ul
-                      className={`py-2 space-y-2  transition-all ${opensidebar?'block':'lg:hidden'} ${ind == 0 ? "hidden" : "block"
+                      className={`py-2 space-y-2  transition-all ${opensidebar ? 'block' : 'lg:hidden'} ${ind == 0 ? "hidden" : "block"
                         } ${!openDropdown?.includes(ind)
                           ? "hidden h-0"
                           : "min-h-[100px] opacity-100"
