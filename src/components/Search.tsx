@@ -25,7 +25,6 @@ const Search = () => {
         setSearch('')
     }
 
-    const showsortingonly=['/clients/my','/clients/all']
 
     return (
         <>
@@ -51,15 +50,15 @@ const Search = () => {
                     </button>
                 </div>
             </div>
-             {showsortingonly?.includes(pathname)&&<div className='text-white relative'>
+             <div className='text-white relative'>
                 <button onClick={()=>setPopup(!popup)} className='bg-white bg-opacity-15 px-3 py-1.5 rounded-md shadow-inner hover:scale-90 transition-all'><Sort/></button>
                 <div className={` absolute ${popup?'scale-100':'scale-0'} transition-all z-[60] top-[100%] right-0  bg-gray-600 p-1 rounded-md`}>
                     <button onClick={()=>handelSort('desc')} className='px-6 py-1 hover:bg-gray-500 transition-all rounded-md w-full'>Descending</button>
                     <button onClick={()=>handelSort('asc')} className='px-6 py-1 hover:bg-gray-500 transition-all rounded-md w-full'>Ascending</button>
                 </div>
-             </div>}
+             </div>
         </div>
-        {popup&&showsortingonly?.includes(pathname)&&<div onClick={()=>setPopup(!popup)} className='w-full h-screen fixed top-0 left-0 bg-black z-[59] bg-opacity-35'></div>}
+        {popup&&<div onClick={()=>setPopup(!popup)} className='w-full h-screen fixed top-0 left-0 bg-black z-[59] bg-opacity-35'></div>}
 </>
     )
 }
