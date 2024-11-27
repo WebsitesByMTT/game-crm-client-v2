@@ -658,7 +658,7 @@ export const GetMyClients = async (search:string,page:number,query?:any,sort?:st
   }
 };
 
-export const GetMyTransactions = async (search:string,page:number, query?:any) => {
+export const GetMyTransactions = async (search:string,page:number, query?:any,sort?:string) => {
   const token = await getCookie();
   let filterQuery = "{}";
   let username = "";
@@ -670,7 +670,7 @@ export const GetMyTransactions = async (search:string,page:number, query?:any) =
   }
   try {
     const response = await fetch(
-      `${config.server}/api/transactions?filter=${username}&page=${page}&search=${filterQuery}`,
+      `${config.server}/api/transactions?filter=${username}&page=${page}&search=${filterQuery}&sort=${sort}`,
       {
         method: "GET",
         credentials: "include",
@@ -690,7 +690,7 @@ export const GetMyTransactions = async (search:string,page:number, query?:any) =
   }
 };
 
-export const GetAllTransactions = async (search:string,page:number, query?:any) => {
+export const GetAllTransactions = async (search:string,page:number, query?:any,sort?:string) => {
   const token = await getCookie();
   let filterQuery = "{}";
   let username = "";
@@ -702,7 +702,7 @@ export const GetAllTransactions = async (search:string,page:number, query?:any) 
   }
   try {
     const response = await fetch(
-      `${config.server}/api/transactions/all?filter=${username}&page=${page}&search=${filterQuery}`,
+      `${config.server}/api/transactions/all?filter=${username}&page=${page}&search=${filterQuery}&sort=${sort}`,
       {
         method: "GET",
         credentials: "include",

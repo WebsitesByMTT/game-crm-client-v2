@@ -12,6 +12,7 @@ import Profile from "../svg/Profile";
 import Hamburger from "../svg/Hamburger";
 import Close from "../svg/Close";
 import Left from "../svg/Left";
+import Arrow_Left from "../svg/Arrow_Left";
 
 const Sidebar = () => {
   const isSidebar = useAppSelector((state) => state.globlestate?.showSideBar)
@@ -258,19 +259,18 @@ const Sidebar = () => {
         >
           <div className="h-full flex flex-col justify-between px-3  overflow-y-auto bg-gray-100 dark:bg-gray-800">
             <div>
-              <div className={`flex justify-around lg:justify-between p-2  ${opensidebar ? 'block' : 'lg:hidden'} items-center`}>
+              <div className={`flex justify-around  p-2  ${opensidebar ? 'block' : 'lg:hidden'} items-center`}>
                 <Image src={'/assets/images/logo.png'} width={400} height={400} quality={100} className="w-[40px] h-[40px]" alt="logo" />
                 <h1 className="text-center font-semibold leading-none text-[1.1rem] lg:text-[1.1rem] text-[#fff] drop-shadow-xl">
                   El Dorado Spin
                 </h1>
-               
-               
+                <div onClick={handelOpenSideBar} className={`pl-4 pt-2  ${!opensidebar ? 'hidden' : 'lg:flex justify-end hidden'} text-white  cursor-pointer`}>
+                  <Arrow_Left />
+                </div> 
               </div>
-              <div onClick={handelOpenSideBar} className={`pl-4 pt-2  ${!opensidebar ? 'hidden' : 'lg:flex justify-end hidden'} text-white  cursor-pointer`}>
-                  <Left />
-                </div>
+              
               <div onClick={handelOpenSideBar} className={`pb-4 px-3 ${opensidebar ? 'hidden' : 'lg:block hidden'} text-white rotate-180 cursor-pointer items-center`}>
-                <Left />
+                <Arrow_Left />
               </div>
 
               <ul className="space-y-2 pt-6 font-medium">

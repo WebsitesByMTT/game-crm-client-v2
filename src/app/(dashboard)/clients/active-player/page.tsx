@@ -124,7 +124,7 @@ export default function ActiveUsers() {
                           : "bg-gray-600 text-gray-300"
                           }`}
                       >
-                        {playerData.currentGame?.gameId || "No Active Game"}
+                        {playerData.currentGame?.gameId || "No Game"}
                       </span>
                     </div>
 
