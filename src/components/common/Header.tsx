@@ -156,7 +156,7 @@ const Header = () => {
           </div>}
           <button
               onClick={handelLogout}
-              className="bg-[#8C7CFD] lg:inline-block hidden bg-opacity-40 px-5 py-2 rounded-md hover:scale-95 transition-all hover:bg-opacity-90"
+              className="bg-[#8C7CFD] bg-opacity-40 px-5 py-2 rounded-md hover:scale-95 transition-all hover:bg-opacity-90"
             >
               <svg
                 className="flex-shrink-0 w-5 h-5 rotate-180  transition duration-75 text-gray-800 dark:text-white "
