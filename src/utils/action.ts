@@ -21,7 +21,6 @@ export const loginUser = async (data:any) => {
     const responseData = await response.json();
     return { responseData };
   } catch (error) {
-    console.log("error:", error);
   } finally {
     revalidatePath("/");
   }
@@ -52,7 +51,6 @@ export async function getUserReport(id:string, type:string) {
 
     return data;
   } catch (error) {
-    console.log("error:", error);
   }
 }
 
@@ -76,7 +74,6 @@ export const addClient = async (user:any) => {
     const data = await response.json();
     return { data };
   } catch (error) {
-    console.log("error:", error);
   } finally {
     revalidatePath("/clients/all");
   }
@@ -103,7 +100,6 @@ export async function generatePassword() {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log("error", error);
   }
 }
 
@@ -126,7 +122,6 @@ export const editPassword = async (password:string, id:string) => {
     const responseData = await response.json();
     return { responseData };
   } catch (error) {
-    console.log("error:", error);
   } finally {
     revalidateTag("client");
   }
@@ -151,7 +146,6 @@ export const editCredits = async (credits:any, id:string) => {
     const responseData = await response.json();
     return { responseData };
   } catch (error) {
-    console.log("error", error);
   } finally {
     revalidateTag("client");
   }
@@ -177,7 +171,6 @@ export const editStatus = async (status:string, id:string) => {
     const responseData = await response.json();
     return { responseData };
   } catch (error) {
-    console.log("error", error);
   } finally {
     revalidateTag("client");
   }
@@ -201,7 +194,6 @@ export const deleteClient = async (id:string) => {
     const data = await response.json();
     return { data };
   } catch (error) {
-    console.log("error:", error);
   } finally {
     revalidatePath("/clients/all");
   }
@@ -229,7 +221,6 @@ export const getActivePlayers = async (page:number) => {
 
     return data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };
@@ -252,7 +243,6 @@ export const getPlatform = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log("error", error);
   }
 };
 
@@ -277,7 +267,6 @@ export const getGames = async (platform:string, category:string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log("error", error);
   }
 };
 
@@ -300,7 +289,6 @@ export const editGames = async (game:any, id:string) => {
     const data = await response.json();
     return { data };
   } catch (error) {
-    console.log("error", error);
   } finally {
     revalidatePath("/game");
   }
@@ -351,7 +339,6 @@ export const fetchPayoutversion = async (tagname:string, platform:string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log("error", error);
   }finally {
     revalidatePath("/game");
   }
@@ -380,7 +367,6 @@ export const deletePayout = async (tagname:string, version:string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log("error", error);
   } finally {
     revalidatePath("/game");
   }
@@ -406,7 +392,6 @@ export const setPayoutActive = async (tagname:string, version:string, platform:s
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log("error", error);
   }
 };
 
@@ -456,7 +441,6 @@ export const deleteGame = async (platform:string, id:string) => {
     const data = await response.json();
     return { data };
   } catch (error) {
-    console.log("error", error);
   } finally {
     revalidatePath("/game");
   }
@@ -506,10 +490,8 @@ export const getSubordinateTransactions = async (id:number, page:string) => {
       return { error: error.message };
     }
     const data = await response.json();
-    console.log(data);
     return { data };
   } catch (error) {
-    console.log("error", error);
   }
 };
 
@@ -533,10 +515,8 @@ export const getSubordinateClients = async (id:string, page:number) => {
       return { error: error.message };
     }
     const data = await response.json();
-    console.log(data);
     return { data };
   } catch (error) {
-    console.log("error", error);
   }finally {
     revalidatePath("/clients");
   }
@@ -556,8 +536,6 @@ export const addPlatform = async (platform:any) => {
         Cookie: `userToken=${token}`,
       },
     });
-
-    console.log(response);
 
     if (!response.ok) {
       const error = await response.json();
@@ -590,7 +568,6 @@ export const getToggle = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log("error", error);
   }
 };
 
@@ -614,12 +591,11 @@ export const UpdateMaintenance = async (availableAt:string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log("error", error);
   }
 };
 
 
-export const GetAllClients = async (search: string, page: number, query?: any) => {
+export const GetAllClients = async (search: string, page: number, query?: any,sort?:String) => {
   const token = await getCookie();
   try {
     let filterQuery = '';
@@ -630,7 +606,7 @@ export const GetAllClients = async (search: string, page: number, query?: any) =
       
     }
     const response = await fetch(
-      `${config.server}/api/users/all?filter=${search}&page=${page}&search=${filterQuery}`,
+      `${config.server}/api/users/all?filter=${search}&page=${page}&search=${filterQuery}&sort=${sort}`,
       {
         method: "GET",
         credentials: "include",
@@ -647,11 +623,10 @@ export const GetAllClients = async (search: string, page: number, query?: any) =
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log("error", error);
   }
 };
 
-export const GetMyClients = async (search:string,page:number,query?:any) => {
+export const GetMyClients = async (search:string,page:number,query?:any,sort?:string) => {
   const token = await getCookie();
   try {
     let filterQuery = '';
@@ -663,7 +638,7 @@ export const GetMyClients = async (search:string,page:number,query?:any) => {
     }
     
     const response = await fetch(
-      `${config.server}/api/users/subordinates?filter=${search}&page=${page}&search=${filterQuery}`,
+      `${config.server}/api/users/subordinates?filter=${search}&page=${page}&search=${filterQuery}&sort=${sort}`,
       {
         method: "GET",
         credentials: "include",
@@ -680,11 +655,10 @@ export const GetMyClients = async (search:string,page:number,query?:any) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log("error", error);
   }
 };
 
-export const GetMyTransactions = async (search:string,page:number, query?:any) => {
+export const GetMyTransactions = async (search:string,page:number, query?:any,sort?:string) => {
   const token = await getCookie();
   let filterQuery = "{}";
   let username = "";
@@ -696,7 +670,7 @@ export const GetMyTransactions = async (search:string,page:number, query?:any) =
   }
   try {
     const response = await fetch(
-      `${config.server}/api/transactions?filter=${username}&page=${page}&search=${filterQuery}`,
+      `${config.server}/api/transactions?filter=${username}&page=${page}&search=${filterQuery}&sort=${sort}`,
       {
         method: "GET",
         credentials: "include",
@@ -713,11 +687,10 @@ export const GetMyTransactions = async (search:string,page:number, query?:any) =
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log("error", error);
   }
 };
 
-export const GetAllTransactions = async (search:string,page:number, query?:any) => {
+export const GetAllTransactions = async (search:string,page:number, query?:any,sort?:string) => {
   const token = await getCookie();
   let filterQuery = "{}";
   let username = "";
@@ -729,7 +702,7 @@ export const GetAllTransactions = async (search:string,page:number, query?:any) 
   }
   try {
     const response = await fetch(
-      `${config.server}/api/transactions/all?filter=${username}&page=${page}&search=${filterQuery}`,
+      `${config.server}/api/transactions/all?filter=${username}&page=${page}&search=${filterQuery}&sort=${sort}`,
       {
         method: "GET",
         credentials: "include",
@@ -746,7 +719,6 @@ export const GetAllTransactions = async (search:string,page:number, query?:any) 
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log("error", error);
   }
 };
 
@@ -768,7 +740,6 @@ export const getUserData = async () => {
     const data = await response.json();
     return { data };
   } catch (error) {
-    console.log(error);
   }
 };
 

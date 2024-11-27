@@ -76,7 +76,6 @@ export default function ActiveUsers() {
         if (response.success && response.sessionData) {
           setSessionData(response.sessionData);
         } else {
-          console.error("Failed to retrieve session data:", response.message);
           alert(`Error: ${response.message}`);
         }
       }
@@ -111,7 +110,7 @@ export default function ActiveUsers() {
                   className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow-sm"
 
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="lg:flex items-center justify-between">
                     <span className="tracking-wide capitalize text-lg font-semibold text-gray-600 dark:text-white">
                       {playerId}
                     </span>
@@ -125,7 +124,7 @@ export default function ActiveUsers() {
                           : "bg-gray-600 text-gray-300"
                           }`}
                       >
-                        {playerData.currentGame?.gameId || "No Active Game"}
+                        {playerData.currentGame?.gameId || "No Game"}
                       </span>
                     </div>
 
