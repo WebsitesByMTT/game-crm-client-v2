@@ -595,7 +595,7 @@ export const UpdateMaintenance = async (availableAt:string) => {
 };
 
 
-export const GetAllClients = async (search: string, page: number, query?: any) => {
+export const GetAllClients = async (search: string, page: number, query?: any,sort?:String) => {
   const token = await getCookie();
   try {
     let filterQuery = '';
@@ -606,7 +606,7 @@ export const GetAllClients = async (search: string, page: number, query?: any) =
       
     }
     const response = await fetch(
-      `${config.server}/api/users/all?filter=${search}&page=${page}&search=${filterQuery}`,
+      `${config.server}/api/users/all?filter=${search}&page=${page}&search=${filterQuery}&sort=${sort}`,
       {
         method: "GET",
         credentials: "include",
@@ -626,7 +626,7 @@ export const GetAllClients = async (search: string, page: number, query?: any) =
   }
 };
 
-export const GetMyClients = async (search:string,page:number,query?:any) => {
+export const GetMyClients = async (search:string,page:number,query?:any,sort?:string) => {
   const token = await getCookie();
   try {
     let filterQuery = '';
@@ -638,7 +638,7 @@ export const GetMyClients = async (search:string,page:number,query?:any) => {
     }
     
     const response = await fetch(
-      `${config.server}/api/users/subordinates?filter=${search}&page=${page}&search=${filterQuery}`,
+      `${config.server}/api/users/subordinates?filter=${search}&page=${page}&search=${filterQuery}&sort=${sort}`,
       {
         method: "GET",
         credentials: "include",

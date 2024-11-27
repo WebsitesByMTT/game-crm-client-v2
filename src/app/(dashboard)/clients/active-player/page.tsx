@@ -110,7 +110,7 @@ export default function ActiveUsers() {
                   className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow-sm"
 
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="lg:flex items-center justify-between">
                     <span className="tracking-wide capitalize text-lg font-semibold text-gray-600 dark:text-white">
                       {playerId}
                     </span>
