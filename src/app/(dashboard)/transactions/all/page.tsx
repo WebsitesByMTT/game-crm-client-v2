@@ -4,7 +4,7 @@ import {GetAllTransactions} from '@/utils/action'
 import React from 'react'
 
 const page = async ({ searchParams }:any) => {
-    const AllTransaction = await GetAllTransactions(searchParams?.search,searchParams?.page,searchParams?.sort)
+    const AllTransaction = await GetAllTransactions(searchParams?.search,searchParams?.page,'',searchParams?.sort)
     const tableData = {
         Thead: ['status', 'Amount', 'Sender', 'Receiver', 'Transaction Date'],
         Tbody:['type', 'amount', 'debtor', 'creditor','updatedAt']
