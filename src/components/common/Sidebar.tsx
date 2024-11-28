@@ -16,7 +16,7 @@ import Arrow_Left from "../svg/Arrow_Left";
 
 const Sidebar = () => {
   const isSidebar = useAppSelector((state) => state.globlestate?.showSideBar)
-  const [opensidebar, setOpenSidebar] = useState(false)
+  const [opensidebar, setOpenSidebar] = useState(true)
   const dispatch = useAppDispatch()
   const pathname = usePathname();
   const [user, setUser] = useState<{
