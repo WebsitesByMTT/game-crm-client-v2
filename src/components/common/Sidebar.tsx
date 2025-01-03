@@ -38,16 +38,17 @@ const Sidebar = () => {
   }, []);
 
   const [openDropdown, setOpenDropdown] = useState<number[]>([1]);
-  const router = useRouter();
+  const SingleTabs = ["Dashboard", "Recharge Record", "Redeem Record"]
+
   const SideBarLink =
-    user?.role === "company"
+    user?.role === "admin"
       ? [
         {
           LinkName: "Dashboard",
           Link: "/",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
+              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -62,7 +63,7 @@ const Sidebar = () => {
           LinkName: "Clients",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
+              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -102,7 +103,7 @@ const Sidebar = () => {
           Link: "",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
+              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -132,7 +133,7 @@ const Sidebar = () => {
           Link: "",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
+              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -156,14 +157,28 @@ const Sidebar = () => {
             },
           ],
         },
+        {
+          LinkName: "Recharge Record",
+          Link: "/transactions/recharge-record",
+          icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17" /><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9" /><path d="m2 16 6 6" /><circle cx="16" cy="9" r="2.9" /><circle cx="6" cy="5" r="3" /></svg>
+          ),
+        },
+        {
+          LinkName: "Redeem Record",
+          Link: "/transactions/redeem-record",
+          icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"><path d="M11 12h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 14" /><path d="m7 18 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9" /><path d="m2 13 6 6" /></svg>
+          ),
+        }
       ]
-      : [
+      : user?.role === "supermaster" ? [
         {
           LinkName: "Dashboard",
           Link: "/",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
+              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -178,7 +193,107 @@ const Sidebar = () => {
           LinkName: "Clients",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
+              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 18"
+            >
+              <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+            </svg>
+          ),
+          Link: "",
+          showDropDown: true,
+          nested: [
+            {
+              LinkName: "My Clients",
+              Link: `/clients/my`,
+              icon: "",
+            },
+            {
+              LinkName: "All Clients",
+              Link: "/clients/all",
+              icon: "",
+            },
+            {
+              LinkName: "Active Players",
+              Link: "/clients/active-player",
+              icon: "",
+            },
+            {
+              LinkName: "Add Client",
+              Link: "/clients/add",
+              icon: "",
+            },
+
+          ],
+        },
+        {
+          LinkName: "Transaction",
+          Link: "",
+          icon: (
+            <svg
+              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
+              <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z" />
+              <path d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z" />
+            </svg>
+          ),
+          showDropDown: true,
+          nested: [
+            {
+              LinkName: "My Transaction",
+              Link: "/transactions/my",
+              icon: "",
+            },
+            {
+              LinkName: "All Transaction",
+              Link: "/transactions/all",
+              icon: "",
+            },
+          ],
+        },
+        {
+          LinkName: "Recharge Record",
+          Link: "/transactions/recharge-record",
+          icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17" /><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9" /><path d="m2 16 6 6" /><circle cx="16" cy="9" r="2.9" /><circle cx="6" cy="5" r="3" /></svg>
+          ),
+        },
+        {
+          LinkName: "Redeem Record",
+          Link: "/transactions/redeem-record",
+          icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"><path d="M11 12h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 14" /><path d="m7 18 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9" /><path d="m2 13 6 6" /></svg>
+          ),
+        }
+      ] : [
+        {
+          LinkName: "Dashboard",
+          Link: "/",
+          icon: (
+            <svg
+              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 22 21"
+            >
+              <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+              <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+            </svg>
+          ),
+        },
+        {
+          LinkName: "Clients",
+          icon: (
+            <svg
+              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -207,7 +322,7 @@ const Sidebar = () => {
           Link: "",
           icon: (
             <svg
-              className="w-9  h-9  transition duration-75 text-[#8C7CFD] group-hover:text-[#8C7CFD] group-hover:bg-[#000] rounded-2xl group-hover:bg-opacity-20 p-2"
+              className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -227,6 +342,20 @@ const Sidebar = () => {
             },
           ],
         },
+        {
+          LinkName: "Recharge Record",
+          Link: "/transactions/recharge-record",
+          icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17" /><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9" /><path d="m2 16 6 6" /><circle cx="16" cy="9" r="2.9" /><circle cx="6" cy="5" r="3" /></svg>
+          ),
+        },
+        {
+          LinkName: "Redeem Record",
+          Link: "/transactions/redeem-record",
+          icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="w-9  h-9  transition duration-75 text-[#FFD117] group-hover:text-[#FFD117] group-hover:bg-[#F08D36] rounded-2xl group-hover:bg-opacity-20 p-2"><path d="M11 12h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 14" /><path d="m7 18 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9" /><path d="m2 13 6 6" /></svg>
+          ),
+        }
       ];
 
   const toggleDropdown = (index: number) => {
@@ -253,26 +382,26 @@ const Sidebar = () => {
         >
           <div className="h-full flex flex-col justify-between px-3  overflow-y-auto bg-gray-100 dark:bg-gray-800">
             <div>
-              <div className={`flex justify-around  p-2  ${opensidebar ? 'block' : 'lg:hidden'} items-center`}>
+              <div className={`${opensidebar ? 'block' : 'lg:hidden'} flex p-2 justify-between items-center`}>
                 <Image src={'/assets/images/logo.png'} width={400} height={400} quality={100} className="w-[40px] h-[40px]" alt="logo" />
                 <h1 className="text-center font-semibold leading-none text-[1.1rem] lg:text-[1.1rem] text-[#fff] drop-shadow-xl">
                   El Dorado Spin
                 </h1>
                 <div onClick={handelOpenSideBar} className={`pl-4 pt-2  ${!opensidebar ? 'hidden' : 'lg:flex justify-end hidden'} text-white  cursor-pointer`}>
                   <Arrow_Left />
-                </div> 
+                </div>
               </div>
-              
+
               <div onClick={handelOpenSideBar} className={`pb-4 px-3 ${opensidebar ? 'hidden' : 'lg:block hidden'} text-white rotate-180 cursor-pointer items-center`}>
                 <Arrow_Left />
               </div>
 
-              <ul className="space-y-2 pt-6 font-medium">
+              <ul className="space-y-2 pt-3 font-medium">
                 {SideBarLink?.map((item, ind) => (
                   <li key={ind}>
                     <Link href={item?.Link}>
                       <button
-                        onClick={() => toggleDropdown(ind == 0 ? -1 : ind)}
+                        onClick={() => toggleDropdown(SingleTabs?.includes(item?.LinkName) ? -1 : ind)}
                         type="button"
                         className={`flex items-center w-full p-2 text-base ${pathname === item?.Link && 'bg-gray-200 dark:bg-gray-700'} text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700`}
                       >
@@ -281,7 +410,7 @@ const Sidebar = () => {
                           {item?.LinkName}
                         </span>
                         <svg
-                          className={`w-3 h-3 ${opensidebar ? 'inline-block' : 'lg:hidden'} ${ind == 0 && "hidden"}`}
+                          className={`w-3 h-3 transition-all ${opensidebar ? 'block' : 'lg:hidden'} ${SingleTabs?.includes(item?.LinkName) && "hidden"}`}
                           aria-hidden="true"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"

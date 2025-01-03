@@ -22,9 +22,9 @@ const Header = () => {
   const dispatch = useAppDispatch()
   const [modaltype, setModalType] = useState('');
   const userCredit = useAppSelector((state) => state?.user?.userCredit)
-  const router=useRouter()
+  const router = useRouter()
   useEffect(() => {
-      document.body.classList.add("dark");     
+    document.body.classList.add("dark");
   }, []);
 
   // const handleToggle = () => {
@@ -63,6 +63,7 @@ const Header = () => {
     setOpenSetting(false)
   }
 
+
   let ModalContent;
   switch (modaltype) {
     case "Add_Platform":
@@ -75,13 +76,13 @@ const Header = () => {
       ModalContent = null;
   }
 
-    //Logout Dispatch
-    const handelLogout = () => {
-      router.push("/logout");
-      localStorage.clear();
-      toast.success("Logout Successfully!");
-    };
-  
+  //Logout Dispatch
+  const handelLogout = () => {
+    router.push("/logout");
+    localStorage.clear();
+    toast.success("Logout Successfully!");
+  };
+
 
 
   return (
@@ -130,7 +131,7 @@ const Header = () => {
             </div>
           </label>} */}
           <div className="dark:bg-[#dfdfdf24] py-1 px-4 rounded-md bg-gray-300 text-black text-opacity-60 dark:text-white  text-lg">
-            {userCredit&&<p className="text-gray-900 dark:text-white">
+            {userCredit && <p className="text-gray-900 dark:text-white">
               Credits :{" "}
               <span className=" text-gray-700 dark:text-[#dfdfdf9c]">
                 {userCredit}
@@ -143,25 +144,25 @@ const Header = () => {
             <span className="text-sm dark:text-gray-300 font-normal">({user?.role})</span>
           </div>}
           <button
-              onClick={handelLogout}
-              className="bg-[#8C7CFD] bg-opacity-40 px-5 py-2 rounded-md hover:scale-95 transition-all hover:bg-opacity-90"
+            onClick={handelLogout}
+            className="bg-[#8C7CFD] bg-opacity-40 px-5 py-2 rounded-md hover:scale-95 transition-all hover:bg-opacity-90"
+          >
+            <svg
+              className="flex-shrink-0 w-5 h-5 rotate-180  transition duration-75 text-gray-800 dark:text-white "
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 18 16"
             >
-              <svg
-                className="flex-shrink-0 w-5 h-5 rotate-180  transition duration-75 text-gray-800 dark:text-white "
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 18 16"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"
-                />
-              </svg>
-            </button>
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"
+              />
+            </svg>
+          </button>
         </div>
       </div>
       {openModal && <Modal closeModal={handelCloseModal}>{ModalContent}</Modal>}

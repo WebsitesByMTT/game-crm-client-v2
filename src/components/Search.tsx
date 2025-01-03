@@ -25,7 +25,7 @@ const Search = () => {
     }
 
     useEffect(() => {
-        handelSort(sort ? 'desc' : 'asc')
+        handelSort(sort ? 'asc' : 'desc')
     }, [sort])
 
 
