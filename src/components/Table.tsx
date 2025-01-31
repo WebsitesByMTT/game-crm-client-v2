@@ -15,9 +15,15 @@ import Pagination from './Pagination'
 import Arrow_Right from './svg/Arrow_Right'
 import { usePathname, useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
+import GetPlayerGameHistory from './modals/GetPlayerGameHistory'
 import { rolesHierarchy } from '@/utils/common'
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
+import { useAppDispatch } from '@/utils/hooks'
+import { ChangeGamesOrder } from '@/utils/action'
+import Loader from '@/utils/Load'
+import { setDragedData } from '@/redux/features/gameorderSlice'
+
 
 
 const Table = ({ data, tableData, page, gamePlatform, paginationData }: any) => {
@@ -27,11 +33,38 @@ const Table = ({ data, tableData, page, gamePlatform, paginationData }: any) => 
     const [range, setRange] = useState({ From: '', To: '' });
     const [openRange, setOpenRange] = useState(false)
     const [roles, setRoles] = useState<any>([])
+    const [loading, setLoading] = useState(false);
+
+    interface TableDataItem {
+        _id: string;
+        order?: number;
+        [key: string]: any;
+    }
+
+    const [tabledata, setTableData] = useState<TableDataItem[]>([])
+    const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+    const [orderInputs, setOrderInputs] = useState<{ [key: string]: number }>({});
+
     const router = useRouter();
-    const pathname = usePathname()
+    const dispatch = useAppDispatch();
+    const pathname = usePathname();
+
+    const platform = pathname.match(/game\/([^/]+)/)?.[1] || '';
+
     const handleOpen = (index: any) => {
         setOpenIndex((prevIndex) => (prevIndex === index ? null : index)); // Toggle the dropdown for the clicked index
     };
+
+    useEffect(() => {
+        if (data?.length > 0) {
+            setTableData(data);
+            const initialOrderInputs = data.reduce((acc: any, item: any, index: number) => {
+                acc[item._id] = index + 1;
+                return acc;
+            }, {});
+            setOrderInputs(initialOrderInputs);
+        }
+    }, [data])
 
 
     useEffect(() => {
@@ -103,12 +136,80 @@ const Table = ({ data, tableData, page, gamePlatform, paginationData }: any) => 
     }
 
 
+    //Games Order Chaning Logic 
+
+    const handleOrderChange = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
+        const { value } = e.target;
+        setOrderInputs((prev) => ({ ...prev, [id]: parseInt(value) }));
+    };
+
+    const handelChangeOrder = async (dragedData: any) => {
+        setLoading(true);
+        console.log("CURRENT PAGE ; ", platform)
+
+        const formattedData = {
+            gameOrders: dragedData.map((game: any) => ({
+                gameId: game._id,
+                order: game.order
+            })),
+            platformName: platform
+        };
+
+        try {
+            const response = await ChangeGamesOrder(formattedData);
+            if (response.data?.message) {
+                toast.success(response.data?.message);
+            } else {
+                toast.error(response.error || "An unexpected error occurred");
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message || "An error occurred");
+            } else {
+                toast.error("An error occurred");
+            }
+            console.log(error);
+        } finally {
+            setLoading(false);
+            dispatch(setDragedData([]));
+        }
+    };
+
+    const handleReorder = async () => {
+        const newOrder = Object.entries(orderInputs).map(([id, order]) => ({
+            _id: id,
+            order,
+        }));
+
+        // Create a map of the new order
+        const orderMap = new Map(newOrder.map(item => [item._id, item.order]));
+
+        // Update the order of all items and sort them
+        const sortedData = [...tabledata]
+            .map(item => ({
+                ...item,
+                order: orderMap.get(item._id) || item.order,
+            }))
+            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+            .map((item, index) => ({
+                ...item,
+                order: index + 1,
+            }));
+
+        setTableData(sortedData);
+        dispatch(setDragedData(sortedData));
+        await handelChangeOrder(sortedData); // Call the API function
+    };
+
+
     return (
         <>
             <div className="relative shadow-md h-[75vh] lg:h-auto overflow-auto lg:overflow-visible rounded">
                 <table className="w-full text-sm text-left rtl:text-right rounded text-gray-500 dark:text-gray-400">
                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
+                            {page === 'game' && <th scope="col" className="px-6 py-3 text-left">Order</th>}
+
                             {
                                 tableData.Thead.map((th: any) => (
                                     <th key={th} scope="col" className="px-6 py-3  text-left">
@@ -122,22 +223,34 @@ const Table = ({ data, tableData, page, gamePlatform, paginationData }: any) => 
                                                 </div>
                                             </div>}
                                         </div>
-
-
                                     </th>
                                 ))
                             }
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.length > 0 ? (
-                            data.map((item: any, ind: number) => (
+                        {tabledata?.length > 0 ? (
+                            tabledata?.map((item: any, ind: number) => (
                                 <tr
+
                                     key={item?._id}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                                 >
+                                    {page === 'game' && (
+                                        <td className="px-6 py-4 whitespace-nowrap text-base">
+                                            <input
+                                                type="number"
+                                                value={orderInputs[item._id] || ''}
+                                                onChange={(e) => handleOrderChange(e, item._id)}
+                                                className="p-3 rounded-lg bg-gray-100 dark:bg-gray-700 outline-none dark:text-white placeholder:text-gray-500 focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out w-24"
+                                                placeholder="Enter order"
+                                            />
+                                        </td>
+                                    )}
+
+
                                     {tableData?.Tbody?.map((td: any) => {
-                                        let tdClass = "px-6 py-4 whitespace-nowra text-base ";
+                                        let tdClass = "px-6 py-4 whitespace-nowrap text-base ";
 
                                         switch (td) {
                                             case 'status':
@@ -160,7 +273,7 @@ const Table = ({ data, tableData, page, gamePlatform, paginationData }: any) => 
                                             <td key={td} className={tdClass}>
                                                 {td === "updatedAt" ? new Date(item[td]).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
                                                     : td === 'thumbnail' ? <Image src={item[td]} alt={item[td]} quality={100} width={400} height={400} className="w-[80px]" />
-                                                        : td === 'username' ? <Link href={`/clients/${item?._id}`} className="hover:text-[#362e76] hover:scale-110 inline-block transition-all">{item[td]}</Link>
+                                                        : td === 'username' ? <Link href={roles?.includes(item?.role) ? `/clients/${item?._id}` : '#'} className="hover:text-[#FFD117] hover:scale-110 inline-block transition-all">{item[td]}</Link>
                                                             : item[td]}
                                             </td>
                                         );
@@ -170,7 +283,7 @@ const Table = ({ data, tableData, page, gamePlatform, paginationData }: any) => 
                                         <td>
                                             <div className="flex items-center justify-start pl-5 space-x-5">
                                                 <div className="relative">
-                                                    <button onClick={() => handleOpen(ind)} className="hover:bg-gray-200 dark:hover:bg-black transition-all text-[#8C7CFD] p-1 rounded-lg">
+                                                    <button onClick={() => handleOpen(ind)} className="hover:bg-gray-200 dark:hover:bg-black transition-all text-[#FFD117] p-1 rounded-lg">
                                                         <Threedots />
                                                     </button>
                                                     <div className={` ${openIndex === ind ? 'scale-100' : 'scale-0'} z-[51] transition-all absolute ${popup?.includes(ind) ? 'top-[100%]' : 'bottom-0'} right-0 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}>
@@ -205,6 +318,18 @@ const Table = ({ data, tableData, page, gamePlatform, paginationData }: any) => 
                 </table>
                 {/* Pagination */}
             </div>
+            {loading && <Loader />}
+
+            {
+                page === "game" && <button
+                    onClick={handleReorder}
+                    className="fixed bottom-10 right-10 z-50 mt-4 px-6 py-3 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300 ease-in-out"
+                >
+                    Update Order
+                </button>
+            }
+
+
             {page !== 'game' && !popup?.includes(paginationData?.totalPage) && <Pagination paginationData={paginationData} />}
             {openIndex !== null && <div onClick={() => handleOpen(null)} className='bg-black fixed top-0 bg-opacity-35 left-0 w-full h-screen z-[50]'></div>}
             {openmodal && <Modal closeModal={handelCloseModal} modaltype={modalType} >{ModalContent}</Modal>}
