@@ -254,6 +254,13 @@ const page = () => {
                         required
                         className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
                     />
+                    <p className="text-left font-light">Description :</p>
+                    <input
+                        name="description"
+                        onChange={(e) => handleChange(e)}
+                        value={game.description}
+                        className="text-left font-extralight text-gray-400 focus:outline-none bg-transparent w-full border-b-[1px] border-gray-300 dark:border-[#dfdfdf2e] "
+                    />
                     <div className="col-span-2 flex justify-center mt-2">
                         <button
                             disabled={disable ? true : false}

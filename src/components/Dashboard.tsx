@@ -13,32 +13,41 @@ import TodayDate from './svg/Date'
 import { formatAmount } from '@/utils/common'
 import { useAppSelector } from '@/utils/hooks'
 import Percentage from './svg/Percentage'
+import Credit from './svg/Credit'
+
 
 const Dashboard = ({ subordinates_id, userDetail }: any) => {
     const [reporttype, setReportType] = useState('daily')
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState<any>({});
+
     const date = new Date()?.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+
     const userCredit = useAppSelector((state) => state?.user?.userCredit)
     const card = data?.role === 'player' ? [
         {
             title: 'Recharge',
-            amount: `$${formatAmount(data?.recharge || 0)}`,
+            amount: formatAmount(data?.recharge || 0),
             icon: <Recharge />
         },
         {
             title: 'Redeem',
-            amount: `$${formatAmount(data?.redeem || 0)}`,
+            amount: formatAmount(data?.redeem || 0),
             icon: <Redeem />
         },
+        {
+            title: 'Credits',
+            amount: Math.round(data?.credits),
+            icon: <Credit />
+        }
     ] : subordinates_id && data?.role !== 'player' ? [{
         title: 'Recharge',
-        amount: `$${formatAmount(data?.recharge || 0)}`,
+        amount: formatAmount(data?.recharge || 0),
         icon: <Recharge />
     },
     {
         title: 'Redeem',
-        amount: `$${formatAmount(data?.redeem || 0)}`,
+        amount: formatAmount(data?.redeem || 0),
         icon: <Redeem />
     }, {
         title: 'Clients',
@@ -46,19 +55,19 @@ const Dashboard = ({ subordinates_id, userDetail }: any) => {
         icon: <Clients />
     },
     {
-        title: 'Date',
-        amount: data?.users ? date : 0,
-        icon: <TodayDate />
+        title: 'Credits',
+        amount: Math.round(data?.credits),
+        icon: <Credit />
     }
-    ] : data?.role === "company" ? [
+    ] : data?.role === 'admin' ? [
         {
             title: 'Recharge',
-            amount: `$${formatAmount(data?.recharge || 0)}`,
+            amount: formatAmount(data?.recharge || 0),
             icon: <Recharge />
         },
         {
             title: 'Redeem',
-            amount: `$${formatAmount(data?.redeem || 0)}`,
+            amount: formatAmount(data?.redeem || 0),
             icon: <Redeem />
         },
         {
@@ -74,12 +83,12 @@ const Dashboard = ({ subordinates_id, userDetail }: any) => {
     ] : [
         {
             title: 'Recharge',
-            amount: `$${formatAmount(data?.recharge || 0)}`,
+            amount: formatAmount(data?.recharge || 0),
             icon: <Recharge />
         },
         {
             title: 'Redeem',
-            amount: `$${formatAmount(data?.redeem || 0)}`,
+            amount: formatAmount(data?.redeem || 0),
             icon: <Redeem />
         },
         {
@@ -89,7 +98,7 @@ const Dashboard = ({ subordinates_id, userDetail }: any) => {
         },
         {
             title: 'Holdings %',
-            amount: `${userCredit && data?.recharge > 0 ? (Math.round((userCredit / userDetail?.data?.totalRecharged) * 100)) : 0}%`,
+            amount: `${userCredit ? (Math.round((userCredit / userDetail?.data?.totalRecharged) * 100)) : 0}%`,
             icon: <Percentage />
         }
     ]

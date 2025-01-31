@@ -1,13 +1,14 @@
-import { useAppSelector } from '@/utils/hooks';
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import activeUsersReducers from './features/activeUsersSlice'
 import { reduxSlice } from './ReduxSlice';
-import { UsersSlice } from './user/userSlice';
+import { UsersSlice } from './features/userSlice';
+import { gameSlice } from './features/gameorderSlice';
 
 const rootReducer = combineReducers({
   activeUsers: activeUsersReducers,
   globlestate: reduxSlice.reducer,
-  user:UsersSlice.reducer
+  user: UsersSlice.reducer,
+  game: gameSlice.reducer
 })
 
 export const makeStore = () => {
