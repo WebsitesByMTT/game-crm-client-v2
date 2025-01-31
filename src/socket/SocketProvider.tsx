@@ -7,11 +7,10 @@ import {
   removePlayer,
   updateSpin,
 } from "@/redux/features/activeUsersSlice";
-import { setUsercredit } from "@/redux/user/userSlice";
+import { setUsercredit } from "@/redux/features/userSlice";
 import { CurrentGame, EventType } from "@/utils/Types";
 import { config } from "@/utils/config";
 import { useAppDispatch } from "@/utils/hooks";
-import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { io, Socket } from "socket.io-client";
@@ -35,7 +34,6 @@ export const SocketProvider: React.FC<{
 }> = ({ token, children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const dispatch = useAppDispatch();
-  const router = useRouter();
 
   useEffect(() => {
     if (token) {
@@ -48,7 +46,7 @@ export const SocketProvider: React.FC<{
       });
 
       socketInstance.on("activePlayers", (activePlayersData) => {
-        activePlayersData.forEach((player:any) => {
+        activePlayersData.forEach((player: any) => {
           dispatch(
             addPlayer({
               playerId: player.playerId,
@@ -151,6 +149,7 @@ export const SocketProvider: React.FC<{
     const {
       playerId,
       gameId,
+      gameName,
       sessionId,
       entryTime,
       exitTime,
@@ -167,6 +166,7 @@ export const SocketProvider: React.FC<{
       enterGame({
         playerId,
         gameId,
+        gameName,
         sessionId,
         entryTime: new Date(entryTime), // Pass Date object directly
         exitTime: exitTime ? new Date(exitTime) : null, // Keep as Date or null
@@ -182,11 +182,11 @@ export const SocketProvider: React.FC<{
 
   };
 
-  
+
 
   const handleExitedGame = (payload: any) => {
     const { playerId } = payload;
-    dispatch(exitGame({ playerId }));
+    dispatch(exitGame({ playerId, gameId: payload.gameId }));
   };
 
   const handleUpdatedSpin = (summary: CurrentGame) => {
@@ -196,7 +196,7 @@ export const SocketProvider: React.FC<{
 
   const hadleCurrentUserCredits = (payload: any) => {
     const { credits, role } = payload;
-    if (role === "company") {
+    if (role === "admin") {
       dispatch(setUsercredit('∞'));
     } else {
       dispatch(setUsercredit(credits));

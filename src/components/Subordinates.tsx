@@ -5,11 +5,13 @@ import { IoChevronBackOutline } from 'react-icons/io5';
 import Dashboard from './Dashboard';
 import Subclient from './Subclient';
 import SubclientTransaction from './SubclientTransaction';
+import PlayerGameHistory from './PlayerGameHistory';
 
 const Subordinates = ({ subordinateData, id, page }: any) => {
     const [option, setOption] = React.useState("report");
     const router = useRouter()
     const pathname = usePathname()
+
 
     let ModalContent;
     switch (option) {
@@ -22,9 +24,14 @@ const Subordinates = ({ subordinateData, id, page }: any) => {
         case "transactions":
             ModalContent = <SubclientTransaction subordinates_id={id} page={page} />;
             break;
+
+        case "game-history":
+            ModalContent = <PlayerGameHistory username={subordinateData?.username} />;
+            break;
         default:
             ModalContent = null;
     }
+
     return (
         <>
             <div className="min-h-full h-auto ">
@@ -85,6 +92,20 @@ const Subordinates = ({ subordinateData, id, page }: any) => {
                         >
                             Transactions
                         </button>
+                        {
+                            subordinateData.role === "player" && <button
+                                onClick={() => {
+                                    setOption("game-history");
+                                    router.push(`${pathname}`);
+                                }}
+                                className={`px-4  rounded-full ${option === "game-history"
+                                    ? "text-white bg-opacity-80 border-[3px] border-[#8C7CFD] bg-[#8C7CFD]"
+                                    : "dark:text-[#f4f2f2ac] border-gray-700"
+                                    } border-[3px] transition-all`}
+                            >
+                                Game History
+                            </button>
+                        }
                     </div>
                 </div>
             </div>

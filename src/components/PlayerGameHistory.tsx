@@ -1,14 +1,15 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import * as XLSX from "xlsx";
-import Arrow_Left from "../svg/Arrow_Left";
-import Arrow_Right from "../svg/Arrow_Right";
+import Arrow_Left from "./svg/Arrow_Left";
+import Arrow_Right from "./svg/Arrow_Right";
 import { getGameHistory } from "@/utils/action";
-import { SessionSpinChart } from "../SessionSpinChart";
-import { WinPercentageChart } from "../WinPercentageChart";
-import SpinDataTable from "../SpinDataTable";
-import { TimeDisplay } from "../TimeDisplay";
-import { StatsCard } from "../StatsCard";
+import { SessionSpinChart } from "./SessionSpinChart";
+import { TimeDisplay } from "./TimeDisplay";
+import { StatsCard } from "./StatsCard";
+import { WinPercentageChart } from "./WinPercentageChart";
+import SpinDataItem from "./SpinDataItem";
+import SpinDataTable from "./SpinDataTable";
 
 
 const PlayerGameHistory = ({ username }: { username: string }) => {

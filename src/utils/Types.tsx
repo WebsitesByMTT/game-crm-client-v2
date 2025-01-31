@@ -6,7 +6,11 @@ export interface SpinData {
     spinId: string;
     betAmount: number;
     winAmount: number;
-    specialFeatures?: SpecialFeatures;
+    specialFeatures?: {
+        jackpot?: { amountWon: number }
+        scatter?: { amountWon: number }
+        bonus?: { amountWon: number }
+    }
 }
 
 export interface SpecialFeatures {
@@ -35,6 +39,7 @@ export interface Bonus {
 export interface CurrentGame {
     playerId: string,
     gameId: string,
+    gameName: string,
     sessionId: string,
     entryTime: Date;
     exitTime: Date | null;
