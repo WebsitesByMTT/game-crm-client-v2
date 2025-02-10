@@ -33,6 +33,10 @@ const Pagination = ({ paginationData }: any) => {
         if (paginationData?.To) queryParams.set('To', paginationData.To);
         if (paginationData?.sort) queryParams.set('sort', paginationData.sort || 'desc');
 
+        // Set date range params
+        if (paginationData?.startDate) queryParams.set('startDate', paginationData.startDate)
+        if (paginationData?.endDate) queryParams.set('endDate', paginationData.endDate)
+
         const queryString = queryParams.toString();
         const newUrl = `${pathname}?${queryString}`;
 
