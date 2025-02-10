@@ -10,6 +10,9 @@ import Loader from '@/utils/Load'
 import { ChangeGamesOrder } from '@/utils/action'
 import { setDragedData } from '@/redux/features/gameorderSlice'
 import Order from './svg/Order'
+import Cookies from 'js-cookie'
+import jwt from 'jsonwebtoken'
+import { rolesHierarchy } from '@/utils/common'
 
 
 
@@ -21,6 +24,9 @@ const Search = ({ page, platform }: any) => {
         endDate: "",
     })
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
+    const [user, setUser] = useState<{ username: string; role: string; credits: number; } | null>(null);
+    const [selectedRole, setSelectedRole] = useState<string>('');
+    const [availableRoles, setAvailableRoles] = useState<string[]>([]);
 
 
     const dispatch = useAppDispatch()
@@ -113,6 +119,24 @@ const Search = ({ page, platform }: any) => {
         setSortOrder(urlSort)
     }, [])
 
+    const handelGetUser = async () => {
+        try {
+            const user = await Cookies.get('userToken')
+            if (user) {
+                const decodedUser: any = jwt.decode(user)
+                setUser(decodedUser)
+                setAvailableRoles(rolesHierarchy(decodedUser?.role || ''));
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        handelGetUser()
+    }, []);
+
+
 
     return (
         <div className='flex flex-col lg:flex-row items-start lg:items-center gap-4 lg:gap-6 w-full'>
@@ -135,6 +159,31 @@ const Search = ({ page, platform }: any) => {
                         <SearchIcon />
                     </button>
                 </div>
+            </div>
+
+            <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 px-4 py-2 rounded-lg border dark:border-gray-600">
+                <select
+                    value={selectedRole}
+                    onChange={(e) => {
+                        setSelectedRole(e.target.value);
+                        const queryParams = new URLSearchParams(window.location.search);
+                        if (e.target.value) {
+                            queryParams.set('search', e.target.value);
+                        } else {
+                            queryParams.delete('search');
+                        }
+                        queryParams.set('page', '1');
+                        router.push(`${pathname}?${queryParams.toString()}`);
+                    }}
+                    className="bg-transparent text-sm outline-none dark:text-white w-[150px]"
+                >
+                    <option value="">All Roles</option>
+                    {availableRoles.map((role) => (
+                        <option key={role} value={role}>
+                            {role.charAt(0).toUpperCase() + role.slice(1)}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             {page !== 'game' && (
