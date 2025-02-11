@@ -8,6 +8,7 @@ const page = async ({ searchParams }: any) => {
         searchParams?.page,
         '',
         searchParams?.sort || 'desc',
+        '',
         searchParams?.startDate,
         searchParams?.endDate)
 

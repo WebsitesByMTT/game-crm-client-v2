@@ -679,7 +679,6 @@ export const GetMyTransactions = async (search: string, page: number, query?: an
 
   // Add date range parameters to URL if provided
   const dateParams = startDate && endDate ? `&startDate=${startDate}&endDate=${endDate}` : '';
-
   try {
     const response = await fetch(
       `${config.server}/api/transactions?filter=${username}&page=${page}&search=${filterQuery}&sort=${sort || 'desc'}&type=${type || ''}${dateParams}`,
