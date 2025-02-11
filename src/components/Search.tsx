@@ -161,7 +161,7 @@ const Search = ({ page, platform }: any) => {
                 </div>
             </div>
 
-            <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 px-4 py-2 rounded-lg border dark:border-gray-600">
+            {page==='client'&&(<div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 px-4 py-2 rounded-lg border dark:border-gray-600">
                 <select
                     value={selectedRole}
                     onChange={(e) => {
@@ -184,7 +184,7 @@ const Search = ({ page, platform }: any) => {
                         </option>
                     ))}
                 </select>
-            </div>
+            </div>)}
 
             {page !== 'game' && (
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full lg:w-auto">
