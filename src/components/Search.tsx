@@ -40,6 +40,7 @@ const Search = ({ page, platform }: any) => {
         queryParams.set('page', '1')
 
         if (search) queryParams.set('search', search)
+        if (selectedRole) queryParams.set('search', selectedRole)
         if (dateRange.startDate) queryParams.set("startDate", dateRange.startDate)
         if (dateRange.endDate) queryParams.set("endDate", dateRange.endDate)
 
@@ -100,6 +101,7 @@ const Search = ({ page, platform }: any) => {
 
     const clearFilters = () => {
         setSearch("")
+        setSelectedRole("")
         setDateRange({ startDate: "", endDate: "" })
         router.push(pathname)
     }
@@ -161,7 +163,7 @@ const Search = ({ page, platform }: any) => {
                 </div>
             </div>
 
-            <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 px-4 py-2 rounded-lg border dark:border-gray-600">
+            {page === 'client' && (<div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 px-4 py-2 rounded-lg border dark:border-gray-600">
                 <select
                     value={selectedRole}
                     onChange={(e) => {
@@ -184,7 +186,7 @@ const Search = ({ page, platform }: any) => {
                         </option>
                     ))}
                 </select>
-            </div>
+            </div>)}
 
             {page !== 'game' && (
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full lg:w-auto">
